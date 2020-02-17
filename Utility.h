@@ -18,3 +18,27 @@ inline void setBoundary(int type, float *quantity, int N) {
   quantity[indexOf(0, N+1, N)]    = 0.5f * (quantity[indexOf(1, N+1, N)] + quantity[indexOf(0, N, N)]);
   quantity[indexOf(N+1, N+1, N)]  = 0.5f * (quantity[indexOf(N, N+1, N)] + quantity[indexOf(N+1, N, N)]);
 }
+inline void setBoundaryAdjoint(int type, float *quantityAdjoint, int N) {
+  quantityAdjoint[indexOf(N+1, N, N)]      += 0.5f * quantityAdjoint[indexOf(N+1, N+1, N)];
+  quantityAdjoint[indexOf(N, N+1, N)]      += 0.5f * quantityAdjoint[indexOf(N+1, N+1, N)];
+  quantityAdjoint[indexOf(N+1, N+1, N)]    = 0.0f;
+
+  quantityAdjoint[indexOf(N+1, 1, N)]      += 0.5f * quantityAdjoint[indexOf(N+1, 0, N)];
+  quantityAdjoint[indexOf(N, 0, N)]        += 0.5f * quantityAdjoint[indexOf(N+1, 0, N)];
+  quantityAdjoint[indexOf(N+1, 0, N)]      = 0.0f;
+
+  quantityAdjoint[indexOf(0, N, N)]        += 0.5f * quantityAdjoint[indexOf(0, N+1, N)];
+  quantityAdjoint[indexOf(1, N+1, N)]      += 0.5f * quantityAdjoint[indexOf(0, N+1, N)];
+  quantityAdjoint[indexOf(0, N+1, N)]      = 0.0f;
+
+  quantityAdjoint[indexOf(0, 1, N)]        += 0.5f * quantityAdjoint[indexOf(0, 0, N)];
+  quantityAdjoint[indexOf(1, 0, N)]        += 0.5f * quantityAdjoint[indexOf(0, 0, N)];
+  quantityAdjoint[indexOf(0, 0, N)]        = 0.0f;
+
+  for(int i = N;i >= 1;--i) {
+    quantityAdjoint[indexOf(i, N, N)]    += type==2?-quantityAdjoint[indexOf(i, N+1, N)] : quantityAdjoint[indexOf(i, N+1, N)];quantityAdjoint[indexOf(i, N+1, N)] = 0.0f;
+    quantityAdjoint[indexOf(i, 1, N)]    += type==2?-quantityAdjoint[indexOf(i, 0, N)] : quantityAdjoint[indexOf(i, 0, N)];quantityAdjoint[indexOf(i, 0, N)] = 0.0f;
+    quantityAdjoint[indexOf(N, i, N)]    += type==1?-quantityAdjoint[indexOf(N+1, i, N)] : quantityAdjoint[indexOf(N+1, i, N)];quantityAdjoint[indexOf(N+1, i, N)] = 0.0f;
+    quantityAdjoint[indexOf(1, i, N)]    += type==1?-quantityAdjoint[indexOf(0, i, N)] : quantityAdjoint[indexOf(0, i, N)];quantityAdjoint[indexOf(0, i, N)] = 0.0f;
+  }
+}
