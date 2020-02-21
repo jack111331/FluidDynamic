@@ -6,6 +6,9 @@ inline int indexOf(int i, int j, int N) {
 inline float linearInterpolate2D(float u, float v, float ll, float lr, float ul, float ur) {
   return (1-v) * ((1-u) * ll + u * lr) + v * ((1-u) * ul + u * ur);
 }
+inline float linearInterpolate2DDerivative(float u, float ll, float lr, float ul, float ur) {
+  return (1-u) * (lr - ll) + u * (ur - ul);
+}
 inline void setBoundary(int type, float *quantity, int N) {
   for(int i = 1;i <= N;++i) {
     quantity[indexOf(0, i, N)]    = type==1?-quantity[indexOf(1, i, N)] : quantity[indexOf(1, i, N)];

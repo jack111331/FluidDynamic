@@ -11,6 +11,21 @@ Velocity::Velocity(int N, Solver *solver) : NavierStokes(N, solver){
   }
 }
 
+Velocity::Velocity(const Velocity &v) {
+  m_grid = v.m_grid;
+  m_solver = v.m_solver;
+  m_currentContext = v.m_currentContext;
+
+  for(int k = 0;k < 2;++k) {
+    m_uQuantity[k] = new float[(N+2)*(N+2)];
+    m_vQuantity[k] = new float[(N+2)*(N+2)];
+    for(int i = 0;i < (N+2)*(N+2);++i) {
+      m_uQuantity[k][i] = v.m_uQuantity[k][i];
+      m_vQuantity[k][i] = v.m_vQuantity[k][i];
+    }
+  }
+}
+
 Velocity::~Velocity() {
   for(int i = 0;i < 2;++i) {
     delete m_uQuantity[i];
@@ -18,9 +33,10 @@ Velocity::~Velocity() {
   }
 }
 
-void Velocity::process(float dt, float diffusion, float *u, float *v) {
-  addQuantity(dt, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext^1]);
-  addQuantity(dt, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext^1]);
+void Velocity::process(float dt, float diffusion, float *u, float *v, const std::vector<ControlForce *> &controlForceList) {
+  for(auto controlForce : controlForceList) {
+    controlForce->applyForce(*this, m_grid);
+  }
 
   m_currentContext ^= 1;
   diffuse(dt, diffusion, 1, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext^1]);
@@ -34,6 +50,25 @@ void Velocity::process(float dt, float diffusion, float *u, float *v) {
   advect(dt, 2, m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1], m_vQuantity[m_currentContext], m_vQuantity[m_currentContext^1]);
   project(m_uQuantity[m_currentContext], m_vQuantity[m_currentContext], m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1]);
 }
+
+void Velocity::processDerivative(float dt, float diffusion, float *u, float *v, const std::vector<ControlForce *> &controlForceList) {
+  for(auto controlForce : controlForceList) {
+    controlForce->applyForceDerivative(*this, m_grid);
+  }
+
+  m_currentContext ^= 1;
+  diffuse(dt, diffusion, 1, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext^1]);
+  diffuse(dt, diffusion, 2, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext^1]);
+
+  // Satisfy the incompressible condition
+  project(m_uQuantity[m_currentContext], m_vQuantity[m_currentContext], m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1]);
+
+  m_currentContext ^= 1;
+  advect(dt, 1, m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1], m_uQuantity[m_currentContext], m_uQuantity[m_currentContext^1]);
+  advect(dt, 2, m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1], m_vQuantity[m_currentContext], m_vQuantity[m_currentContext^1]);
+  project(m_uQuantity[m_currentContext], m_vQuantity[m_currentContext], m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1]);
+}
+
 void Velocity::project(float *u, float *v, float *p, float *div) {
   for(int i = 1;i <= m_grid;++i) {
     for(int j = 1;j <= m_grid;++j) {

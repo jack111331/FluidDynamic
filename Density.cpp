@@ -9,6 +9,19 @@ Density::Density(int N, Solver *solver) : NavierStokes(N, solver){
   }
 }
 
+Density::Density(const Density &v) {
+  m_grid = v.m_grid;
+  m_solver = v.m_solver;
+  m_currentContext = v.m_currentContext;
+
+  for(int k = 0;k < 2;++k) {
+    m_quantity[k] = new float[(N+2)*(N+2)];
+    for(int i = 0;i < (N+2)*(N+2);++i) {
+      m_quantity[k][i] = v.m_quantity[k][i];
+    }
+  }
+}
+
 Density::~Density() {
   for(int i = 0;i < 2;++i) {
     delete m_quantity[i];

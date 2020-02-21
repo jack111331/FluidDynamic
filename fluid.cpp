@@ -10,8 +10,6 @@
 using namespace std;
 
 // #define DEBUG_MODE
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 static Solver *solver;
 static Density *densityField;
@@ -223,17 +221,6 @@ static void initializeState() {
   const float r = 2.0f;
   addVortexForce(gridWidth, width, r, initVelocityLocation, 1);
   addGaussianWindForce(gridWidth, width, windDirection, initVelocityLocation, 3);
-}
-
-
-static void costFunction() {
-  int imageWidth, imageHeight, imageChannels;
-  uint8_t * data = stbi_load("targetImage.png", &imageWidth, &imageHeight, &imageChannels, 0);
-  if(data) {
-  } else {
-    // std::cout << __FILE__ << " Failed to Load Image " << TextureFilenameInstance.c_str() << std::endl;
-  }
-  stbi_image_free(data);
 }
 
 int main() {
