@@ -10,8 +10,6 @@
 using namespace std;
 
 // #define DEBUG_MODE
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 static Solver *solver;
 static Density *densityField;
@@ -62,6 +60,14 @@ static void keyboardCallback(GLFWwindow* window, int key, int scancode, int acti
     if(key == GLFW_KEY_V) {
       displayMode = !displayMode;
     }
+    if(key == GLFW_KEY_C) {
+      float *density = densityField->getQuantity();
+      for(int i = 0;i < N+2;++i) {
+        for(int j = 0;j < N+2;++j) {
+          density[indexOf(i, j, N)] = 0.0f;
+        }
+      }
+    }
     if(key == GLFW_KEY_ESCAPE) {
       glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
@@ -72,13 +78,15 @@ static void keyboardCallback(GLFWwindow* window, int key, int scancode, int acti
 static void mouseActionHandler() {
   int i = ((windowY-mouseYpos)/(double)windowY) * N + 1;
   int j = (mouseXpos/(double)windowX) * N + 1;
-  if(i >= 1 && i <= N && j >= 1 && j <= N) {
+  if(i >= 1 && i < N && j >= 1 && j < N) {
     float *density = densityField->getPrevQuantity();
     float *u = velocityField->getPrevQuantity(Velocity::uComponent);
     float *v = velocityField->getPrevQuantity(Velocity::vComponent);
     if(mouseAction[0]) {
-      u[indexOf(i, j, N)] = force * (prevMouseYpos - mouseYpos);
-      v[indexOf(i, j, N)] = force * (mouseXpos - prevMouseXpos);
+      u[indexOfVelocityU(i, j, N)] = force * (mouseXpos - prevMouseXpos);
+      u[indexOfVelocityU(i, j+1, N)] = force * (mouseXpos - prevMouseXpos);
+      v[indexOfVelocityV(i, j, N)] = force * (prevMouseYpos - mouseYpos);
+      v[indexOfVelocityV(i+1, j, N)] = force * (prevMouseYpos - mouseYpos);
     }
     if(mouseAction[1]) {
       density[indexOf(i, j, N)] = source;
@@ -149,8 +157,8 @@ static float *changeGridPosition(float *gridPosition, float *u, float *v, int N)
   float gridSize = 2.0f/N;
   for(int i = 0;i < N;++i) {
     for(int j = 0;j < N;++j) {
-      gridPosition[3 * (i*N+j)] = -1.0f + gridSize * ((float)j + 0.5f) + v[indexOf(i+1, j+1, N)];
-      gridPosition[3 * (i*N+j) + 1] = -1.0f + gridSize * ((float)i + 0.5f) + u[indexOf(i+1, j+1, N)];
+      gridPosition[3 * (i*N+j)] = -1.0f + gridSize * ((float)j + 0.5f) + (u[indexOfVelocityU(i, j+1, N)] + u[indexOfVelocityU(i, j, N)]) * 0.5f;
+      gridPosition[3 * (i*N+j) + 1] = -1.0f + gridSize * ((float)i + 0.5f) + (v[indexOfVelocityV(i+1, j, N)] + v[indexOfVelocityV(i, j, N)]) * 0.5f;
       gridPosition[3 * (i*N+j) + 2] = 0.0f;
     }
   }
@@ -225,17 +233,6 @@ static void initializeState() {
   addGaussianWindForce(gridWidth, width, windDirection, initVelocityLocation, 3);
 }
 
-
-static void costFunction() {
-  int imageWidth, imageHeight, imageChannels;
-  uint8_t * data = stbi_load("targetImage.png", &imageWidth, &imageHeight, &imageChannels, 0);
-  if(data) {
-  } else {
-    // std::cout << __FILE__ << " Failed to Load Image " << TextureFilenameInstance.c_str() << std::endl;
-  }
-  stbi_image_free(data);
-}
-
 int main() {
     // Environment preparation
     if(!glfwInit()) {
@@ -264,9 +261,9 @@ int main() {
 
     solver = new GaussSeidelSolver(timestep);
     densityField = new Density(N, solver);
-    velocityField = new Velocity(N, solver);
+    velocityField = new Velocity(N);
 
-    initializeState();
+    // initializeState();
 
     // mesh shader init
     Shader meshShader;
@@ -358,7 +355,12 @@ int main() {
       float *density = densityField->getPrevQuantity();
       for(int i = 0;i < N+2;++i) {
         for(int j = 0;j < N+2;++j) {
-          u[indexOf(i, j, N)] = v[indexOf(i, j, N)] = density[indexOf(i, j, N)] = 0.0f;
+          density[indexOf(i, j, N)] = 0.0f;
+        }
+      }
+      for(int i = 0;i <= N;++i) {
+        for(int j = 0;j <= N+1;++j) {
+          u[indexOfVelocityU(j, i, N)] = v[indexOfVelocityV(i, j, N)] = 0.0f;
         }
       }
       glfwPollEvents();

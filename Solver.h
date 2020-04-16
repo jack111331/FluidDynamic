@@ -16,5 +16,6 @@ class GaussSeidelSolver : public Solver {
 
 class ConjugatedGradientSolver : public Solver {
   public:
+    ConjugatedGradientSolver();
     void solve(float *x, float *x0, float a, float denom, int boundary, int N) override;
 };

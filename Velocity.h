@@ -1,15 +1,21 @@
 #pragma once
-#include "NavierStokes.h"
 #include "Quantity.h"
-class Velocity : public NavierStokes, public MultipleQuantity {
+class Velocity : public MultipleQuantity {
 private:
+  int m_grid;
+  int m_currentContext;
   float *m_uQuantity[2];
   float *m_vQuantity[2];
-  void project(float *u, float *v, float *p, float *div);
+  void addForce(float dt);
+  void advectU(float dt, float *u, float *prevU, float *prevV);
+  void advectV(float dt, float *v, float *prevV, float *prevU);
+  float curl(int x, int y);
+  void vorticityConfinement(float dt, float vorticity);
+  void massConserve(float dt, float materialDensity);
 public:
-  Velocity(int N, Solver *solver);
+  Velocity(int N);
   ~Velocity();
-  void process(float dt, float diffusion, float *u, float *v) override;
+  void process(float dt, float diffusion, float *u, float *v);
   float *getQuantity(int component) override;
   float *getPrevQuantity(int component) override;
 
