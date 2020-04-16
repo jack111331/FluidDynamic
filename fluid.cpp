@@ -267,11 +267,11 @@ int main() {
 
     // mesh shader init
     Shader meshShader;
-    meshShader.CreateShader("mesh.vs", "mesh.fs");
+    meshShader.CreateShader("resources/shader/mesh.vs", "resources/shader/mesh.fs");
 
     // velocity shader init
     Shader velocityShader;
-    velocityShader.CreateShader("velocity.vs", "velocity.fs");
+    velocityShader.CreateShader("resources/shader/velocity.vs", "resources/shader/velocity.fs");
 
     // Mesh VAO
     uint32_t *meshIndices = createMeshIndices(N);

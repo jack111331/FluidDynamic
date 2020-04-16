@@ -1,0 +1,8 @@
+﻿  windows.c
+D:\libraries\glfw-3.3.2\deps\getopt.h : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  getopt.c
+D:\libraries\glfw-3.3.2\deps\getopt.c : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+d:\libraries\glfw-3.3.2\deps\getopt.h : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+  glad_gl.c
+  正在產生程式碼...
+  windows.vcxproj -> D:\libraries\glfw-3.3.2\build\tests\Debug\windows.exe
