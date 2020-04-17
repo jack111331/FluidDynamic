@@ -7,8 +7,8 @@ private:
   float *m_uQuantity[2];
   float *m_vQuantity[2];
   void addForce(float dt);
-  void advectU(float dt, float *u, float *prevU, float *prevV);
-  void advectV(float dt, float *v, float *prevV, float *prevU);
+  void advectU(float dt, float *u, const float *prevU, const float *prevV);
+  void advectV(float dt, float *v, const float *prevV, const float *prevU);
   float curl(int x, int y);
   void vorticityConfinement(float dt, float vorticity);
   void massConserve(float dt, float materialDensity);

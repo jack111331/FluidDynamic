@@ -46,11 +46,11 @@ inline void setUBoundary(float *u, int N) {
 
 inline void setVBoundary(float *v, int N) {
   for(int i = 1;i <= N;++i) {
-    v[indexOfVelocityU(i, 0, N)] = 0.0f;
-    v[indexOfVelocityU(i, N, N)] = 0.0f;
+    v[indexOfVelocityV(i, 0, N)] = 0.0f;
+    v[indexOfVelocityV(i, N, N)] = 0.0f;
   }
   for(int i = 0;i <= N;++i) {
-    v[indexOfVelocityU(N+1, i, N)] = v[indexOfVelocityV(N, i, N)];
+    v[indexOfVelocityV(N+1, i, N)] = v[indexOfVelocityV(N, i, N)];
     v[indexOfVelocityV(0, i, N)] = v[indexOfVelocityV(1, i, N)];
   }
 }

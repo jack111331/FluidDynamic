@@ -15,7 +15,7 @@ static Solver *solver;
 static Density *densityField;
 static Velocity *velocityField;
 
-static int N = 64;
+static int N = 128;
 static int timestep = 20;
 static float dt = 0.1f;
 static float diffusion = 0.0f;
