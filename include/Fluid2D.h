@@ -1,0 +1,31 @@
+//
+// Created by Edge on 2020/4/23.
+//
+
+#ifndef FLUIDDYNAMIC_FLUID2D_H
+#define FLUIDDYNAMIC_FLUID2D_H
+
+#include <stdint.h>
+#include "Velocity.h"
+#include "Density.h"
+
+class Fluid2D {
+public:
+    void init(int gridSize, int solverTimestep);
+
+    void update();
+
+    void display();
+
+private:
+    uint32_t *m_meshIndices;
+    float *m_meshPosition;
+    uint32_t *m_gridIndices;
+    float *m_gridPosition;
+
+    Velocity *m_velocityField;
+    Density *m_densityField;
+};
+
+
+#endif //FLUIDDYNAMIC_FLUID2D_H

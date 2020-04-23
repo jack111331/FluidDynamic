@@ -8,6 +8,10 @@ CMakeFiles/FluidDynamic.dir/Density.cpp.obj: ../include/Solver.h
 CMakeFiles/FluidDynamic.dir/Density.cpp.obj: ../include/Utility.h
 CMakeFiles/FluidDynamic.dir/Density.cpp.obj: ../Density.cpp
 
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: ../include/Fluid2D.h
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: ../include/Utility.h
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: ../Fluid2D.cpp
+
 CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj: ../include/NavierStokes.h
 CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj: ../include/Solver.h
 CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj: ../include/Utility.h
@@ -27,14 +31,14 @@ CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj: ../include/Utility.h
 CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj: ../include/Velocity.h
 CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj: ../Velocity.cpp
 
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Density.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/GLFW/glfw3.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/NavierStokes.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Quantity.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Shader.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Solver.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Utility.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../include/Velocity.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../library/glew-2.2.0/include/GL/glew.h
-CMakeFiles/FluidDynamic.dir/fluid.cpp.obj: ../fluid.cpp
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Density.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/GLFW/glfw3.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/NavierStokes.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Quantity.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Shader.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Solver.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Utility.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../include/Velocity.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../library/glew-2.2.0/include/GL/glew.h
+CMakeFiles/FluidDynamic.dir/main.cpp.obj: ../main.cpp
 

@@ -126,19 +126,19 @@ CMakeFiles/FluidDynamic.dir/Solver.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/Solver.cpp.s"
 	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\Solver.cpp -o CMakeFiles\FluidDynamic.dir\Solver.cpp.s
 
-CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
-CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
-CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj: ../Fluid.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj"
-	D:\MinGW\bin\c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\FluidDynamic.dir\Fluid.cpp.obj -c D:\Code\FluidDynamic\Fluid.cpp
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj: ../Fluid2D.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj"
+	D:\MinGW\bin\c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\FluidDynamic.dir\Fluid2D.cpp.obj -c D:\Code\FluidDynamic\Fluid2D.cpp
 
-CMakeFiles/FluidDynamic.dir/Fluid.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FluidDynamic.dir/Fluid.cpp.i"
-	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Code\FluidDynamic\Fluid.cpp > CMakeFiles\FluidDynamic.dir\Fluid.cpp.i
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.i"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Code\FluidDynamic\Fluid2D.cpp > CMakeFiles\FluidDynamic.dir\Fluid2D.cpp.i
 
-CMakeFiles/FluidDynamic.dir/Fluid.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/Fluid.cpp.s"
-	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\Fluid.cpp -o CMakeFiles\FluidDynamic.dir\Fluid.cpp.s
+CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.s"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\Fluid2D.cpp -o CMakeFiles\FluidDynamic.dir\Fluid2D.cpp.s
 
 CMakeFiles/FluidDynamic.dir/Shader.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
 CMakeFiles/FluidDynamic.dir/Shader.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
@@ -161,7 +161,7 @@ FluidDynamic_OBJECTS = \
 "CMakeFiles/FluidDynamic.dir/Density.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/Solver.cpp.obj" \
-"CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj" \
+"CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/Shader.cpp.obj"
 
 # External object files for target FluidDynamic
@@ -172,7 +172,7 @@ FluidDynamic_EXTERNAL_OBJECTS =
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Density.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Solver.cpp.obj
-../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj
+../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Shader.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/build.make
 ../bin/FluidDynamic.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib

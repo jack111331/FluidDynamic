@@ -35,7 +35,7 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         Density.cpp
         Velocity.cpp
         Solver.cpp
-        Fluid.cpp
+        Fluid2D.cpp
         Shader.cpp
         )
 list(APPEND FLUID_DYNAMIC_HEADER

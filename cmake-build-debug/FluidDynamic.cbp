@@ -197,7 +197,7 @@
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
-		<Unit filename="D:/Code/FluidDynamic/Fluid.cpp">
+		<Unit filename="D:/Code/FluidDynamic/Fluid2D.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/NavierStokes.cpp">

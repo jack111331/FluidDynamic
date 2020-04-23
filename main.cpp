@@ -244,7 +244,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwSetErrorCallback(GLFWErrorCallback);
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Fluid Simulation", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(800, 600, "Fluid2D Simulation", NULL, NULL);
     if(window == nullptr) {
       std::cout << "[GLFW] failed to create window" << std::endl;
       glfwTerminate();

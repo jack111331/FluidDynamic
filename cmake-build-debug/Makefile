@@ -221,32 +221,32 @@ Density.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Density.cpp.s
 .PHONY : Density.cpp.s
 
-Fluid.obj: Fluid.cpp.obj
+Fluid2D.obj: Fluid2D.cpp.obj
 
-.PHONY : Fluid.obj
+.PHONY : Fluid2D.obj
 
 # target to build an object file
-Fluid.cpp.obj:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj
-.PHONY : Fluid.cpp.obj
+Fluid2D.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj
+.PHONY : Fluid2D.cpp.obj
 
-Fluid.i: Fluid.cpp.i
+Fluid2D.i: Fluid2D.cpp.i
 
-.PHONY : Fluid.i
+.PHONY : Fluid2D.i
 
 # target to preprocess a source file
-Fluid.cpp.i:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.i
-.PHONY : Fluid.cpp.i
+Fluid2D.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.i
+.PHONY : Fluid2D.cpp.i
 
-Fluid.s: Fluid.cpp.s
+Fluid2D.s: Fluid2D.cpp.s
 
-.PHONY : Fluid.s
+.PHONY : Fluid2D.s
 
 # target to generate assembly for a file
-Fluid.cpp.s:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.s
-.PHONY : Fluid.cpp.s
+Fluid2D.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.s
+.PHONY : Fluid2D.cpp.s
 
 NavierStokes.obj: NavierStokes.cpp.obj
 
@@ -401,9 +401,9 @@ help:
 	@echo ... Density.obj
 	@echo ... Density.i
 	@echo ... Density.s
-	@echo ... Fluid.obj
-	@echo ... Fluid.i
-	@echo ... Fluid.s
+	@echo ... Fluid2D.obj
+	@echo ... Fluid2D.i
+	@echo ... Fluid2D.s
 	@echo ... NavierStokes.obj
 	@echo ... NavierStokes.i
 	@echo ... NavierStokes.s
