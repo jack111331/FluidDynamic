@@ -8,6 +8,7 @@ private:
 public:
   Density(int N, Solver *solver);
   ~Density();
+  void clearPrev();
   void process(float dt, float diffusion, float *u, float *v) override;
   float *getQuantity() override;
   float *getPrevQuantity() override;

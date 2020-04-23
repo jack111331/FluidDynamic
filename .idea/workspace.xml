@@ -14,21 +14,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaeb42b6-d01c-48a0-b919-f2148dd25bf1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Fluid2D.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fluid.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/FluidDynamic.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/FluidDynamic.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/fluid.cpp.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects1.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Fluid.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Fluid2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Density.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Density.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fluid2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fluid2D.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Velocity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Velocity.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Density.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Density.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Fluid2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Fluid2D.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Velocity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Velocity.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,6 +43,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectId" id="1absoIdYq34FKvE3WFDpj63BOk9" />
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
@@ -112,7 +105,8 @@
       <workItem from="1587324390975" duration="500000" />
       <workItem from="1587377417208" duration="8000" />
       <workItem from="1587620045839" duration="1327000" />
-      <workItem from="1587623911537" duration="7737000" />
+      <workItem from="1587623911537" duration="7773000" />
+      <workItem from="1587640148463" duration="1972000" />
     </task>
     <servers />
   </component>

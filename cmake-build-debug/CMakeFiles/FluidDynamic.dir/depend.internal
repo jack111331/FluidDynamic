@@ -9,8 +9,13 @@ CMakeFiles/FluidDynamic.dir/Density.cpp.obj
  ../include/Utility.h
  D:/Code/FluidDynamic/Density.cpp
 CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj
+ ../include/Density.h
  ../include/Fluid2D.h
+ ../include/NavierStokes.h
+ ../include/Quantity.h
+ ../include/Solver.h
  ../include/Utility.h
+ ../include/Velocity.h
  D:/Code/FluidDynamic/Fluid2D.cpp
 CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj
  ../include/NavierStokes.h
@@ -33,6 +38,7 @@ CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj
  D:/Code/FluidDynamic/Velocity.cpp
 CMakeFiles/FluidDynamic.dir/main.cpp.obj
  ../include/Density.h
+ ../include/Fluid2D.h
  ../include/GLFW/glfw3.h
  ../include/NavierStokes.h
  ../include/Quantity.h

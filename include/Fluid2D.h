@@ -13,11 +13,19 @@ class Fluid2D {
 public:
     void init(int gridSize, int solverTimestep);
 
-    void update();
+    void
+    input(int windowX, int windowY, double mouseXpos, double mouseYpos, double &prevMouseXpos, double &prevMouseYpos,
+          const bool *mouseAction, float force, float source);
 
-    void display();
+    void update(float dt, float diffusion, float viscosity);
+
+    void display(bool mode);
+
+    void clear();
 
 private:
+    int m_gridSize;
+
     uint32_t *m_meshIndices;
     float *m_meshPosition;
     uint32_t *m_gridIndices;

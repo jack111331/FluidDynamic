@@ -6,6 +6,8 @@
 #include "Fluid2D.h"
 
 void Fluid2D::init(int gridSize, int solverTimestep) {
+    this->m_gridSize = gridSize;
+
     // Display Related
     m_meshIndices = new uint32_t[6 * (gridSize + 1) * (gridSize + 1)];
     m_meshPosition = new float[3 * (gridSize + 2) * (gridSize + 2)];
@@ -54,29 +56,42 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
 
 }
 
-void Fluid2D::update() {
+void Fluid2D::input(int windowX, int windowY, double mouseXpos, double mouseYpos, double &prevMouseXpos,
+                    double &prevMouseYpos, const bool *mouseAction, float force, float source) {
     // Process density and velocity field
-    m_DensityField->clearPrev();
+    m_densityField->clearPrev();
     m_velocityField->clearPrev();
-    float *prevU = m_velocityField->getPrevQuantity(Velocity::uComponent), *prevV = m_velocityField->getPrevQuantity(Velocity::vComponent);
-    float *density = m_densityField->getPrevQuantity();
-    for(int i = 0;i < N+2;++i) {
-        for(int j = 0;j < N+2;++j) {
-            density[indexOf(i, j, N)] = 0.0f;
-        }
-    }
-    for(int i = 0;i <= N;++i) {
-        for(int j = 0;j <= N+1;++j) {
-            prevU[indexOfVelocityU(j, i, N)] = prevV[indexOfVelocityV(i, j, N)] = 0.0f;
-        }
-    }
-    glfwPollEvents();
-    mouseActionHandler();
-    velocityField->process(dt, viscosity, u, v);
-    float *prevU = m_velocityField->getPrevQuantity(Velocity::uComponent), *v = velocityField->getPrevQuantity(Velocity::vComponent);
-    u = velocityField->getQuantity(Velocity::uComponent);
-    v = velocityField->getQuantity(Velocity::vComponent);
-    densityField->process(dt, diffusion, u, v);
-    density = densityField->getQuantity();
 
+    int i = (static_cast<double>(windowY - mouseYpos) / static_cast<double>(windowY)) * m_gridSize + 1;
+    int j = (static_cast<double>(mouseXpos) / static_cast<double>(windowX)) * m_gridSize + 1;
+    if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
+        float *density = m_densityField->getPrevQuantity();
+        float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
+        float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+        if (mouseAction[0]) {
+            u[indexOfVelocityU(i, j, m_gridSize)] = force * (mouseXpos - prevMouseXpos);
+            u[indexOfVelocityU(i, j + 1, m_gridSize)] = force * (mouseXpos - prevMouseXpos);
+            v[indexOfVelocityV(i, j, m_gridSize)] = force * (prevMouseYpos - mouseYpos);
+            v[indexOfVelocityV(i + 1, j, m_gridSize)] = force * (prevMouseYpos - mouseYpos);
+        }
+        if (mouseAction[1]) {
+            density[indexOf(i, j, m_gridSize)] = source;
+        }
+    }
+    prevMouseXpos = mouseXpos;
+    prevMouseYpos = mouseYpos;
+
+}
+
+void Fluid2D::update(float dt, float diffusion, float viscosity) {
+    m_velocityField->process(dt, viscosity, nullptr, nullptr);
+    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::uComponent),
+                            m_velocityField->getQuantity(Velocity::vComponent));
+}
+
+void Fluid2D::display(bool mode) {
+
+}
+
+void Fluid2D::clear() {
 }

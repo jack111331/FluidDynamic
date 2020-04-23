@@ -7,6 +7,8 @@
 #include "Velocity.h"
 #include "Utility.h"
 #include <GLFW/glfw3.h>
+#include <Fluid2D.h>
+
 using namespace std;
 
 // #define DEBUG_MODE
@@ -258,6 +260,8 @@ int main() {
     glewInit();
 
     // Initial Setup
+    Fluid2D *fluid2D = new Fluid2D();
+    fluid2D->init(N, timestep);
 
     solver = new GaussSeidelSolver(timestep);
     densityField = new Density(N, solver);

@@ -15,6 +15,15 @@ Density::~Density() {
   }
 }
 
+
+void Density::clearPrev() {
+    for(int i = 0;i < m_grid+2;++i) {
+        for(int j = 0;j < m_grid+2;++j) {
+            m_quantity[m_currentContext^1][indexOf(i, j, m_grid)] = 0.0f;
+        }
+    }
+}
+
 void Density::process(float dt, float diffusion, float *u, float *v) {
   addQuantity(dt, m_quantity[m_currentContext], m_quantity[m_currentContext^1]);
 
