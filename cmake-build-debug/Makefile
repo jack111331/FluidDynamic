@@ -221,6 +221,33 @@ Density.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Density.cpp.s
 .PHONY : Density.cpp.s
 
+Fluid.obj: Fluid.cpp.obj
+
+.PHONY : Fluid.obj
+
+# target to build an object file
+Fluid.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.obj
+.PHONY : Fluid.cpp.obj
+
+Fluid.i: Fluid.cpp.i
+
+.PHONY : Fluid.i
+
+# target to preprocess a source file
+Fluid.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.i
+.PHONY : Fluid.cpp.i
+
+Fluid.s: Fluid.cpp.s
+
+.PHONY : Fluid.s
+
+# target to generate assembly for a file
+Fluid.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid.cpp.s
+.PHONY : Fluid.cpp.s
+
 NavierStokes.obj: NavierStokes.cpp.obj
 
 .PHONY : NavierStokes.obj
@@ -329,32 +356,32 @@ Velocity.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Velocity.cpp.s
 .PHONY : Velocity.cpp.s
 
-fluid.obj: fluid.cpp.obj
+main.obj: main.cpp.obj
 
-.PHONY : fluid.obj
+.PHONY : main.obj
 
 # target to build an object file
-fluid.cpp.obj:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/fluid.cpp.obj
-.PHONY : fluid.cpp.obj
+main.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/main.cpp.obj
+.PHONY : main.cpp.obj
 
-fluid.i: fluid.cpp.i
+main.i: main.cpp.i
 
-.PHONY : fluid.i
+.PHONY : main.i
 
 # target to preprocess a source file
-fluid.cpp.i:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/fluid.cpp.i
-.PHONY : fluid.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-fluid.s: fluid.cpp.s
+main.s: main.cpp.s
 
-.PHONY : fluid.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-fluid.cpp.s:
-	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/fluid.cpp.s
-.PHONY : fluid.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -374,6 +401,9 @@ help:
 	@echo ... Density.obj
 	@echo ... Density.i
 	@echo ... Density.s
+	@echo ... Fluid.obj
+	@echo ... Fluid.i
+	@echo ... Fluid.s
 	@echo ... NavierStokes.obj
 	@echo ... NavierStokes.i
 	@echo ... NavierStokes.s
@@ -386,9 +416,9 @@ help:
 	@echo ... Velocity.obj
 	@echo ... Velocity.i
 	@echo ... Velocity.s
-	@echo ... fluid.obj
-	@echo ... fluid.i
-	@echo ... fluid.s
+	@echo ... main.obj
+	@echo ... main.i
+	@echo ... main.s
 .PHONY : help
 
 

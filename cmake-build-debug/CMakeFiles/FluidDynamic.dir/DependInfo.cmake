@@ -9,7 +9,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "D:/Code/FluidDynamic/Shader.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Shader.cpp.obj"
   "D:/Code/FluidDynamic/Solver.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj"
   "D:/Code/FluidDynamic/Velocity.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj"
-  "D:/Code/FluidDynamic/fluid.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/fluid.cpp.obj"
+  "D:/Code/FluidDynamic/Fluid.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/fluid.cpp.obj"
+  "D:/Code/FluidDynamic/main.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

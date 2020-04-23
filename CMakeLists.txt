@@ -30,21 +30,22 @@ set(FLUID_DYNAMIC_SOURCE)
 set(FLUID_DYNAMIC_HEADER)
 
 list(APPEND FLUID_DYNAMIC_SOURCE
-        fluid.cpp
-        Density.cpp
+        main.cpp
         NavierStokes.cpp
-        Shader.cpp
-        Solver.cpp
+        Density.cpp
         Velocity.cpp
+        Solver.cpp
+        Fluid.cpp
+        Shader.cpp
         )
 list(APPEND FLUID_DYNAMIC_HEADER
         include/NavierStokes.h
+        include/Density.h
+        include/Velocity.h
         include/Quantity.h
-        include/Shader.h
         include/Solver.h
         include/Utility.h
-        include/Velocity.h
-        include/Density.h
+        include/Shader.h
 
         include/stb_image.h
         )

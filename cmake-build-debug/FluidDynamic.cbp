@@ -197,6 +197,9 @@
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/Fluid.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/NavierStokes.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
@@ -211,9 +214,6 @@
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/glfw_config.h">
 			<Option target="glfw"/>
-		</Unit>
-		<Unit filename="D:/Code/FluidDynamic/fluid.cpp">
-			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Density.h">
 			<Option target="FluidDynamic"/>
@@ -310,6 +310,9 @@
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/library/glfw-3.3.2/src/window.c">
 			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/main.cpp">
+			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

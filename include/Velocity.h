@@ -10,6 +10,8 @@ private:
   void advectU(float dt, float *u, const float *prevU, const float *prevV);
   void advectV(float dt, float *v, const float *prevV, const float *prevU);
   float curl(int x, int y);
+  float dVOverDX(int i, int j);
+  float dUOverDY(int i, int j);
   void vorticityConfinement(float dt, float vorticity);
   void massConserve(float dt, float materialDensity);
 public:
