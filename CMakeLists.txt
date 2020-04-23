@@ -47,6 +47,8 @@ list(APPEND FLUID_DYNAMIC_HEADER
         include/Utility.h
         include/Shader.h
 
+        include/vo/GLFWWindowInfo.h
+
         include/stb_image.h
         )
 

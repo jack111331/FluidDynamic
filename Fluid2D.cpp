@@ -3,7 +3,21 @@
 //
 
 #include <Utility.h>
+#include <Shader.h>
 #include "Fluid2D.h"
+
+Fluid2D::~Fluid2D() {
+    delete m_meshPosition;
+    delete m_meshIndices;
+    delete m_gridPosition;
+    delete m_gridIndices;
+
+    delete m_densityFieldShader;
+    delete m_velocityFieldShader;
+
+    delete m_velocityField;
+    delete m_densityField;
+}
 
 void Fluid2D::init(int gridSize, int solverTimestep) {
     this->m_gridSize = gridSize;
@@ -50,37 +64,107 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
         }
     }
 
+    // mesh shader init
+    m_densityFieldShader = new Shader();
+    m_densityFieldShader->CreateShader("resources/shader/mesh.vs", "resources/shader/mesh.fs");
+
+    // velocity shader init
+    m_velocityFieldShader = new Shader();
+    m_velocityFieldShader->CreateShader("resources/shader/velocity.vs", "resources/shader/velocity.fs");
+
+    // Mesh VAO
+    glGenVertexArrays(1, &m_meshVAO);
+    glBindVertexArray(m_meshVAO);
+
+    // Mesh VBO
+    glGenBuffers(1, &m_positionVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionVBO);
+    glBufferData(GL_ARRAY_BUFFER, 3 * (gridSize + 2) * (gridSize + 2) * sizeof(float), m_meshPosition, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(0);
+
+    // Color VBO
+    glGenBuffers(1, &m_colorVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+    glBufferData(GL_ARRAY_BUFFER, (gridSize + 2) * (gridSize + 2) * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), nullptr);
+    glEnableVertexAttribArray(1);
+
+    // Mesh EBO
+    glGenBuffers(1, &m_indicesEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indicesEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * (gridSize + 1) * (gridSize + 1) * sizeof(uint32_t), m_meshIndices,
+                 GL_STATIC_DRAW);
+
+
+    // Velocity VAO
+    glGenVertexArrays(1, &m_velocityVAO);
+    glBindVertexArray(m_velocityVAO);
+
+    // Velocity VBO
+    glGenBuffers(1, &m_velocityPositionVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_velocityPositionVBO);
+    glBufferData(GL_ARRAY_BUFFER, 2 * 3 * gridSize * gridSize * sizeof(float), nullptr, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 3 * gridSize * gridSize * sizeof(float), m_gridPosition);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(0);
+
+    // EBO
+    glGenBuffers(1, &m_velocityIndicesEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_velocityIndicesEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * gridSize * gridSize * sizeof(uint32_t), m_gridIndices, GL_STATIC_DRAW);
+
+
     // Navier Stokes Field Attribute
     m_densityField = new Density(gridSize, new GaussSeidelSolver(solverTimestep));
     m_velocityField = new Velocity(gridSize);
 
 }
 
-void Fluid2D::input(int windowX, int windowY, double mouseXpos, double mouseYpos, double &prevMouseXpos,
-                    double &prevMouseYpos, const bool *mouseAction, float force, float source) {
+void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
     // Process density and velocity field
     m_densityField->clearPrev();
     m_velocityField->clearPrev();
 
-    int i = (static_cast<double>(windowY - mouseYpos) / static_cast<double>(windowY)) * m_gridSize + 1;
-    int j = (static_cast<double>(mouseXpos) / static_cast<double>(windowX)) * m_gridSize + 1;
+    int i = (static_cast<double>(windowInfo->windowHeight - windowInfo->mouseYPos) /
+             static_cast<double>(windowInfo->windowHeight )) * m_gridSize + 1;
+    int j = (static_cast<double>(windowInfo->mouseXPos) / static_cast<double>(windowInfo->windowWidth)) * m_gridSize +
+            1;
     if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
         float *density = m_densityField->getPrevQuantity();
         float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
         float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
-        if (mouseAction[0]) {
-            u[indexOfVelocityU(i, j, m_gridSize)] = force * (mouseXpos - prevMouseXpos);
-            u[indexOfVelocityU(i, j + 1, m_gridSize)] = force * (mouseXpos - prevMouseXpos);
-            v[indexOfVelocityV(i, j, m_gridSize)] = force * (prevMouseYpos - mouseYpos);
-            v[indexOfVelocityV(i + 1, j, m_gridSize)] = force * (prevMouseYpos - mouseYpos);
+        if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
+            u[indexOfVelocityU(i, j, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
+            u[indexOfVelocityU(i, j + 1, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
+            v[indexOfVelocityV(i, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
+            v[indexOfVelocityV(i + 1, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
         }
-        if (mouseAction[1]) {
+        if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
             density[indexOf(i, j, m_gridSize)] = source;
         }
     }
-    prevMouseXpos = mouseXpos;
-    prevMouseYpos = mouseYpos;
+    windowInfo->prevMouseXPos = windowInfo->mouseXPos;
+    windowInfo->prevMouseYPos = windowInfo->mouseYPos;
 
+}
+
+void Fluid2D::changeGridPosition() {
+    float *u = m_velocityField->getQuantity(Velocity::uComponent), *v = m_velocityField->getQuantity(
+            Velocity::vComponent);
+    float lengthPerGrid = 2.0f / m_gridSize;
+    for (int i = 0; i < m_gridSize; ++i) {
+        for (int j = 0; j < m_gridSize; ++j) {
+            m_gridPosition[3 * (i * m_gridSize + j)] = -1.0f + lengthPerGrid * ((float) j + 0.5f) +
+                                                       (u[indexOfVelocityU(i, j + 1, m_gridSize)] +
+                                                        u[indexOfVelocityU(i, j, m_gridSize)]) * 0.5f;
+            m_gridPosition[3 * (i * m_gridSize + j) + 1] = -1.0f + lengthPerGrid * ((float) i + 0.5f) +
+                                                           (v[indexOfVelocityV(i + 1, j, m_gridSize)] +
+                                                            v[indexOfVelocityV(i, j, m_gridSize)]) * 0.5f;
+            m_gridPosition[3 * (i * m_gridSize + j) + 2] = 0.0f;
+        }
+    }
 }
 
 void Fluid2D::update(float dt, float diffusion, float viscosity) {
@@ -90,8 +174,28 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
 }
 
 void Fluid2D::display(bool mode) {
-
+    if (mode == DENSITY_FIELD_MODE) {
+        // Prepare density
+        m_densityFieldShader->Use();
+        glBindVertexArray(m_meshVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (m_gridSize + 2) * (m_gridSize + 2) * sizeof(float),
+                        m_densityField->getQuantity());
+        glDrawElements(GL_TRIANGLES, 6 * (m_gridSize + 1) * (m_gridSize + 1), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    } else if (mode == VELOCITY_FIELD_MODE) {
+        // Prepare velocity
+        m_velocityFieldShader->Use();
+        glBindVertexArray(m_velocityVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, m_velocityPositionVBO);
+        changeGridPosition();
+        glBufferSubData(GL_ARRAY_BUFFER, 3 * m_gridSize * m_gridSize * sizeof(float),
+                        3 * m_gridSize * m_gridSize * sizeof(float), m_gridPosition);
+        glDrawElements(GL_LINES, 2 * m_gridSize * m_gridSize, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
 }
 
 void Fluid2D::clear() {
+    m_densityField->clear();
 }

@@ -17,6 +17,7 @@ private:
 public:
   Velocity(int N);
   ~Velocity();
+  void clear();
   void clearPrev();
   void process(float dt, float diffusion, float *u, float *v);
   float *getQuantity(int component) override;

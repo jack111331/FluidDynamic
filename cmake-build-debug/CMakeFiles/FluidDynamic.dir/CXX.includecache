@@ -15,6 +15,8 @@ Quantity.h
 ../include/Fluid2D.h
 stdint.h
 -
+vo/GLFWWindowInfo.h
+-
 Velocity.h
 ../include/Velocity.h
 Density.h
@@ -82,6 +84,10 @@ GL/glew.h
 Quantity.h
 ../include/Quantity.h
 
+../include/vo/GLFWWindowInfo.h
+GLFW/glfw3.h
+-
+
 ../library/glew-2.2.0/include/GL/glew.h
 cstddef
 -
@@ -117,6 +123,8 @@ iostream
 D:/Code/FluidDynamic/Fluid2D.cpp
 Utility.h
 -
+Shader.h
+-
 Fluid2D.h
 D:/Code/FluidDynamic/Fluid2D.h
 
@@ -135,8 +143,6 @@ iostream
 D:/Code/FluidDynamic/main.cpp
 iostream
 -
-cmath
--
 stdint.h
 -
 Shader.h
@@ -147,10 +153,10 @@ Density.h
 D:/Code/FluidDynamic/Density.h
 Velocity.h
 D:/Code/FluidDynamic/Velocity.h
-Utility.h
-D:/Code/FluidDynamic/Utility.h
 GLFW/glfw3.h
 -
 Fluid2D.h
+-
+vo/GLFWWindowInfo.h
 -
 

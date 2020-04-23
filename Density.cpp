@@ -13,8 +13,16 @@ Density::~Density() {
   for(int i = 0;i < 2;++i) {
     delete m_quantity[i];
   }
+  delete m_solver;
 }
 
+void Density::clear() {
+    for(int i = 0;i < m_grid+2;++i) {
+        for(int j = 0;j < m_grid+2;++j) {
+            m_quantity[m_currentContext][indexOf(i, j, m_grid)] = 0.0f;
+        }
+    }
+}
 
 void Density::clearPrev() {
     for(int i = 0;i < m_grid+2;++i) {

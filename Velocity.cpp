@@ -30,6 +30,14 @@ Velocity::~Velocity() {
   }
 }
 
+void Velocity::clear() {
+    for(int i = 0;i <= m_grid;++i) {
+        for(int j = 0;j <= m_grid+1;++j) {
+            m_uQuantity[m_currentContext][indexOfVelocityU(j, i, m_grid)] = m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] = 0.0f;
+        }
+    }
+}
+
 void Velocity::clearPrev() {
     for(int i = 0;i <= m_grid;++i) {
         for(int j = 0;j <= m_grid+1;++j) {
@@ -37,7 +45,6 @@ void Velocity::clearPrev() {
         }
     }
 }
-
 
 void Velocity::addForce(float dt) {
   for(int i = 1;i <= m_grid;++i) {

@@ -14,10 +14,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaeb42b6-d01c-48a0-b919-f2148dd25bf1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/include/vo/GLFWWindowInfo.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Density.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Density.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fluid2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fluid2D.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Velocity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Velocity.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/FluidDynamic.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/FluidDynamic.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Density.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Density.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Fluid2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Fluid2D.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Velocity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Velocity.h" afterDir="false" />
@@ -52,6 +62,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\FluidDynamic\include\vo" />
       <recent name="D:\Code\FluidDynamic\include" />
     </key>
   </component>
@@ -106,7 +117,7 @@
       <workItem from="1587377417208" duration="8000" />
       <workItem from="1587620045839" duration="1327000" />
       <workItem from="1587623911537" duration="7773000" />
-      <workItem from="1587640148463" duration="1972000" />
+      <workItem from="1587640148463" duration="4985000" />
     </task>
     <servers />
   </component>
