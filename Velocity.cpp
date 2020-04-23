@@ -103,20 +103,32 @@ void Velocity::advectV(float dt, float *v, const float *prevV, const float *prev
 float Velocity::curl(int x, int y) {
   return m_uQuantity[m_currentContext^1][indexOfVelocityU(y, x, m_grid)] - m_uQuantity[m_currentContext^1][indexOfVelocityU(y-1, x, m_grid)] + m_vQuantity[m_currentContext^1][indexOfVelocityV(y, x-1, m_grid)] - m_vQuantity[m_currentContext^1][indexOfVelocityV(y, x, m_grid)];
 }
+//
+//void Velocity::vorticityConfinement(float dt, float vorticity) {
+//    for(int i = 2;i < m_grid;++i) {
+//        for(int j = 2;j < m_grid;++j) {
+//            float dVOverDX = (m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] - m_vQuantity[m_currentContext][indexOfVelocityV(i, j-1, m_grid)]) / m_grid;
+//            float dUOverDY = (m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] - m_uQuantity[m_currentContext][indexOfVelocityU(i-1, j, m_grid)]) / m_grid
+//            float omega = dVOverDX - dUOverDY;
+//            float omegaGradient[2] = {};
+//            float vectorToVorticeCenter[2] = {};
+//        }
+//    }
+//}
 
-void Velocity::vorticityConfinement(float dt, float vorticity) {
-  for(int i = 2;i < m_grid;++i) {
-    for(int j = 2;j < m_grid;++j) {
-      float dx = fabsf(curl(j-1, i)) - fabsf(curl(j+1, i));
-      float dy = fabsf(curl(j, i+1)) - fabsf(curl(j, i-1));
-      double len = sqrt(dx*dx + dy*dy) + 1e-5;
-      dx *= vorticity / len;
-      dy *= vorticity / len;
-      m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] = m_uQuantity[m_currentContext^1][indexOfVelocityU(i, j, m_grid)] + dt * curl(j, i) * dx;
-      m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] = m_vQuantity[m_currentContext^1][indexOfVelocityV(i, j, m_grid)] + dt * curl(j, i) * dy;
-    }
-  }
-}
+//void Velocity::vorticityConfinement(float dt, float vorticity) {
+//  for(int i = 2;i < m_grid;++i) {
+//    for(int j = 2;j < m_grid;++j) {
+//      float dx = fabsf(curl(j-1, i)) - fabsf(curl(j+1, i));
+//      float dy = fabsf(curl(j, i+1)) - fabsf(curl(j, i-1));
+//      double len = sqrt(dx*dx + dy*dy) + 1e-5;
+//      dx *= vorticity / len;
+//      dy *= vorticity / len;
+//      m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] = m_uQuantity[m_currentContext^1][indexOfVelocityU(i, j, m_grid)] + dt * curl(j, i) * dx;
+//      m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] = m_vQuantity[m_currentContext^1][indexOfVelocityV(i, j, m_grid)] + dt * curl(j, i) * dy;
+//    }
+//  }
+//}
 
 void Velocity::process(float dt, float diffusion, float *u, float *v) {
   // Add force
@@ -131,7 +143,6 @@ void Velocity::process(float dt, float diffusion, float *u, float *v) {
 //   massConserve(dt, 1.0f);
 
   m_currentContext ^= 1;
-  // DEBUG Advect
   advectU(dt, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext^1], m_vQuantity[m_currentContext^1]);
   advectV(dt, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext^1], m_uQuantity[m_currentContext^1]);
 

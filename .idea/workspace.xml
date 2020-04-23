@@ -17,9 +17,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Velocity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Velocity.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/FluidDynamic.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/FluidDynamic.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluid.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/fluid.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/library/glfw-3.3.2/src/libglfw3.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/library/glfw-3.3.2/src/libglfw3.a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Utility.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Velocity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Velocity.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +47,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AI/hw2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -93,6 +95,11 @@
       <updated>1587015800267</updated>
       <workItem from="1587015801988" duration="4253000" />
       <workItem from="1587140302746" duration="4324000" />
+      <workItem from="1587236706640" duration="2210000" />
+      <workItem from="1587324390975" duration="500000" />
+      <workItem from="1587377417208" duration="8000" />
+      <workItem from="1587620045839" duration="1327000" />
+      <workItem from="1587623911537" duration="1537000" />
     </task>
     <servers />
   </component>

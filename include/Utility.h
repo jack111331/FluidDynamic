@@ -35,26 +35,23 @@ inline void setBoundary(int type, float *quantity, int N) {
 
 inline void setUBoundary(float *u, int N) {
   for(int i = 1;i <= N;++i) {
-    u[indexOfVelocityU(0, i, N)] = 0.0f;
-    u[indexOfVelocityU(N, i, N)] = 0.0f;
+    u[indexOfVelocityU(i, 0, N)] = 0.0f;
+    u[indexOfVelocityU(i, N, N)] = 0.0f;
   }
   for(int i = 0;i <= N;++i) {
-    u[indexOfVelocityU(i, 0, N)] = u[indexOfVelocityU(i, 1, N)];
-    u[indexOfVelocityU(i, N+1, N)] = u[indexOfVelocityU(i, N, N)];
+    u[indexOfVelocityU(0, i, N)] = u[indexOfVelocityU(1, i, N)];
+    u[indexOfVelocityU(N+1, i, N)] = u[indexOfVelocityU(N, i, N)];
   }
 }
 
 inline void setVBoundary(float *v, int N) {
   for(int i = 1;i <= N;++i) {
-    v[indexOfVelocityV(i, 0, N)] = 0.0f;
-    v[indexOfVelocityV(i, N, N)] = 0.0f;
+      v[indexOfVelocityV(0, i, N)] = 0.0f;
+      v[indexOfVelocityV(N, i, N)] = 0.0f;
   }
   for(int i = 0;i <= N;++i) {
-    v[indexOfVelocityV(N+1, i, N)] = v[indexOfVelocityV(N, i, N)];
-    v[indexOfVelocityV(0, i, N)] = v[indexOfVelocityV(1, i, N)];
+    v[indexOfVelocityV(i, 0, N)] = v[indexOfVelocityV(i, 1, N)];
+    v[indexOfVelocityV(i, N+1, N)] = v[indexOfVelocityV(i, N, N)];
   }
 }
 
-inline bool isInGrid(int x, int y, int xb, int yb) {
-  return x>=0&&y>=0&&x<xb&&y<yb;
-}
