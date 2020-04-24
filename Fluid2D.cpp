@@ -2,9 +2,14 @@
 // Created by Edge on 2020/4/23.
 //
 
+#include <cmath>
+#include <algorithm>
 #include <Utility.h>
-#include <Shader.h>
+#include <GL/glew.h>
 #include "Fluid2D.h"
+
+using std::max;
+using std::min;
 
 Fluid2D::~Fluid2D() {
     delete m_meshPosition;
@@ -137,9 +142,7 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
         float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
         if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
             u[indexOfVelocityU(i, j, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
-            u[indexOfVelocityU(i, j + 1, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
             v[indexOfVelocityV(i, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
-            v[indexOfVelocityV(i + 1, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
         }
         if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
             density[indexOf(i, j, m_gridSize)] = source;
@@ -194,6 +197,54 @@ void Fluid2D::display(bool mode) {
         glDrawElements(GL_LINES, 2 * m_gridSize * m_gridSize, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
+}
+
+void Fluid2D::addDensity(int gridWidth, float width, int (&initWindLocation)[2], float source) {
+    float *density = m_densityField->getPrevQuantity();
+    for (int i = max(initWindLocation[0] - gridWidth, 1);
+         i <= min(initWindLocation[0] + gridWidth, m_gridSize); ++i) {
+        for (int j = max(initWindLocation[1] - gridWidth, 1);
+             j <= min(initWindLocation[1] + gridWidth, m_gridSize); ++j) {
+            int deltaC[2] = {initWindLocation[0] - i, initWindLocation[1] - j};
+            double gaussFalloff = exp(-width * (deltaC[0] * deltaC[0] + deltaC[1] * deltaC[1]));
+            density[indexOf(j, i, m_gridSize)] += gaussFalloff * source;
+        }
+    }
+}
+
+void Fluid2D::addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]) {
+    float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
+    float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+
+    double uDirection = cos(windDirection), vDirection = sin(windDirection);
+    for (int i = max(initWindLocation[0] - gridWidth, 1);
+         i <= min(initWindLocation[0] + gridWidth, m_gridSize); ++i) {
+        for (int j = max(initWindLocation[1] - gridWidth, 1);
+             j <= min(initWindLocation[1] + gridWidth, m_gridSize); ++j) {
+            int deltaC[2] = {initWindLocation[0] - i, initWindLocation[1] - j};
+            double gaussFalloff = exp(-width * (deltaC[0] * deltaC[0] + deltaC[1] * deltaC[1]));
+            u[indexOfVelocityU(j, i, m_gridSize)] += gaussFalloff * uDirection;
+            v[indexOfVelocityV(j, i, m_gridSize)] += gaussFalloff * vDirection;
+        }
+    }
+}
+
+void Fluid2D::addVortexForce(int gridWidth, float width, float r, int (&initVortexLocation)[2]) {
+    float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
+    float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+
+    for (int i = max(initVortexLocation[0] - gridWidth, 1);
+         i <= min(initVortexLocation[0] + gridWidth, m_gridSize); ++i) {
+        for (int j = max(initVortexLocation[1] - gridWidth, 1);
+             j <= min(initVortexLocation[1] + gridWidth, m_gridSize); ++j) {
+            int deltaC[2] = {initVortexLocation[0] - i, initVortexLocation[1] - j};
+            float uDirection = -deltaC[1], vDirection = deltaC[0];
+            double gaussFalloff = exp(-width * (deltaC[0] * deltaC[0] + deltaC[1] * deltaC[1]));
+            u[indexOfVelocityU(j, i, m_gridSize)] += r * gaussFalloff * uDirection;
+            v[indexOfVelocityV(j, i, m_gridSize)] += r * gaussFalloff * vDirection;
+        }
+    }
+
 }
 
 void Fluid2D::clear() {

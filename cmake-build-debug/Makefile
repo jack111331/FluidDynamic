@@ -194,6 +194,33 @@ glfw/fast:
 	$(MAKE) -f library\glfw-3.3.2\src\CMakeFiles\glfw.dir\build.make library/glfw-3.3.2/src/CMakeFiles/glfw.dir/build
 .PHONY : glfw/fast
 
+Control.obj: Control.cpp.obj
+
+.PHONY : Control.obj
+
+# target to build an object file
+Control.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Control.cpp.obj
+.PHONY : Control.cpp.obj
+
+Control.i: Control.cpp.i
+
+.PHONY : Control.i
+
+# target to preprocess a source file
+Control.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Control.cpp.i
+.PHONY : Control.cpp.i
+
+Control.s: Control.cpp.s
+
+.PHONY : Control.s
+
+# target to generate assembly for a file
+Control.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Control.cpp.s
+.PHONY : Control.cpp.s
+
 Density.obj: Density.cpp.obj
 
 .PHONY : Density.obj
@@ -398,6 +425,9 @@ help:
 	@echo ... install/strip
 	@echo ... uninstall
 	@echo ... glfw
+	@echo ... Control.obj
+	@echo ... Control.i
+	@echo ... Control.s
 	@echo ... Density.obj
 	@echo ... Density.i
 	@echo ... Density.s

@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../include/Control.h
+Fluid2D.h
+../include/Fluid2D.h
+
 ../include/Density.h
 NavierStokes.h
 ../include/NavierStokes.h
@@ -16,6 +20,8 @@ Quantity.h
 stdint.h
 -
 vo/GLFWWindowInfo.h
+-
+Shader.h
 -
 Velocity.h
 ../include/Velocity.h
@@ -73,12 +79,10 @@ Solver.h
 ../include/Quantity.h
 
 ../include/Shader.h
-GL/glew.h
+cstdint
 -
 
 ../include/Solver.h
-
-../include/Utility.h
 
 ../include/Velocity.h
 Quantity.h
@@ -88,75 +92,9 @@ Quantity.h
 GLFW/glfw3.h
 -
 
-../library/glew-2.2.0/include/GL/glew.h
-cstddef
--
-cstdint
--
-stddef.h
--
-stdint.h
--
-stddef.h
--
-inttypes.h
--
-stdint.h
--
-inttypes.h
--
-Availability.h
--
-OpenGL/glu.h
--
-GL/glu.h
--
-
-D:/Code/FluidDynamic/Density.cpp
-Density.h
-D:/Code/FluidDynamic/Density.h
-Utility.h
-D:/Code/FluidDynamic/Utility.h
-iostream
--
-
-D:/Code/FluidDynamic/Fluid2D.cpp
-Utility.h
--
-Shader.h
--
-Fluid2D.h
-D:/Code/FluidDynamic/Fluid2D.h
-
-D:/Code/FluidDynamic/Velocity.cpp
-Velocity.h
-D:/Code/FluidDynamic/Velocity.h
-Utility.h
-D:/Code/FluidDynamic/Utility.h
-Solver.h
-D:/Code/FluidDynamic/Solver.h
+D:/Code/FluidDynamic/Control.cpp
 cmath
 -
-iostream
--
-
-D:/Code/FluidDynamic/main.cpp
-iostream
--
-stdint.h
--
-Shader.h
-D:/Code/FluidDynamic/Shader.h
-Solver.h
-D:/Code/FluidDynamic/Solver.h
-Density.h
-D:/Code/FluidDynamic/Density.h
-Velocity.h
-D:/Code/FluidDynamic/Velocity.h
-GLFW/glfw3.h
--
-Fluid2D.h
--
-vo/GLFWWindowInfo.h
--
+Control.h
+D:/Code/FluidDynamic/Control.h
 

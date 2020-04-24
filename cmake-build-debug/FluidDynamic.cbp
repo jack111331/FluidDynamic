@@ -194,6 +194,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="D:/Code/FluidDynamic/Control.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
@@ -214,6 +217,9 @@
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/glfw_config.h">
 			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/Control.h">
+			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Density.h">
 			<Option target="FluidDynamic"/>

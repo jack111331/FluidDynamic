@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <vo/GLFWWindowInfo.h>
+#include <Shader.h>
 #include "Velocity.h"
 #include "Density.h"
 
@@ -16,14 +17,19 @@ public:
 
     void init(int gridSize, int solverTimestep);
 
-    void
-    input(GLFWWindowInfo *windowInfo, float force, float source);
+    void input(GLFWWindowInfo *windowInfo, float force, float source);
 
     void changeGridPosition();
 
     void update(float dt, float diffusion, float viscosity);
 
     void display(bool mode);
+
+    void addDensity(int gridWidth, float width, int (&initWindLocation)[2], float source);
+
+    void addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]);
+
+    void addVortexForce(int gridWidth, float width, float r, int (&initVortexLocation)[2]);
 
     void clear();
 

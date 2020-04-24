@@ -36,6 +36,7 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         Velocity.cpp
         Solver.cpp
         Fluid2D.cpp
+        Control.cpp
         Shader.cpp
         )
 list(APPEND FLUID_DYNAMIC_HEADER
@@ -45,6 +46,7 @@ list(APPEND FLUID_DYNAMIC_HEADER
         include/Quantity.h
         include/Solver.h
         include/Utility.h
+        include/Control.h
         include/Shader.h
 
         include/vo/GLFWWindowInfo.h
@@ -55,7 +57,7 @@ list(APPEND FLUID_DYNAMIC_HEADER
 set(all_code_files
         ${FLUID_DYNAMIC_HEADER}
         ${FLUID_DYNAMIC_SOURCE}
-        )
+         )
 
 add_executable(FluidDynamic ${all_code_files})
 target_link_libraries(FluidDynamic glfw OpenGL::GL)

@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "../bin/FluidDynamic.exe"
   "../bin/FluidDynamic.exe.manifest"
   "../bin/FluidDynamic.pdb"
+  "CMakeFiles/FluidDynamic.dir/Control.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/Density.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj"
