@@ -138,8 +138,8 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
             1;
     if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
         float *density = m_densityField->getPrevQuantity();
-        float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
-        float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+        float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
+        float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
         if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
             u[indexOfVelocityU(i, j, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
             v[indexOfVelocityV(i, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
@@ -154,8 +154,8 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
 }
 
 void Fluid2D::changeGridPosition() {
-    float *u = m_velocityField->getQuantity(Velocity::uComponent), *v = m_velocityField->getQuantity(
-            Velocity::vComponent);
+    float *u = m_velocityField->getQuantity(Velocity::U_COMPONENT), *v = m_velocityField->getQuantity(
+            Velocity::V_COMPONENT);
     float lengthPerGrid = 2.0f / m_gridSize;
     for (int i = 0; i < m_gridSize; ++i) {
         for (int j = 0; j < m_gridSize; ++j) {
@@ -171,9 +171,13 @@ void Fluid2D::changeGridPosition() {
 }
 
 void Fluid2D::update(float dt, float diffusion, float viscosity) {
+    // FIXME alpha and beta
+//    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
+//    addBuoyancy(dt, -0.000625, 5.0f, 1);
+    addBuoyancy(dt, 0.0f, 0.4f, -9.8);
     m_velocityField->process(dt, viscosity, nullptr, nullptr);
-    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::uComponent),
-                            m_velocityField->getQuantity(Velocity::vComponent));
+    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
+                            m_velocityField->getQuantity(Velocity::V_COMPONENT));
 }
 
 void Fluid2D::display(bool mode) {
@@ -199,6 +203,23 @@ void Fluid2D::display(bool mode) {
     }
 }
 
+void Fluid2D::addBuoyancy(float dt, float alpha, float beta, float gravity) {
+    // FIXME local large buoyancy
+    float *density = m_densityField->getQuantity();
+    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+    for (int i = 1; i <= m_gridSize; ++i) {
+        for (int j = 1; j <= m_gridSize + 1; ++j) {
+            float averageTemperature =
+                    (density[indexOf(i + 1, j, m_gridSize)] + density[indexOf(i - 1, j, m_gridSize)] +
+                     density[indexOf(i, j + 1, m_gridSize)] + density[indexOf(i, j - 1, m_gridSize)]) * 0.25f;
+            v[indexOfVelocityV(i, j, m_gridSize)] += ((alpha * density[indexOf(i, j, m_gridSize)] -
+                                                       beta *
+                                                       (density[indexOf(i, j, m_gridSize)] - averageTemperature)) *
+                                                      gravity) * dt;
+        }
+    }
+}
+
 void Fluid2D::addDensity(int gridWidth, float width, int (&initWindLocation)[2], float source) {
     float *density = m_densityField->getPrevQuantity();
     for (int i = max(initWindLocation[0] - gridWidth, 1);
@@ -213,8 +234,8 @@ void Fluid2D::addDensity(int gridWidth, float width, int (&initWindLocation)[2],
 }
 
 void Fluid2D::addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]) {
-    float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
-    float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
+    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
 
     double uDirection = cos(windDirection), vDirection = sin(windDirection);
     for (int i = max(initWindLocation[0] - gridWidth, 1);
@@ -230,8 +251,8 @@ void Fluid2D::addGaussianWindForce(int gridWidth, float width, double windDirect
 }
 
 void Fluid2D::addVortexForce(int gridWidth, float width, float r, int (&initVortexLocation)[2]) {
-    float *u = m_velocityField->getPrevQuantity(Velocity::uComponent);
-    float *v = m_velocityField->getPrevQuantity(Velocity::vComponent);
+    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
+    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
 
     for (int i = max(initVortexLocation[0] - gridWidth, 1);
          i <= min(initVortexLocation[0] + gridWidth, m_gridSize); ++i) {

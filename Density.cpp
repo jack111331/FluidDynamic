@@ -11,7 +11,7 @@ Density::Density(int N, Solver *solver) : NavierStokes(N, solver) {
 
 Density::~Density() {
     for (int i = 0; i < 2; ++i) {
-        delete m_quantity[i];
+        delete[] m_quantity[i];
     }
     delete m_solver;
 }

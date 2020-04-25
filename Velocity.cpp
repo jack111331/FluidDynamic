@@ -6,10 +6,6 @@
 
 using namespace std;
 
-// #include <Eigen/Eigen>
-// using namespace Eigen;
-// #include <vector>
-
 Velocity::Velocity(int N) : m_grid(N), m_currentContext(0) {
     for (int i = 0; i < 2; ++i) {
         // m_uQuantity[indexOfVelocityU(i, j, m_grid)] = u_(i, j-1/2)
@@ -26,8 +22,8 @@ Velocity::Velocity(int N) : m_grid(N), m_currentContext(0) {
 
 Velocity::~Velocity() {
     for (int i = 0; i < 2; ++i) {
-        delete m_uQuantity[i];
-        delete m_vQuantity[i];
+        delete[] m_uQuantity[i];
+        delete[] m_vQuantity[i];
     }
 }
 
@@ -186,70 +182,24 @@ void Velocity::process(float dt, float diffusion, float *u, float *v) {
     // Add force
     addForce(dt);
     // Mass conservative
-    massConserve(dt, 1.0f);
+    massConserve(dt);
 
     m_currentContext ^= 1;
     vorticityConfinement(dt, 1.0f);
-    massConserve(dt, 1.0f);
+    massConserve(dt);
 
     m_currentContext ^= 1;
     advectU(dt, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext ^ 1], m_vQuantity[m_currentContext ^ 1]);
     advectV(dt, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext ^ 1], m_uQuantity[m_currentContext ^ 1]);
 
     // Mass conservative
-    massConserve(dt, 1.0f);
+    massConserve(dt);
 }
 
-void Velocity::massConserve(float dt, float materialDensity) {
-    // dx * materialDensity / dt
-    // float coefficient = materialDensity / dt * m_grid;
-
-    // Use modified incomplete cholesky preconditioner conjugate gradient method
-    // SparseMatrix<double> A;
-    // A.resize(m_grid*m_grid, m_grid*m_grid);
-    // VectorXd b(m_grid*m_grid), x(m_grid*m_grid);
-    // vector<Triplet<double>> tripletOfA;
-    //
-    // int xdir[4] = {1, -1, 0, 0}, ydir[4] = {0, 0, 1, -1};
-    // float possibleValue[4];
-    //
-    // for(int i = 0;i < m_grid;++i) {
-    //   // Now it's solid boundary, if it's curved boundary, then I will implement it in future
-    //   for(int j = 0;j < m_grid;++j) {
-    //     int validGrid = 0;
-    //     possibleValue[0] = m_uQuantity[m_currentContext^1][indexOfVelocityU(i, j+1, m_grid)];
-    //     possibleValue[1] = -m_uQuantity[m_currentContext^1][indexOfVelocityU(i, j, m_grid)];
-    //     possibleValue[2] = m_vQuantity[m_currentContext^1][indexOfVelocityV(i+1, j, m_grid)];
-    //     possibleValue[3] = -m_vQuantity[m_currentContext^1][indexOfVelocityV(i, j, m_grid)];
-    //     b(indexOfPressure(i, j, m_grid)) = 0.0f;
-    //     for(int k = 0;k < 4;++k) {
-    //       if(isInGrid(i+xdir[k], j+ydir[k], m_grid, m_grid)) {
-    //         validGrid++;
-    //         tripletOfA.push_back(Triplet<double>(indexOfPressure(i, j, m_grid), indexOfPressure(i+xdir[k], j+ydir[k], m_grid), -1));
-    //         b(indexOfPressure(i, j, m_grid)) += coefficient * -possibleValue[k];
-    //       }
-    //     }
-    //     tripletOfA.push_back(Triplet<double>(indexOfPressure(i, j, m_grid), indexOfPressure(i, j, m_grid), validGrid));
-    //   }
-    // }
-    //
-    // A.setFromTriplets(tripletOfA.begin(), tripletOfA.end());
-    // ConjugateGradient<SparseMatrix<double>, Lower, IncompleteCholesky<double>> cg;
-    // cg.compute(A);
-    // x = cg.solve(b);
-    // cout << "x:" << x << endl;
-    // for(int i = 1;i <= m_grid;++i) {
-    //   for(int j = 1;j <= m_grid-1;++j) {
-    //     m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] -= (x(indexOfPressure(i, j+1, m_grid)) - x(indexOfPressure(i, j, m_grid))) / coefficient;
-    //   }
-    // }
-    // for(int i = 1;i <= m_grid-1;++i) {
-    //   for(int j = 1;j <= m_grid;++j) {
-    //     m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] -= (x(indexOfPressure(i+1, j, m_grid)) - x(indexOfPressure(i, j, m_grid))) / coefficient;
-    //   }
-    // }
+void Velocity::massConserve(float dt) {
     // Use Gauss Seidel
     float *p = new float[(m_grid + 2) * (m_grid + 2)], *prevP = new float[(m_grid + 2) * (m_grid + 2)];
+    Solver *solver = new GaussSeidelSolver();
     for (int i = 1; i <= m_grid; ++i) {
         for (int j = 1; j <= m_grid; ++j) {
             prevP[indexOfPressure(i, j, m_grid)] = -(m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] -
@@ -262,7 +212,6 @@ void Velocity::massConserve(float dt, float materialDensity) {
     }
     setBoundary(0, prevP, m_grid);
     setBoundary(0, p, m_grid);
-    Solver *solver = new GaussSeidelSolver();
     solver->solve(p, prevP, 1.0f, 4.0f, 0, m_grid);
     for (int i = 1; i <= m_grid; ++i) {
         for (int j = 1; j <= m_grid - 1; ++j) {
@@ -276,17 +225,18 @@ void Velocity::massConserve(float dt, float materialDensity) {
                     m_grid * (p[indexOfPressure(i + 1, j, m_grid)] - p[indexOfPressure(i, j, m_grid)]);
         }
     }
-    delete prevP;
-    delete p;
+    delete[] prevP;
+    delete[] p;
+    delete solver;
     setUBoundary(m_uQuantity[m_currentContext], m_grid);
     setVBoundary(m_vQuantity[m_currentContext], m_grid);
 
 }
 
 float *Velocity::getQuantity(int component) {
-    if (component == uComponent) {
+    if (component == U_COMPONENT) {
         return m_uQuantity[m_currentContext];
-    } else if (component == vComponent) {
+    } else if (component == V_COMPONENT) {
         return m_vQuantity[m_currentContext];
     } else {
         return nullptr;
@@ -294,9 +244,9 @@ float *Velocity::getQuantity(int component) {
 }
 
 float *Velocity::getPrevQuantity(int component) {
-    if (component == uComponent) {
+    if (component == U_COMPONENT) {
         return m_uQuantity[m_currentContext ^ 1];
-    } else if (component == vComponent) {
+    } else if (component == V_COMPONENT) {
         return m_vQuantity[m_currentContext ^ 1];
     } else {
         return nullptr;

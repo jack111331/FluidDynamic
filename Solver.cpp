@@ -1,6 +1,10 @@
 #include "Solver.h"
 #include "Utility.h"
 
+Solver::~Solver() {
+
+}
+
 GaussSeidelSolver::GaussSeidelSolver() : m_iterativeTime(20) {
 
 }

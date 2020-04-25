@@ -3,6 +3,7 @@
 class Solver {
 public:
     virtual void solve(float *x, float *x0, float a, float denom, int boundary, int N) = 0;
+    virtual ~Solver() = 0;
 };
 
 class GaussSeidelSolver : public Solver {

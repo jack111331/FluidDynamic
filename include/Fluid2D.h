@@ -25,6 +25,8 @@ public:
 
     void display(bool mode);
 
+    void addBuoyancy(float dt, float alpha, float beta, float gravity);
+
     void addDensity(int gridWidth, float width, int (&initWindLocation)[2], float source);
 
     void addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]);

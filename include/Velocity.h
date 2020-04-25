@@ -23,7 +23,7 @@ private:
 
     void vorticityConfinement(float dt, float vorticity);
 
-    void massConserve(float dt, float materialDensity);
+    void massConserve(float dt);
 
 public:
     Velocity(int N);
@@ -40,6 +40,6 @@ public:
 
     float *getPrevQuantity(int component) override;
 
-    static const int uComponent = 1;
-    static const int vComponent = 2;
+    static const int U_COMPONENT = 1;
+    static const int V_COMPONENT = 2;
 };

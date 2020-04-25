@@ -34,7 +34,7 @@ void Control2D::addVortexForce(int gridWidth, float width, float r, int (&initVo
 void GenerateRisingSmoke::control() {
     double pi = acos(-1);
     // FIXME fixed grid size
-    int initWindLocation[2] = {64, 0};
+    int initWindLocation[2] = {64, 3};
     addDensity(3, 1, initWindLocation, 10.0f);
-    addGaussianWindForce(3, 0.2f, pi * 0.5f, initWindLocation);
+//    addGaussianWindForce(3, 0.2f, pi * 0.5f, initWindLocation);
 }

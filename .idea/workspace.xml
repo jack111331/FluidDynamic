@@ -14,48 +14,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaeb42b6-d01c-48a0-b919-f2148dd25bf1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Control.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/Control.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Control.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Density.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Density.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fluid2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fluid2D.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NavierStokes.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/NavierStokes.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Shader.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Solver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Solver.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Velocity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Velocity.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/FluidDynamic.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/FluidDynamic.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Density.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Density.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/DependInfo.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Shader.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Shader.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/main.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects1.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/FluidDynamic.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/library/glfw-3.3.2/src/CMakeFiles/glfw.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/library/glfw-3.3.2/src/CMakeFiles/glfw.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Density.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Density.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Fluid2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Fluid2D.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/NavierStokes.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/NavierStokes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Quantity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Quantity.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Shader.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Solver.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Solver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Utility.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Velocity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Velocity.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -144,6 +118,7 @@
       <workItem from="1587623911537" duration="7773000" />
       <workItem from="1587640148463" duration="5614000" />
       <workItem from="1587746704595" duration="5355000" />
+      <workItem from="1587791051245" duration="8763000" />
     </task>
     <servers />
   </component>

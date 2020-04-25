@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/Control.h
-Fluid2D.h
-../include/Fluid2D.h
-
 ../include/Density.h
 NavierStokes.h
 ../include/NavierStokes.h
@@ -84,6 +80,8 @@ cstdint
 
 ../include/Solver.h
 
+../include/Utility.h
+
 ../include/Velocity.h
 Quantity.h
 ../include/Quantity.h
@@ -92,9 +90,39 @@ Quantity.h
 GLFW/glfw3.h
 -
 
-D:/Code/FluidDynamic/Control.cpp
+../library/glew-2.2.0/include/GL/glew.h
+cstddef
+-
+cstdint
+-
+stddef.h
+-
+stdint.h
+-
+stddef.h
+-
+inttypes.h
+-
+stdint.h
+-
+inttypes.h
+-
+Availability.h
+-
+OpenGL/glu.h
+-
+GL/glu.h
+-
+
+D:/Code/FluidDynamic/Fluid2D.cpp
 cmath
 -
-Control.h
-D:/Code/FluidDynamic/Control.h
+algorithm
+-
+Utility.h
+-
+GL/glew.h
+-
+Fluid2D.h
+D:/Code/FluidDynamic/Fluid2D.h
 
