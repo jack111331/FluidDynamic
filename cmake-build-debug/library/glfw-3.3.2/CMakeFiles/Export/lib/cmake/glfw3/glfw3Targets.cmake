@@ -55,6 +55,7 @@ add_library(glfw STATIC IMPORTED)
 
 set_target_properties(glfw PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+  INTERFACE_LINK_LIBRARIES "D:/Code/FluidDynamic/library/glew-2.2.0/lib/Release/Win32/glew32.lib"
 )
 
 # Load information for each installed configuration.

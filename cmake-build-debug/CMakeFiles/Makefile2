@@ -75,12 +75,12 @@ preinstall: library/glfw-3.3.2/preinstall
 CMakeFiles/FluidDynamic.dir/all: library/glfw-3.3.2/src/CMakeFiles/glfw.dir/all
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/depend
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target FluidDynamic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target FluidDynamic"
 .PHONY : CMakeFiles/FluidDynamic.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/FluidDynamic.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles 25
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles 26
 	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/FluidDynamic.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/FluidDynamic.dir/rule
@@ -166,7 +166,7 @@ library/glfw-3.3.2/src/preinstall:
 library/glfw-3.3.2/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) -f library\glfw-3.3.2\src\CMakeFiles\glfw.dir\build.make library/glfw-3.3.2/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) -f library\glfw-3.3.2\src\CMakeFiles\glfw.dir\build.make library/glfw-3.3.2/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26 "Built target glfw"
 .PHONY : library/glfw-3.3.2/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.

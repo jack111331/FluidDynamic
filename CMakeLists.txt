@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.6)
 project(FluidDynamic)
 
 # - Setup Library
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory("./library/glfw-3.3.2")
-
-find_package(OpenGL REQUIRED)
-
 set(CMAKE_PREFIX_PATH "./library/glew-2.2.0")
 set(CMAKE_LIBRARY_PATH "./library/glew-2.2.0/lib/Release/Win32/")
 find_package(GLEW REQUIRED)
@@ -16,6 +9,13 @@ if (GLEW_FOUND)
     include_directories(${GLEW_INCLUDE_DIRS})
     link_libraries(${GLEW_LIBRARIES})
 endif()
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory("./library/glfw-3.3.2")
+
+find_package(OpenGL REQUIRED)
 
 # Setup executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin/)
@@ -38,6 +38,8 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         Fluid2D.cpp
         Control.cpp
         Shader.cpp
+
+        Keyframe.cpp
         )
 list(APPEND FLUID_DYNAMIC_HEADER
         include/NavierStokes.h
@@ -50,8 +52,10 @@ list(APPEND FLUID_DYNAMIC_HEADER
         include/Shader.h
 
         include/vo/GLFWWindowInfo.h
+        include/Keyframe.h
 
         include/stb_image.h
+        include/stb_image_resize.h
         )
 
 set(all_code_files
@@ -60,4 +64,4 @@ set(all_code_files
          )
 
 add_executable(FluidDynamic ${all_code_files})
-target_link_libraries(FluidDynamic glfw OpenGL::GL)
+target_link_libraries(FluidDynamic GLEW::GLEW glfw OpenGL::GL)

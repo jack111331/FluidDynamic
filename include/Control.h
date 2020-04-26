@@ -7,6 +7,8 @@
 
 
 #include "Fluid2D.h"
+#include "Keyframe.h"
+#include <string>
 
 class Control2D {
 public:
@@ -27,6 +29,15 @@ protected:
 class GenerateRisingSmoke : public Control2D {
 public:
     virtual void control();
+};
+
+class OptimizationControl : public Control2D {
+public:
+    OptimizationControl(const std::string &keyframeAnimationFilename);
+    virtual void control();
+    virtual ~OptimizationControl();
+private:
+    KeyframeAnimation *m_animation;
 };
 
 #endif //FLUIDDYNAMIC_CONTROL_H

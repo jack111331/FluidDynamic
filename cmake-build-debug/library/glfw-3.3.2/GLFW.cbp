@@ -38,6 +38,7 @@
 					<Add option="-D_UNICODE"/>
 					<Add option="-DUNICODE"/>
 					<Add option="-DWINVER=0x0501"/>
+					<Add directory="D:/Code/FluidDynamic/library/glew-2.2.0/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/src"/>
 					<Add directory="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src"/>
@@ -67,6 +68,7 @@
 					<Add option="-D_UNICODE"/>
 					<Add option="-DUNICODE"/>
 					<Add option="-DWINVER=0x0501"/>
+					<Add directory="D:/Code/FluidDynamic/library/glew-2.2.0/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/src"/>
 					<Add directory="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src"/>

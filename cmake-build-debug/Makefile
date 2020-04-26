@@ -275,6 +275,33 @@ Fluid2D.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.s
 .PHONY : Fluid2D.cpp.s
 
+Keyframe.obj: Keyframe.cpp.obj
+
+.PHONY : Keyframe.obj
+
+# target to build an object file
+Keyframe.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj
+.PHONY : Keyframe.cpp.obj
+
+Keyframe.i: Keyframe.cpp.i
+
+.PHONY : Keyframe.i
+
+# target to preprocess a source file
+Keyframe.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Keyframe.cpp.i
+.PHONY : Keyframe.cpp.i
+
+Keyframe.s: Keyframe.cpp.s
+
+.PHONY : Keyframe.s
+
+# target to generate assembly for a file
+Keyframe.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Keyframe.cpp.s
+.PHONY : Keyframe.cpp.s
+
 NavierStokes.obj: NavierStokes.cpp.obj
 
 .PHONY : NavierStokes.obj
@@ -434,6 +461,9 @@ help:
 	@echo ... Fluid2D.obj
 	@echo ... Fluid2D.i
 	@echo ... Fluid2D.s
+	@echo ... Keyframe.obj
+	@echo ... Keyframe.i
+	@echo ... Keyframe.s
 	@echo ... NavierStokes.obj
 	@echo ... NavierStokes.i
 	@echo ... NavierStokes.s

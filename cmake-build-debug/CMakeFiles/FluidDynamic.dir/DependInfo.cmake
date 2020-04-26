@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "D:/Code/FluidDynamic/Control.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Control.cpp.obj"
   "D:/Code/FluidDynamic/Density.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Density.cpp.obj"
   "D:/Code/FluidDynamic/Fluid2D.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj"
+  "D:/Code/FluidDynamic/Keyframe.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj"
   "D:/Code/FluidDynamic/NavierStokes.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj"
   "D:/Code/FluidDynamic/Shader.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Shader.cpp.obj"
   "D:/Code/FluidDynamic/Solver.cpp" "D:/Code/FluidDynamic/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj"
@@ -17,9 +18,9 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../library/glew-2.2.0/include"
   ".././include"
   "../library/glfw-3.3.2/include"
+  "../library/glew-2.2.0/include"
   )
 
 # Targets to which this target links.

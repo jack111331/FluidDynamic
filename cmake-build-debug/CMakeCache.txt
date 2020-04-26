@@ -355,6 +355,9 @@ OPENGL_gl_LIBRARY:STRING=opengl32
 //GLU library for win32
 OPENGL_glu_LIBRARY:STRING=glu32
 
+//Dependencies for the target
+glfw_LIB_DEPENDS:STATIC=general;D:/Code/FluidDynamic/library/glew-2.2.0/lib/Release/Win32/glew32.lib;
+
 
 ########################
 # INTERNAL cache entries
