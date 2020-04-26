@@ -174,7 +174,7 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     // FIXME alpha and beta
 //    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
-    addBuoyancy(dt, 0.0f, 0.4f, -9.8);
+    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity, nullptr, nullptr);
     m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
                             m_velocityField->getQuantity(Velocity::V_COMPONENT));
@@ -212,10 +212,10 @@ void Fluid2D::addBuoyancy(float dt, float alpha, float beta, float gravity) {
             float averageTemperature =
                     (density[indexOf(i + 1, j, m_gridSize)] + density[indexOf(i - 1, j, m_gridSize)] +
                      density[indexOf(i, j + 1, m_gridSize)] + density[indexOf(i, j - 1, m_gridSize)]) * 0.25f;
-            v[indexOfVelocityV(i, j, m_gridSize)] += ((alpha * density[indexOf(i, j, m_gridSize)] -
-                                                       beta *
-                                                       (density[indexOf(i, j, m_gridSize)] - averageTemperature)) *
-                                                      gravity) * dt;
+            v[indexOfVelocityV(i, j, m_gridSize)] += (alpha * density[indexOf(i, j, m_gridSize)]
+                                                      - beta
+                                                        * (density[indexOf(i, j, m_gridSize)] - averageTemperature))
+                                                     * gravity * dt;
         }
     }
 }

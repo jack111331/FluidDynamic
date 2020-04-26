@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="FluidDynamic" targetName="uninstall" />
       <config projectName="FluidDynamic" targetName="glfw" />
+      <config projectName="FluidDynamic" targetName="uninstall" />
       <config projectName="FluidDynamic" targetName="FluidDynamic" />
     </generated>
   </component>
@@ -14,22 +14,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aaeb42b6-d01c-48a0-b919-f2148dd25bf1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Control.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Control.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Density.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Density.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fluid2D.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fluid2D.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Solver.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Velocity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Velocity.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/FluidDynamic.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/FluidDynamic.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Density.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Density.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Solver.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FluidDynamic.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Fluid2D.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Fluid2D.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Solver.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Solver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Velocity.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Velocity.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +110,10 @@
       <workItem from="1587623911537" duration="7773000" />
       <workItem from="1587640148463" duration="5614000" />
       <workItem from="1587746704595" duration="5355000" />
-      <workItem from="1587791051245" duration="8763000" />
+      <workItem from="1587791051245" duration="9044000" />
+      <workItem from="1587802453159" duration="2304000" />
+      <workItem from="1587821104625" duration="472000" />
+      <workItem from="1587879745515" duration="662000" />
     </task>
     <servers />
   </component>
