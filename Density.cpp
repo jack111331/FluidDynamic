@@ -2,30 +2,26 @@
 #include "Utility.h"
 #include <iostream>
 #include <cmath>
+#include <GL/glew.h>
 
-Density::Density(int N, Solver *solver) : NavierStokes(N, solver) {
+Density::Density(int N) : m_grid(N) {
     glGenBuffers(2, m_quantity);
-    uint32_t bufMask = (GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     for (int i = 0; i < 2; ++i) {
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_quantity[i]);
-        glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 2) * (N + 2) * sizeof(float), NULL, GL_DYMANIC_DRAW);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 2) * (N + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
         clear(i);
-//        float *quantity = (float *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (N + 2) * (N + 2) * sizeof(float),
-//                                                     bufMask);
-//        std::fill_n(quantity, (N + 2) * (N + 2), 0.0f);
-//        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     }
 }
 
 Density::~Density() {
     glDeleteBuffers(2, m_quantity);
-    delete m_solver;
 }
 
 void Density::clear(bool isPrevious) {
-    CLEAR_PROGRAM.bind();
-    CLEAR_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ isPrevious], 0);
-    CLEAR_PROGRAM.dispatch();
+    // location = 0: quantity
+    CLEAR_DENSITY_PROGRAM.bind();
+    CLEAR_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ isPrevious], 0);
+    CLEAR_DENSITY_PROGRAM.dispatch();
 }
 
 void Density::blur(const float *density, int gridSize, float sigma, float *target) {
@@ -56,20 +52,55 @@ void Density::blur(const float *density, int gridSize, float sigma, float *targe
     }
 }
 
-void Density::process(float dt, float diffusion, float *u, float *v) {
-    addQuantity(dt, m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1]);
-
-    m_currentContext ^= 1;
-    diffuse(dt, diffusion, 0, m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1]);
-
-    m_currentContext ^= 1;
-    advect(dt, 0, u, v, m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1]);
+void Density::addQuantity(float dt) {
+    // location = 0: current quantity
+    // location = 1: previous quantity
+    ADD_DENSITY_PROGRAM.bind();
+    ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
+    ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
+    ADD_DENSITY_PROGRAM.uniform1f("dt", dt);
+    ADD_DENSITY_PROGRAM.dispatch();
 }
 
-float *Density::getQuantity() {
+void Density::diffuse(float dt, float diffusion) {
+    // location = 0: current quantity
+    // location = 1: previous quantity
+    // FIXME diffuse program
+    DIFFUSE_DENSITY_PROGRAM.bind();
+    DIFFUSE_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
+    DIFFUSE_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
+    DIFFUSE_DENSITY_PROGRAM.uniform1f("diffusionRate", dt * diffusion * m_grid * m_grid);
+    DIFFUSE_DENSITY_PROGRAM.dispatch();
+}
+
+void Density::advect(float dt, uint32_t u, uint32_t v) {
+    // location = 0: current quantity
+    // location = 1: previous quantity
+    // location = 2: current u vector field
+    // location = 3: current v vector field
+    ADVECT_DENSITY_PROGRAM.bind();
+    ADVECT_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
+    ADVECT_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
+    ADVECT_DENSITY_PROGRAM.bindBuffer(u, 2);
+    ADVECT_DENSITY_PROGRAM.bindBuffer(v, 3);
+    ADVECT_DENSITY_PROGRAM.uniform1f("dt0", dt * m_grid);
+    ADVECT_DENSITY_PROGRAM.dispatch();
+}
+
+void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {
+    addQuantity(dt);
+
+    m_currentContext ^= 1;
+    diffuse(dt, diffusion);
+
+    m_currentContext ^= 1;
+    advect(dt, u, v);
+}
+
+uint32_t Density::getQuantity() {
     return m_quantity[m_currentContext];
 }
 
-float *Density::getPrevQuantity() {
+uint32_t Density::getPrevQuantity() {
     return m_quantity[m_currentContext ^ 1];
 }

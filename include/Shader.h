@@ -2,22 +2,45 @@
 #define OPENGL_CUSTOM_SHADER_H
 
 #include <cstdint>
+#include <vector>
 
 class Shader {
 public:
-    void createShader(const char *vertexShaderSource, const char *fragmentShaderSource);
-    void createShader(const char *computeShaderSource);
+    Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 
-    void bind();
-    void bindBuffer(uint32_t bufferId, int location);
-    void dispatch();
+    explicit Shader(const char *computeShaderSource);
 
-    uint32_t getProgramID();
+    Shader() = default;
+
+    virtual ~Shader();
+
+    void addShader(uint32_t shaderType, const char *source);
+
+    void addAttachShader(Shader *source);
+
+    void attachToProgram(uint32_t program);
+
+    void buildShader();
+
+    void bind() const;
+
+    void bindBuffer(uint32_t bufferId, int location) const;
+
+    void dispatch() const;
+
+    void uniform1f(const char* uniformName, float val) const;
+
+    uint32_t getProgramId();
 
 private:
     bool glLoadShaderFile(const char *szFile, uint32_t shader);
 
+    std::vector<uint32_t> m_shaderList;
+
+    std::vector<Shader *> m_attachShaderList;
+
     uint32_t m_program;
+
 };
 
 #endif

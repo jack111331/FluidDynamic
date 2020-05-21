@@ -5,7 +5,6 @@
 class NavierStokes {
 protected:
     int m_grid;
-    Solver *m_solver;
     int m_currentContext;
 
     void addQuantity(float dt, float *quantity, float *adder);
@@ -15,7 +14,7 @@ protected:
     void advect(float dt, int boundary, float *u, float *v, float *quantity, float *prevQuantity);
 
 public:
-    NavierStokes(int N, Solver *solver);
+    NavierStokes(int N);
 
     virtual void process(float dt, float diffusion, float *u, float *v) = 0;
 };

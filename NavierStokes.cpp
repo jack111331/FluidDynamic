@@ -2,8 +2,7 @@
 #include "Utility.h"
 #include <iostream>
 
-NavierStokes::NavierStokes(int N, Solver *solver) : m_grid(N), m_currentContext(0) {
-    m_solver = solver;
+NavierStokes::NavierStokes(int N) : m_grid(N), m_currentContext(0) {
 }
 
 void NavierStokes::addQuantity(float dt, float *quantity, float *adder) {
@@ -16,7 +15,7 @@ void NavierStokes::addQuantity(float dt, float *quantity, float *adder) {
 
 void NavierStokes::diffuse(float dt, float diffusion, int boundary, float *quantity, float *prevQuantity) {
     float diffusionForNearbyGrid = dt * diffusion * m_grid * m_grid;
-    m_solver->solve(quantity, prevQuantity, diffusionForNearbyGrid, (1 + 4 * diffusionForNearbyGrid), boundary, m_grid);
+//    m_solver->solve(quantity, prevQuantity, diffusionForNearbyGrid, (1 + 4 * diffusionForNearbyGrid), boundary, m_grid);
 }
 
 void NavierStokes::advect(float dt, int boundary, float *u, float *v, float *quantity, float *prevQuantity) {

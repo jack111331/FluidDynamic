@@ -5,89 +5,90 @@
 #include <sstream>
 #include <string>
 
-void Shader::createShader(const char *vertexShaderSource, const char *fragmentShaderSource) {
-    //渲染器設定
-    int success;
-    char InfoLog[512];
-    uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    if (glLoadShaderFile(vertexShaderSource, vertexShader) == false) {
-        fprintf(stdout, "[%s] Load vertex shader failed\n", __FILE__);
-        exit(1);
-    }
-    if (glLoadShaderFile(fragmentShaderSource, fragmentShader) == false) {
-        fprintf(stdout, "[%s] Load fragment shader failed\n", __FILE__);
-        exit(1);
-    }
-
-    glCompileShader(vertexShader);
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, sizeof(InfoLog), NULL, InfoLog);
-        fprintf(stdout, "[%s] Vertex Shader %s:\n%s\n", __FILE__, vertexShaderSource, InfoLog);
-        exit(1);
-    }
-    glCompileShader(fragmentShader);
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        //InfoLog should be Get before we delete shader
-        glGetShaderInfoLog(fragmentShader, sizeof(InfoLog), NULL, InfoLog);
-        fprintf(stdout, "[%s] Fragment Shader %s:\n%s\n", __FILE__, fragmentShaderSource, InfoLog);
-        exit(1);
-    }
-
-    this->m_program = glCreateProgram();
-    glAttachShader(this->m_program, vertexShader);
-    glAttachShader(this->m_program, fragmentShader);
-
-    glLinkProgram(this->m_program);
-
-    glGetProgramiv(this->m_program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glDeleteProgram(this->m_program);
-        glGetProgramInfoLog(this->Program, sizeof(InfoLog), NULL, InfoLog);
-        fprintf(stdout, "[%s] Shader Error: %s\n", __FILE__, InfoLog);
-        exit(1);
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
+    addShader(GL_VERTEX_SHADER, vertexShaderSource);
+    addShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+    buildShader();
 }
 
-void Shader::createShader(const char *computeShaderSource) {
+Shader::Shader(const char *computeShaderSource) {
+    addShader(GL_COMPUTE_SHADER, computeShaderSource);
+    buildShader();
+}
+
+Shader::~Shader() {
+    for(auto shader: m_shaderList) {
+        glDeleteShader(shader);
+    }
+    // FIXME if m_program truly contain program, then delete it
+//    glDeleteProgram(m_program);
+}
+
+
+void Shader::addShader(uint32_t shaderType, const char *source) {
     int success;
-    char InfoLog[512];
-    GLuint computeShader = glCreateShader(GL_COMPUTE_SHADER);
+    char infoLog[1024];
+    GLuint shader = glCreateShader(shaderType);
 
-
-    if (glLoadShaderFile(computeShaderSource, computeShader) == false)
-        fprintf(stderr, "[%s] Load Compute Shader Failed\n", __FILE__);
-
-
-    glCompileShader(computeShader);
-    glGetShaderiv(computeShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(computeShader, sizeof(InfoLog), NULL, InfoLog);
-        fprintf(stderr, "[%s] Compute Shader %s:\n%s\n", __FILE__, ComputeShaderSource, InfoLog);
-    }
-    this->m_program = glCreateProgram();
-    glAttachShader(this->m_program, computeShader);
-
-    glLinkProgram(this->m_program);
-
-    glGetProgramiv(this->m_program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glDeleteProgram(this->m_program);
-        glGetProgramInfoLog(this->Program, sizeof(InfoLog), NULL, InfoLog);
-        fprintf(stderr, "[%s] Shader Error: %s\n", __FILE__, InfoLog);
+    if (glLoadShaderFile(source, shader) == false) {
+        exit(1);
     }
 
-    glDeleteShader(computeShader);
+    glCompileShader(shader);
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(shader, sizeof(infoLog), NULL, infoLog);
+        fprintf(stderr, "[%s] Compute Shader %s:\n%s\n", __FILE__, source, infoLog);
+    }
+    m_shaderList.push_back(shader);
+}
+
+void Shader::addAttachShader(Shader *source) {
+    m_attachShaderList.push_back(source);
+}
+
+void Shader::buildShader() {
+    int success;
+    char infoLog[1024];
+
+    // FIXME if m_program truly contain program, then delete it
+//    if(m_program) {
+//        glDeleteProgram(m_program);
+//    }
+
+    m_program = glCreateProgram();
+
+    attachToProgram(m_program);
+
+    for(auto attachShader: m_attachShaderList) {
+        attachShader->attachToProgram(m_program);
+    }
+
+    glLinkProgram(m_program);
+
+    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+    if (!success) {
+        glDeleteProgram(m_program);
+        glGetProgramInfoLog(this->m_program, sizeof(infoLog), NULL, infoLog);
+        fprintf(stderr, "[%s] Shader linking : %s\n", __FILE__, infoLog);
+    }
+
+    for(auto shader: m_shaderList) {
+        glDeleteShader(shader);
+    }
+    m_shaderList.clear();
+    m_attachShaderList.clear();
+}
+
+void Shader::attachToProgram(uint32_t program) {
+    for(auto shader: m_shaderList) {
+        glAttachShader(program, shader);
+    }
 }
 
 bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) {
-    std::ifstream ShaderFile;
+    std::ifstream shaderFile;
     shaderFile.exceptions(std::ifstream::badbit);
     std::string str;
     try {
@@ -105,18 +106,24 @@ bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) {
     return true;
 }
 
-void Shader::bind() {
-    glUseProgram(this->program);
+void Shader::bind() const {
+    glUseProgram(this->m_program);
 }
 
-void Shader::bindBuffer(uint32_t bufferId, int location) {
+void Shader::bindBuffer(uint32_t bufferId, int location) const {
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, location, bufferId);
 }
 
-void Shader::dispatch() {
+void Shader::dispatch() const {
+    // FIXME 2D and barrier
     glDispatchCompute(1, 1, 1);
+    glMemoryBarrier(GL_ALL_BARRIER_BITS);
 }
 
-GLuint Shader::getProgramID() {
-    return this->m_program;
+void Shader::uniform1f(const char* uniformName, float val) const {
+    glUniform1f(glGetUniformLocation(m_program, uniformName), val);
+}
+
+GLuint Shader::getProgramId() {
+    return m_program;
 }
