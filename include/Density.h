@@ -15,9 +15,7 @@ public:
 
     ~Density();
 
-    void clear();
-
-    void clearPrev();
+    void clear(bool isPrevious);
 
     static void blur(const float *density, int gridSize, float sigma, float *target);
 

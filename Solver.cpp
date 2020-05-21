@@ -1,14 +1,6 @@
 #include "Solver.h"
 #include "Utility.h"
 
-Solver::~Solver() {
-
-}
-
-GaussSeidelSolver::GaussSeidelSolver() : m_iterativeTime(20) {
-
-}
-
 GaussSeidelSolver::GaussSeidelSolver(int iterativeTime) : m_iterativeTime(iterativeTime) {
 
 }

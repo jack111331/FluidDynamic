@@ -8,8 +8,9 @@ public:
     void createShader(const char *vertexShaderSource, const char *fragmentShaderSource);
     void createShader(const char *computeShaderSource);
 
-    void use();
+    void bind();
     void bindBuffer(uint32_t bufferId, int location);
+    void dispatch();
 
     uint32_t getProgramID();
 

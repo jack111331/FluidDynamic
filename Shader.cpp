@@ -5,112 +5,118 @@
 #include <sstream>
 #include <string>
 
-void Shader::createShader(const char *VertexShaderSource, const char *FragmentShaderSource) {
+void Shader::createShader(const char *vertexShaderSource, const char *fragmentShaderSource) {
     //渲染器設定
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    if (glLoadShaderFile(VertexShaderSource, vertexShader) == false)
-        fprintf(stdout, "[%s] Load Vertex Shader Failed\n", __FILE__);
-    if (glLoadShaderFile(FragmentShaderSource, fragmentShader) == false)
-        fprintf(stdout, "[%s] Load Fragment Shader Failed\n", __FILE__);
-
     int success;
     char InfoLog[512];
-    //編譯頂點渲染器
+    uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    if (glLoadShaderFile(vertexShaderSource, vertexShader) == false) {
+        fprintf(stdout, "[%s] Load vertex shader failed\n", __FILE__);
+        exit(1);
+    }
+    if (glLoadShaderFile(fragmentShaderSource, fragmentShader) == false) {
+        fprintf(stdout, "[%s] Load fragment shader failed\n", __FILE__);
+        exit(1);
+    }
+
     glCompileShader(vertexShader);
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, InfoLog);
-        fprintf(stdout, "[%s] Vertex Shader %s Error: %s\n", __FILE__, VertexShaderSource, InfoLog);
+        glGetShaderInfoLog(vertexShader, sizeof(InfoLog), NULL, InfoLog);
+        fprintf(stdout, "[%s] Vertex Shader %s:\n%s\n", __FILE__, vertexShaderSource, InfoLog);
+        exit(1);
     }
-    //編譯片段渲染器
     glCompileShader(fragmentShader);
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
         //InfoLog should be Get before we delete shader
-        glGetShaderInfoLog(fragmentShader, 512, NULL, InfoLog);
-        fprintf(stdout, "[%s] Fragment Shader %s Error: %s\n", __FILE__, FragmentShaderSource, InfoLog);
+        glGetShaderInfoLog(fragmentShader, sizeof(InfoLog), NULL, InfoLog);
+        fprintf(stdout, "[%s] Fragment Shader %s:\n%s\n", __FILE__, fragmentShaderSource, InfoLog);
+        exit(1);
     }
-    this->Program = glCreateProgram();
-    glAttachShader(this->Program, vertexShader);
-    glAttachShader(this->Program, fragmentShader);
-    glBindAttribLocation(this->Program, 0, "vertex");
-    //連結渲染器
-    glLinkProgram(this->Program);
-    //生成渲染器
-    glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
+
+    this->m_program = glCreateProgram();
+    glAttachShader(this->m_program, vertexShader);
+    glAttachShader(this->m_program, fragmentShader);
+
+    glLinkProgram(this->m_program);
+
+    glGetProgramiv(this->m_program, GL_LINK_STATUS, &success);
     if (!success) {
-        glDeleteProgram(this->Program);
-        glGetProgramInfoLog(this->Program, 1024, NULL, InfoLog);
+        glDeleteProgram(this->m_program);
+        glGetProgramInfoLog(this->Program, sizeof(InfoLog), NULL, InfoLog);
         fprintf(stdout, "[%s] Shader Error: %s\n", __FILE__, InfoLog);
+        exit(1);
     }
+
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
 
-void Shader::createShader(const char *ComputeShaderSource) {
-    GLuint computeShader;
-    computeShader = glCreateShader(GL_COMPUTE_SHADER);
-
-    if (glLoadShaderFile(ComputeShaderSource, computeShader) == false)
-        fprintf(stderr, "[%s] Load Compute Shader Failed\n", __FILE__);
-
+void Shader::createShader(const char *computeShaderSource) {
     int success;
     char InfoLog[512];
+    GLuint computeShader = glCreateShader(GL_COMPUTE_SHADER);
+
+
+    if (glLoadShaderFile(computeShaderSource, computeShader) == false)
+        fprintf(stderr, "[%s] Load Compute Shader Failed\n", __FILE__);
+
 
     glCompileShader(computeShader);
     glGetShaderiv(computeShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(computeShader, 512, NULL, InfoLog);
-        fprintf(stderr, "[%s] Compute Shader %s Error: %s\n", __FILE__, ComputeShaderSource, InfoLog);
+        glGetShaderInfoLog(computeShader, sizeof(InfoLog), NULL, InfoLog);
+        fprintf(stderr, "[%s] Compute Shader %s:\n%s\n", __FILE__, ComputeShaderSource, InfoLog);
     }
-    this->Program = glCreateProgram();
-    glAttachShader(this->Program, computeShader);
-    //連結渲染器
-    glLinkProgram(this->Program);
-    //生成渲染器
-    glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
+    this->m_program = glCreateProgram();
+    glAttachShader(this->m_program, computeShader);
+
+    glLinkProgram(this->m_program);
+
+    glGetProgramiv(this->m_program, GL_LINK_STATUS, &success);
     if (!success) {
-        glDeleteProgram(this->Program);
-        glGetProgramInfoLog(this->Program, 1024, NULL, InfoLog);
+        glDeleteProgram(this->m_program);
+        glGetProgramInfoLog(this->Program, sizeof(InfoLog), NULL, InfoLog);
         fprintf(stderr, "[%s] Shader Error: %s\n", __FILE__, InfoLog);
     }
+
     glDeleteShader(computeShader);
 }
 
-bool Shader::glLoadShaderFile(const char *szFile, GLuint Shader) {
+bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) {
     std::ifstream ShaderFile;
-    ShaderFile.exceptions(std::ifstream::badbit);
+    shaderFile.exceptions(std::ifstream::badbit);
     std::string str;
     try {
-        ShaderFile.open(szFile);
+        shaderFile.open(szFile);
         std::stringstream ss;
-        ss << ShaderFile.rdbuf();
-        ShaderFile.close();
+        ss << shaderFile.rdbuf();
+        shaderFile.close();
         str = ss.str();
-    }
-    catch (std::ifstream::failure e) {
+    } catch (std::ifstream::failure e) {
         fprintf(stderr, "[%s] Shader file not success loaded\n", __FILE__);
         return false;
     }
-    const char *ShaderSource = str.c_str();
-    std::cout << ShaderSource << std::endl;
-    glShaderSource(Shader, 1, &ShaderSource, NULL);
+    const char *shaderSource = str.c_str();
+    glShaderSource(shader, 1, &shaderSource, NULL);
     return true;
 }
 
-void Shader::use() {
-    glUseProgram(this->Program);
+void Shader::bind() {
+    glUseProgram(this->program);
 }
 
 void Shader::bindBuffer(uint32_t bufferId, int location) {
-
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, location, bufferId);
 }
 
+void Shader::dispatch() {
+    glDispatchCompute(1, 1, 1);
+}
 
 GLuint Shader::getProgramID() {
-    return this->Program;
+    return this->m_program;
 }

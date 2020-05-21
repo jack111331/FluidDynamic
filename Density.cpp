@@ -9,10 +9,11 @@ Density::Density(int N, Solver *solver) : NavierStokes(N, solver) {
     for (int i = 0; i < 2; ++i) {
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_quantity[i]);
         glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 2) * (N + 2) * sizeof(float), NULL, GL_DYMANIC_DRAW);
-        float *quantity = (float *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (N + 2) * (N + 2) * sizeof(float),
-                                                     bufMask);
-        std::fill_n(quantity, (N + 2) * (N + 2), 0.0f);
-        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+        clear(i);
+//        float *quantity = (float *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (N + 2) * (N + 2) * sizeof(float),
+//                                                     bufMask);
+//        std::fill_n(quantity, (N + 2) * (N + 2), 0.0f);
+//        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     }
 }
 
@@ -21,20 +22,10 @@ Density::~Density() {
     delete m_solver;
 }
 
-void Density::clear() {
-    for (int i = 0; i < m_grid + 2; ++i) {
-        for (int j = 0; j < m_grid + 2; ++j) {
-            m_quantity[m_currentContext][indexOf(i, j, m_grid)] = 0.0f;
-        }
-    }
-}
-
-void Density::clearPrev() {
-    for (int i = 0; i < m_grid + 2; ++i) {
-        for (int j = 0; j < m_grid + 2; ++j) {
-            m_quantity[m_currentContext ^ 1][indexOf(i, j, m_grid)] = 0.0f;
-        }
-    }
+void Density::clear(bool isPrevious) {
+    CLEAR_PROGRAM.bind();
+    CLEAR_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ isPrevious], 0);
+    CLEAR_PROGRAM.dispatch();
 }
 
 void Density::blur(const float *density, int gridSize, float sigma, float *target) {
