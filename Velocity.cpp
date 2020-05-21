@@ -21,8 +21,7 @@ Velocity::Velocity(int N) : m_grid(N), m_currentContext(0) {
         // Extend left and right as boundary
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_vQuantity[i]);
         glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 1) * (N + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
-        std::fill_n(m_uQuantity[i], (N + 2) * (N + 1), 0.0f);
-        std::fill_n(m_vQuantity[i], (N + 1) * (N + 2), 0.0f);
+        clear(i);
     }
 }
 
@@ -52,7 +51,14 @@ void Velocity::addForce(float dt) {
     ADD_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 3);
     ADD_VELOCITY_PROGRAM.uniform1f("dt", dt);
     ADD_VELOCITY_PROGRAM.dispatch();
-    // TODO set u v boundary
+
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
 }
 
 void Velocity::advectU(float dt) {
@@ -65,7 +71,10 @@ void Velocity::advectU(float dt) {
     ADVECT_U_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 2);
     ADVECT_U_VELOCITY_PROGRAM.uniform1f("dt", dt);
     ADVECT_U_VELOCITY_PROGRAM.dispatch();
-    // TODO set u boundary
+
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
 }
 
 void Velocity::advectV(float dt) {
@@ -78,7 +87,10 @@ void Velocity::advectV(float dt) {
     ADVECT_V_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 2);
     ADVECT_V_VELOCITY_PROGRAM.uniform1f("dt", dt);
     ADVECT_V_VELOCITY_PROGRAM.dispatch();
-    // TODO set v boundary
+
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
 }
 
 void Velocity::vorticityConfinement(float dt, float vorticity) {
@@ -94,7 +106,71 @@ void Velocity::vorticityConfinement(float dt, float vorticity) {
     CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("dt", dt);
     CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("vorticity", vorticity);
     CONFINE_VORTICITY_VELOCITY_PROGRAM.dispatch();
-    // TODO set u v boundary
+
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+}
+
+
+void Velocity::massConserve(float dt) {
+    // Use Gauss Seidel
+    GaussSeidelSolver *solver = new GaussSeidelSolver();
+    uint32_t p, prevP;
+    glGenBuffers(1, &p);
+    glGenBuffers(1, &prevP);
+    // Extend upper and lower as boundary
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, p);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, prevP);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
+
+    // location = 0: current Pressure quantity
+    // location = 1: previous Pressure quantity
+    // location = 2: current U component quantity
+    // location = 3: current V component quantity
+    BUILD_PRESSURE_PROGRAM.bind();
+    BUILD_PRESSURE_PROGRAM.bindBuffer(p, 0);
+    BUILD_PRESSURE_PROGRAM.bindBuffer(prevP, 1);
+    BUILD_PRESSURE_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 2);
+    BUILD_PRESSURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 3);
+    BUILD_PRESSURE_PROGRAM.uniform1f("inv", (float)1/(float)m_grid);
+    BUILD_PRESSURE_PROGRAM.dispatch();
+
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(p, 0);
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(prevP, 0);
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+
+    solver->solve(p, prevP, 1.0f, 4.0f);
+
+    // location = 0: current U component quantity
+    // location = 1: current V component quantity
+    // location = 2: current Pressure quantity
+    CONSERVE_MASS_PROGRAM.bind();
+    CONSERVE_MASS_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    CONSERVE_MASS_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
+    CONSERVE_MASS_PROGRAM.bindBuffer(p, 2);
+    CONSERVE_MASS_PROGRAM.uniform1f("gridSize", m_grid);
+    CONSERVE_MASS_PROGRAM.dispatch();
+    glDeleteBuffers(1, &p);
+    glDeleteBuffers(1, &prevP);
+    delete solver;
+
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+
 }
 
 void Velocity::process(float dt, float vorticity) {
@@ -113,44 +189,6 @@ void Velocity::process(float dt, float vorticity) {
 
     // Mass conservative
     massConserve(dt);
-}
-
-void Velocity::massConserve(float dt) {
-    // Use Gauss Seidel
-    float *p = new float[(m_grid + 2) * (m_grid + 2)], *prevP = new float[(m_grid + 2) * (m_grid + 2)];
-    Solver *solver = new GaussSeidelSolver();
-    for (int i = 1; i <= m_grid; ++i) {
-        for (int j = 1; j <= m_grid; ++j) {
-            prevP[indexOfPressure(i, j, m_grid)] = -(m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] -
-                                                     m_uQuantity[m_currentContext][indexOfVelocityU(i, j - 1, m_grid)] +
-                                                     m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] -
-                                                     m_vQuantity[m_currentContext][indexOfVelocityV(i - 1, j,
-                                                                                                    m_grid)]) / m_grid;
-            p[indexOfPressure(i, j, m_grid)] = 0.0f;
-        }
-    }
-    setBoundary(0, prevP, m_grid);
-    setBoundary(0, p, m_grid);
-    solver->solve(p, prevP, 1.0f, 4.0f, 0, m_grid);
-    // TODO set boundary
-    for (int i = 1; i <= m_grid; ++i) {
-        for (int j = 1; j <= m_grid - 1; ++j) {
-            m_uQuantity[m_currentContext][indexOfVelocityU(i, j, m_grid)] -=
-                    m_grid * (p[indexOfPressure(i, j + 1, m_grid)] - p[indexOfPressure(i, j, m_grid)]);
-        }
-    }
-    for (int i = 1; i <= m_grid - 1; ++i) {
-        for (int j = 1; j <= m_grid; ++j) {
-            m_vQuantity[m_currentContext][indexOfVelocityV(i, j, m_grid)] -=
-                    m_grid * (p[indexOfPressure(i + 1, j, m_grid)] - p[indexOfPressure(i, j, m_grid)]);
-        }
-    }
-    delete[] prevP;
-    delete[] p;
-    delete solver;
-    setUBoundary(m_uQuantity[m_currentContext], m_grid);
-    setVBoundary(m_vQuantity[m_currentContext], m_grid);
-
 }
 
 uint32_t Velocity::getQuantity(int component) {

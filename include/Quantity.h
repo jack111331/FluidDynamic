@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 class SingleQuantity {
 public:
     virtual uint32_t getQuantity() = 0;

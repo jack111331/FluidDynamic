@@ -1,3 +1,4 @@
+#include <ShaderUtility.h>
 #include "Solver.h"
 #include "Utility.h"
 
@@ -12,15 +13,8 @@ void GaussSeidelSolver::solve(uint32_t x, uint32_t x0, float a, float denom) {
         GAUSS_SEIDEL_SOLVER_PROGRAM.uniform1f("denom", denom);
         GAUSS_SEIDEL_SOLVER_PROGRAM.dispatch();
 
-        // Ax = x0
-//        for (int i = 1; i <= N; i++) {
-//            for (int j = 1; j <= N; j++) {
-//                x[indexOf(i, j, N)] = (x0[indexOf(i, j, N)] + a * (x[indexOf(i - 1, j, N)] + x[indexOf(i + 1, j, N)] +
-//                                                                   x[indexOf(i, j - 1, N)] + x[indexOf(i, j + 1, N)])) /
-//                                      denom;
-//            }
-//        }
-        // TODO set boundary manually after each solve invoke
-//        setBoundary(boundary, x, N);
+        ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
+        ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(x, 0);
+        ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
     }
 }

@@ -16,14 +16,8 @@ private:
     const Shader ADD_DENSITY_PROGRAM = Shader(Density::ADD_DENSITY_PROGRAM_PATH)
             .buildShader();
 
-    static constexpr char DIFFUSE_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/DiffuseDensity.cs";
-    const Shader DIFFUSE_DENSITY_PROGRAM = Shader(Density::DIFFUSE_DENSITY_PROGRAM_PATH)
-            .addAttachShader(&ShaderUtility::GAUSS_SEIDEL_SOLVER_PROGRAM)
-            .buildShader();
-
     static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.cs";
     const Shader ADVECT_DENSITY_PROGRAM = Shader(Density::ADVECT_DENSITY_PROGRAM_PATH)
-            .addAttachShader(&ShaderUtility::SET_DENSITY_BOUND_PROGRAM)
             .buildShader();
 
     uint32_t m_quantity[2];

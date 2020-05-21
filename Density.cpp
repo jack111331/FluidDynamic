@@ -61,18 +61,14 @@ void Density::addQuantity(float dt) {
     ADD_DENSITY_PROGRAM.uniform1f("dt", dt);
     ADD_DENSITY_PROGRAM.dispatch();
 
-    // TODO set boundary
 }
 
 void Density::diffuse(float dt, float diffusion) {
-    // location = 0: current quantity
-    // location = 1: previous quantity
-    // FIXME diffuse program
-    DIFFUSE_DENSITY_PROGRAM.bind();
-    DIFFUSE_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
-    DIFFUSE_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
-    DIFFUSE_DENSITY_PROGRAM.uniform1f("diffusionRate", dt * diffusion * m_grid * m_grid);
-    DIFFUSE_DENSITY_PROGRAM.dispatch();
+    GaussSeidelSolver *solver = new GaussSeidelSolver(20);
+    float diffusionForNearbyGrid = dt * diffusion * m_grid * m_grid;
+    solver->solve(m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1], diffusionForNearbyGrid,
+                  (1 + 4 * diffusionForNearbyGrid));
+    delete solver;
 }
 
 void Density::advect(float dt, uint32_t u, uint32_t v) {
@@ -87,6 +83,10 @@ void Density::advect(float dt, uint32_t u, uint32_t v) {
     ADVECT_DENSITY_PROGRAM.bindBuffer(v, 3);
     ADVECT_DENSITY_PROGRAM.uniform1f("dt0", dt * m_grid);
     ADVECT_DENSITY_PROGRAM.dispatch();
+
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
 }
 
 void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {

@@ -4,7 +4,11 @@
 
 #include "ShaderUtility.h"
 
-const Shader ShaderUtility::GAUSS_SEIDEL_SOLVER_PROGRAM = Shader(ShaderUtility::GAUSS_SEIDEL_SOLVER_PROGRAM);
-const Shader ShaderUtility::SET_DENSITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_DENSITY_BOUND_PROGRAM_PATH);
-const Shader ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM_PATH);
-const Shader ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM_PATH);
+const Shader ShaderUtility::GAUSS_SEIDEL_SOLVER_PROGRAM = Shader(ShaderUtility::GAUSS_SEIDEL_SOLVER_PROGRAM_PATH)
+        .buildShader();
+const Shader ShaderUtility::SET_DENSITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_DENSITY_BOUND_PROGRAM_PATH)
+        .buildShader();
+const Shader ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM_PATH)
+        .buildShader();
+const Shader ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM = Shader(ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM_PATH)
+        .buildShader();

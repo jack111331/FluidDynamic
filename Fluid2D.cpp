@@ -13,10 +13,10 @@ using std::max;
 using std::min;
 
 Fluid2D::~Fluid2D() {
-    delete m_meshPosition;
-    delete m_meshIndices;
-    delete m_gridPosition;
-    delete m_gridIndices;
+    delete[] m_meshPosition;
+    delete[] m_meshIndices;
+    delete[] m_gridPosition;
+    delete[] m_gridIndices;
 
     delete m_densityFieldShader;
     delete m_velocityFieldShader;
@@ -71,12 +71,12 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
     }
 
     // mesh shader init
-    m_densityFieldShader = new Shader();
-    m_densityFieldShader->CreateShader("resources/shader/mesh.vs", "resources/shader/mesh.fs");
+    m_densityFieldShader = new Shader("resources/shader/mesh.vs", "resources/shader/mesh.fs");
+    m_densityFieldShader->buildShader();
 
     // velocity shader init
-    m_velocityFieldShader = new Shader();
-    m_velocityFieldShader->CreateShader("resources/shader/velocity.vs", "resources/shader/velocity.fs");
+    m_velocityFieldShader = new Shader("resources/shader/velocity.vs", "resources/shader/velocity.fs");
+    m_velocityFieldShader->buildShader();
 
     // Mesh VAO
     glGenVertexArrays(1, &m_meshVAO);
@@ -123,15 +123,15 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
 
 
     // Navier Stokes Field Attribute
-    m_densityField = new Density(gridSize, new GaussSeidelSolver(solverTimestep));
+    m_densityField = new Density(gridSize);
     m_velocityField = new Velocity(gridSize);
 
 }
 
 void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
     // Process density and velocity field
-    m_densityField->clearPrev();
-    m_velocityField->clearPrev();
+    m_densityField->clear(true);
+    m_velocityField->clear(true);
 
     int i = (static_cast<double>(windowInfo->windowHeight - windowInfo->mouseYPos) /
              static_cast<double>(windowInfo->windowHeight )) * m_gridSize + 1;
