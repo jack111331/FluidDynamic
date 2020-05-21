@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/NavierStokes.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/Shader.cpp.obj"
+  "CMakeFiles/FluidDynamic.dir/ShaderUtility.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/Solver.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj"
   "CMakeFiles/FluidDynamic.dir/main.cpp.obj"

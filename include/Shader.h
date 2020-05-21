@@ -6,6 +6,9 @@
 
 class Shader {
 public:
+//    template <uint32_t shaderType, const char *source>
+//    Shader();
+
     Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 
     explicit Shader(const char *computeShaderSource);
@@ -16,11 +19,11 @@ public:
 
     void addShader(uint32_t shaderType, const char *source);
 
-    void addAttachShader(Shader *source);
+    Shader &addAttachShader(const Shader *source);
 
-    void attachToProgram(uint32_t program);
+    void attachToProgram(uint32_t program) const;
 
-    void buildShader();
+    Shader &buildShader();
 
     void bind() const;
 
@@ -33,11 +36,11 @@ public:
     uint32_t getProgramId();
 
 private:
-    bool glLoadShaderFile(const char *szFile, uint32_t shader);
+    bool glLoadShaderFile(const char *szFile, uint32_t shader) const;
 
     std::vector<uint32_t> m_shaderList;
 
-    std::vector<Shader *> m_attachShaderList;
+    std::vector<const Shader *> m_attachShaderList;
 
     uint32_t m_program;
 

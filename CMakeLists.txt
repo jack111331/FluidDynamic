@@ -38,6 +38,7 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         Fluid2D.cpp
         Control.cpp
         Shader.cpp
+        ShaderUtility.cpp
 
         Keyframe.cpp
         )
@@ -50,6 +51,7 @@ list(APPEND FLUID_DYNAMIC_HEADER
         include/Utility.h
         include/Control.h
         include/Shader.h
+        include/ShaderUtility.h
 
         include/vo/GLFWWindowInfo.h
         include/Keyframe.h

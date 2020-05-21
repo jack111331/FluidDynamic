@@ -60,6 +60,8 @@ void Density::addQuantity(float dt) {
     ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
     ADD_DENSITY_PROGRAM.uniform1f("dt", dt);
     ADD_DENSITY_PROGRAM.dispatch();
+
+    // TODO set boundary
 }
 
 void Density::diffuse(float dt, float diffusion) {

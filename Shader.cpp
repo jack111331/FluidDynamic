@@ -9,12 +9,10 @@
 Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
     addShader(GL_VERTEX_SHADER, vertexShaderSource);
     addShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-    buildShader();
 }
 
 Shader::Shader(const char *computeShaderSource) {
     addShader(GL_COMPUTE_SHADER, computeShaderSource);
-    buildShader();
 }
 
 Shader::~Shader() {
@@ -29,7 +27,7 @@ Shader::~Shader() {
 void Shader::addShader(uint32_t shaderType, const char *source) {
     int success;
     char infoLog[1024];
-    GLuint shader = glCreateShader(shaderType);
+    uint32_t shader = glCreateShader(shaderType);
 
     if (glLoadShaderFile(source, shader) == false) {
         exit(1);
@@ -44,11 +42,18 @@ void Shader::addShader(uint32_t shaderType, const char *source) {
     m_shaderList.push_back(shader);
 }
 
-void Shader::addAttachShader(Shader *source) {
+Shader &Shader::addAttachShader(const Shader *source) {
     m_attachShaderList.push_back(source);
+    return *this;
 }
 
-void Shader::buildShader() {
+void Shader::attachToProgram(uint32_t program) const{
+    for(auto shader: m_shaderList) {
+        glAttachShader(program, shader);
+    }
+}
+
+Shader &Shader::buildShader() {
     int success;
     char infoLog[1024];
 
@@ -79,15 +84,10 @@ void Shader::buildShader() {
     }
     m_shaderList.clear();
     m_attachShaderList.clear();
+    return *this;
 }
 
-void Shader::attachToProgram(uint32_t program) {
-    for(auto shader: m_shaderList) {
-        glAttachShader(program, shader);
-    }
-}
-
-bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) {
+bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) const {
     std::ifstream shaderFile;
     shaderFile.exceptions(std::ifstream::badbit);
     std::string str;
