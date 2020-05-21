@@ -5,17 +5,18 @@
 
 class Shader {
 public:
-    void CreateShader(const char *VertexShaderSource, const char *FragmentShaderSource);
-    void CreateShader(const char *ComputeShaderSource);
+    void createShader(const char *vertexShaderSource, const char *fragmentShaderSource);
+    void createShader(const char *computeShaderSource);
 
-    void Use();
+    void use();
+    void bindBuffer(uint32_t bufferId, int location);
 
-    uint32_t GetProgramID();
+    uint32_t getProgramID();
 
 private:
-    bool glLoadShaderFile(const char *szFile, uint32_t Shader);
+    bool glLoadShaderFile(const char *szFile, uint32_t shader);
 
-    uint32_t Program;
+    uint32_t m_program;
 };
 
 #endif

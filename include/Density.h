@@ -5,7 +5,10 @@
 
 class Density : public NavierStokes, public SingleQuantity {
 private:
-    float *m_quantity[2];
+    uint32_t m_quantity[2];
+
+    const char CLEAR_PROGRAM_PATH = "resources/shader/compute/clear.cs";
+    const Shader CLEAR_PROGRAM = Shader(CLEAR_PROGRAM_PATH);
 
 public:
     Density(int N, Solver *solver);

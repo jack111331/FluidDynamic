@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-void Shader::CreateShader(const char *VertexShaderSource, const char *FragmentShaderSource) {
+void Shader::createShader(const char *VertexShaderSource, const char *FragmentShaderSource) {
     //渲染器設定
     GLuint vertexShader;
     GLuint fragmentShader;
@@ -51,7 +51,7 @@ void Shader::CreateShader(const char *VertexShaderSource, const char *FragmentSh
     glDeleteShader(fragmentShader);
 }
 
-void Shader::CreateShader(const char *ComputeShaderSource) {
+void Shader::createShader(const char *ComputeShaderSource) {
     GLuint computeShader;
     computeShader = glCreateShader(GL_COMPUTE_SHADER);
 
@@ -102,10 +102,15 @@ bool Shader::glLoadShaderFile(const char *szFile, GLuint Shader) {
     return true;
 }
 
-void Shader::Use() {
+void Shader::use() {
     glUseProgram(this->Program);
 }
 
-GLuint Shader::GetProgramID() {
+void Shader::bindBuffer(uint32_t bufferId, int location) {
+
+}
+
+
+GLuint Shader::getProgramID() {
     return this->Program;
 }

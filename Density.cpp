@@ -4,16 +4,20 @@
 #include <cmath>
 
 Density::Density(int N, Solver *solver) : NavierStokes(N, solver) {
+    glGenBuffers(2, m_quantity);
+    uint32_t bufMask = (GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
     for (int i = 0; i < 2; ++i) {
-        m_quantity[i] = new float[(N + 2) * (N + 2)];
-        std::fill_n(m_quantity[i], (N + 2) * (N + 2), 0.0f);
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_quantity[i]);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 2) * (N + 2) * sizeof(float), NULL, GL_DYMANIC_DRAW);
+        float *quantity = (float *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (N + 2) * (N + 2) * sizeof(float),
+                                                     bufMask);
+        std::fill_n(quantity, (N + 2) * (N + 2), 0.0f);
+        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     }
 }
 
 Density::~Density() {
-    for (int i = 0; i < 2; ++i) {
-        delete[] m_quantity[i];
-    }
+    glDeleteBuffers(2, m_quantity);
     delete m_solver;
 }
 
