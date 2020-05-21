@@ -16,7 +16,7 @@ public:
     void interpolate(Keyframe *next, float delta, Keyframe &target);
     Keyframe &operator = (Keyframe *keyframe);
     virtual ~Keyframe();
-    uint8_t *m_pixel;
+    float *m_pixel;
     int m_width, m_height, m_channel;
 };
 

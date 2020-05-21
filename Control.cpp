@@ -5,6 +5,7 @@
 #include <cmath>
 #include "Control.h"
 
+
 Control2D::Control2D() : m_target(nullptr) {
 
 }
@@ -51,5 +52,29 @@ void OptimizationControl::control() {
 }
 
 OptimizationControl::~OptimizationControl() {
+    delete m_animation;
+}
+
+TargetDrivenControl::TargetDrivenControl(const std::string &keyframeAnimationFilename, float dt) {
+    m_animation = new KeyframeAnimation();
+    m_animation->loadAnimation(keyframeAnimationFilename);
+    m_dt = dt;
+}
+
+void TargetDrivenControl::control() {
+    if (m_target) {
+        Keyframe keyframe;
+        int t = 0;
+        m_animation->getKeyframeAtTime(t, keyframe);
+        // Add driving force
+        float vf = 3.0f;
+        int initWindLocation[2] = {32, 40};
+        addDensity(3, 1, initWindLocation, 1000.0f);
+
+        m_target->addDrivingForce(m_dt, vf, keyframe.m_pixel);
+    }
+}
+
+TargetDrivenControl::~TargetDrivenControl() {
     delete m_animation;
 }

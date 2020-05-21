@@ -40,4 +40,14 @@ private:
     KeyframeAnimation *m_animation;
 };
 
+class TargetDrivenControl : public Control2D {
+public:
+    TargetDrivenControl(const std::string &keyframeAnimationFilename, float dt);
+    virtual void control();
+    virtual ~TargetDrivenControl();
+private:
+    KeyframeAnimation *m_animation;
+    float m_dt;
+};
+
 #endif //FLUIDDYNAMIC_CONTROL_H

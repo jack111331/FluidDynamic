@@ -6,6 +6,7 @@
 class Shader {
 public:
     void CreateShader(const char *VertexShaderSource, const char *FragmentShaderSource);
+    void CreateShader(const char *ComputeShaderSource);
 
     void Use();
 

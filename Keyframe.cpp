@@ -5,6 +5,7 @@
 #include "Keyframe.h"
 #include <iostream>
 #include <fstream>
+#include <Utility.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -18,37 +19,47 @@ using std::string;
 using std::ifstream;
 
 Keyframe::Keyframe(string filename) {
-    m_pixel = stbi_load(filename.c_str(), &m_width, &m_height, &m_channel, 0);
+    uint8_t *pixel = stbi_load(filename.c_str(), &m_width, &m_height, &m_channel, 0);
+    m_pixel = new float[(m_width + 2) * (m_height + 2)];
+    for (int i = 1; i <= m_width; ++i) {
+        for (int j = 1; j <= m_height; ++j) {
+            m_pixel[indexOf(i, j, m_width)] = pixel[(i - 1) * m_width + (j - 1)];
+        }
+    }
+    stbi_image_free(pixel);
 }
 
 void Keyframe::interpolate(Keyframe *next, float delta, Keyframe &target) {
-    // FIXME I'm idiot, for sure keyframe is real
     if (!target.m_pixel) {
-        stbir_resize_uint8(next->m_pixel, m_width, m_height, 0,
-                           target.m_pixel, m_width, m_height, 0, m_channel);
+        target.m_width = m_width;
+        target.m_height = m_height;
+        target.m_channel = m_channel;
+        target.m_pixel = new float[(m_width + 2) * (m_height + 2)];
     }
-    for (int i = 0; i < m_width; ++i) {
-        for (int j = 0; j < m_height; ++j) {
-            for (int k = 0; k < m_channel; ++k) {
-                target.m_pixel[i] = m_pixel[i] * (1 - delta) + next->m_pixel[i] * delta;
-            }
+    for (int i = 1; i <= m_width; ++i) {
+        for (int j = 1; j <= m_height; ++j) {
+            target.m_pixel[indexOf(i, j, m_width)] =
+                    m_pixel[indexOf(i, j, m_width)] * (1 - delta) + next->m_pixel[indexOf(i, j, m_width)] * delta;
         }
     }
 }
 
 Keyframe &Keyframe::operator=(Keyframe *keyframe) {
-    // FIXME I'm idiot, for sure keyframe is real
     if (!m_pixel) {
-        stbir_resize_uint8(keyframe->m_pixel, m_width, m_height, 0,
-                           m_pixel, m_width, m_height, 0, m_channel);
+        m_width = keyframe->m_width;
+        m_height = keyframe->m_height;
+        m_channel = keyframe->m_channel;
+        m_pixel = new float[(m_width + 2) * (m_height + 2)];
     }
-    for (int i = 0; i < m_width * m_height * m_channel; ++i) {
-        m_pixel[i] = keyframe->m_pixel[i];
+    for (int i = 1; i <= m_width; ++i) {
+        for (int j = 1; j <= m_height; ++j) {
+            m_pixel[indexOf(i, j, m_width)] = keyframe->m_pixel[indexOf(i, j, m_width)];
+        }
     }
 }
 
 Keyframe::~Keyframe() {
-    stbi_image_free(m_pixel);
+    delete[] m_pixel;
 }
 
 void KeyframeAnimation::loadAnimation(const string &keyframeSeriesName) {
@@ -59,7 +70,7 @@ void KeyframeAnimation::loadAnimation(const string &keyframeSeriesName) {
     std::string keyframeFilename;
     int timeline;
     while (ifs >> timeline >> keyframeFilename) {
-        m_keyframeTimeline.insert(std::pair<int, Keyframe *>(timeline, new Keyframe(keyframeFilename)));
+        m_keyframeTimeline.insert(std::pair<int, Keyframe *>(timeline, new Keyframe(keyframeSeriesName.substr(0, keyframeSeriesName.find_last_of('/')+1) + keyframeFilename)));
     }
     ifs.close();
 }
@@ -69,7 +80,6 @@ void KeyframeAnimation::getKeyframeAtTime(int t, Keyframe &result) {
     if (!maxTimeline) {
         return;
     }
-
     t = (((t % maxTimeline) + maxTimeline) % maxTimeline);
     auto keyframeIt = m_keyframeTimeline.lower_bound(t);
     if (keyframeIt->first != t) {

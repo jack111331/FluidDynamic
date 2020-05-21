@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Quantity.h"
+#include <cstdint>
 
 class Velocity : public MultipleQuantity {
 private:

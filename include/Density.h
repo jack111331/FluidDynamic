@@ -16,6 +16,8 @@ public:
 
     void clearPrev();
 
+    static void blur(const float *density, int gridSize, float sigma, float *target);
+
     void process(float dt, float diffusion, float *u, float *v) override;
 
     float *getQuantity() override;

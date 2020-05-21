@@ -61,7 +61,11 @@ list(APPEND FLUID_DYNAMIC_HEADER
 set(all_code_files
         ${FLUID_DYNAMIC_HEADER}
         ${FLUID_DYNAMIC_SOURCE}
-         )
+        )
 
 add_executable(FluidDynamic ${all_code_files})
 target_link_libraries(FluidDynamic GLEW::GLEW glfw OpenGL::GL)
+
+project(ComputeShaderTest)
+add_executable(ComputeShaderTest test_compute_shader.cpp include/Shader.h Shader.cpp)
+target_link_libraries(ComputeShaderTest GLEW::GLEW glfw OpenGL::GL)

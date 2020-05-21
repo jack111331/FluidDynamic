@@ -7,6 +7,7 @@
 #include <Utility.h>
 #include <GL/glew.h>
 #include "Fluid2D.h"
+#include <iostream>
 
 using std::max;
 using std::min;
@@ -174,7 +175,7 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     // FIXME alpha and beta
 //    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
-    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
+//    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity, nullptr, nullptr);
     m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
                             m_velocityField->getQuantity(Velocity::V_COMPONENT));
@@ -201,6 +202,61 @@ void Fluid2D::display(bool mode) {
         glDrawElements(GL_LINES, 2 * m_gridSize * m_gridSize, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
+}
+
+void Fluid2D::addDrivingForce(float dt, float vf, float *state) {
+    // blur current density
+    float *density = m_densityField->getPrevQuantity();
+
+    float *bluredDensity = new float[(m_gridSize + 2) * (m_gridSize + 2)];
+    float *bluredState = new float[(m_gridSize + 2) * (m_gridSize + 2)];
+    Density::blur(density, m_gridSize, 1, bluredDensity);
+    Density::blur(state, m_gridSize, 1, bluredState);
+    setBoundary(0, bluredDensity, m_gridSize);
+    setBoundary(0, bluredState, m_gridSize);
+    for (int i = 1; i <= m_gridSize; ++i) {
+        for (int j = 1; j <= m_gridSize; ++j) {
+            std::cout << dt * vf
+                         * ((bluredDensity[indexOf(i, j + 1, m_gridSize)] +
+                             bluredDensity[indexOf(i, j, m_gridSize)]) * 0.5f)
+                         * ((bluredState[indexOf(i, j + 1, m_gridSize)] -
+                             bluredState[indexOf(i, j, m_gridSize)]) / m_gridSize)
+                         / ((bluredState[indexOf(i, j + 1, m_gridSize)] +
+                             bluredState[indexOf(i, j, m_gridSize)]) * 0.5f + 1e-10) << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "----" << std::endl;
+    getchar();
+    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
+    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+
+    for (int i = 1; i <= m_gridSize; ++i) {
+        for (int j = 1; j <= m_gridSize; ++j) {
+            // TODO when target state and current state is equal, make sure dont do divide and multiply
+            double force[2] = {
+                    dt * vf
+                    * ((bluredDensity[indexOf(i, j + 1, m_gridSize)] +
+                        bluredDensity[indexOf(i, j, m_gridSize)]) * 0.5f)
+                    * ((bluredState[indexOf(i, j + 1, m_gridSize)] -
+                        bluredState[indexOf(i, j, m_gridSize)]) / m_gridSize)
+                    / ((bluredState[indexOf(i, j + 1, m_gridSize)] +
+                        bluredState[indexOf(i, j, m_gridSize)]) * 0.5f + 1e-10),
+
+                    dt * vf
+                    * ((bluredDensity[indexOf(i + 1, j, m_gridSize)] +
+                        bluredDensity[indexOf(i, j, m_gridSize)]) * 0.5f)
+                    * ((bluredState[indexOf(i + 1, j, m_gridSize)] -
+                        bluredState[indexOf(i, j, m_gridSize)]) / m_gridSize)
+                    / ((bluredState[indexOf(i + 1, j, m_gridSize)] +
+                        bluredState[indexOf(i, j, m_gridSize)]) * 0.5f + 1e-10)
+            };
+            u[indexOfVelocityU(i, j, m_gridSize)] += force[0];
+            v[indexOfVelocityV(i, j, m_gridSize)] += force[1];
+        }
+    }
+    delete[] bluredDensity;
+    delete[] bluredState;
 }
 
 void Fluid2D::addBuoyancy(float dt, float alpha, float beta, float gravity) {

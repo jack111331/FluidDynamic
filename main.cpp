@@ -21,7 +21,7 @@ static GLFWWindowInfo windowInfo{
         .windowHeight = 600
 };
 
-static bool displayMode = true;
+static bool displayMode = false;
 
 static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos) {
     if (windowInfo.mouseAction[GLFWWindowInfo::MOUSE_LEFT] || windowInfo.mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
@@ -88,8 +88,10 @@ int main() {
     fluid2D = new Fluid2D();
     fluid2D->init(N, timestep);
 
-    Control2D *control = new GenerateRisingSmoke();
+    TargetDrivenControl *control = new TargetDrivenControl("resources/animation/from_3_to_4/animation.kfd", dt);
     control->setTarget(fluid2D);
+//    Control2D *control = new GenerateRisingSmoke();
+//    control->setTarget(fluid2D);
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -102,6 +104,7 @@ int main() {
         fluid2D->update(dt, diffusion, viscosity);
         fluid2D->display(displayMode);
         glfwSwapBuffers(window);
+        // TODO DEBUG
     }
 
     glfwTerminate();
