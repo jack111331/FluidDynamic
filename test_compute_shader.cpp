@@ -9,8 +9,9 @@
 #include <Shader.h>
 #include <cassert>
 
-#define NUM_PARTICLES 1023
+#define NUM_PARTICLES 4
 #define WORK_GROUP_SIZE 128
+#define THREAD_SIZE 2
 
 struct pos {
     float x, y, z, w;
@@ -162,7 +163,7 @@ int main() {
         computeShader.bindBuffer(posSSbo, 0);
         computeShader.bindBuffer(velSSbo, 1);
         computeShader.bindBuffer(colSSbo, 2);
-        computeShader.dispatch(NUM_PARTICLES, 1, 1);
+        computeShader.dispatch(NUM_PARTICLES/THREAD_SIZE, 1, 1);
 
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSSbo);
         pos *ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT );
