@@ -8,16 +8,20 @@
 
 class Density : public SingleQuantity {
 private:
-    static constexpr char CLEAR_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.cs";
+    static constexpr char CLEAR_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.shader";
     const Shader CLEAR_DENSITY_PROGRAM = Shader(Density::CLEAR_DENSITY_PROGRAM_PATH)
             .buildShader();
 
-    static constexpr char ADD_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AddDensity.cs";
+    static constexpr char ADD_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AddDensity.shader";
     const Shader ADD_DENSITY_PROGRAM = Shader(Density::ADD_DENSITY_PROGRAM_PATH)
             .buildShader();
 
-    static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.cs";
+    static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.shader";
     const Shader ADVECT_DENSITY_PROGRAM = Shader(Density::ADVECT_DENSITY_PROGRAM_PATH)
+            // FIXME May have latter load problem
+            .addAttachShader(&ShaderUtility::GET_U_SUBROUTINE_SHADER)
+            .addAttachShader(&ShaderUtility::GET_V_SUBROUTINE_SHADER)
+            .addAttachShader(&ShaderUtility::LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER)
             .buildShader();
 
     uint32_t m_quantity[2];

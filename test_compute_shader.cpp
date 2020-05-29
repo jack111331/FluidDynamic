@@ -166,7 +166,7 @@ int main() {
         computeShader.dispatch(NUM_PARTICLES/THREAD_SIZE, 1, 1);
 
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSSbo);
-        pos *ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT );
+        pos *ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT);
 //        fprintf(stderr, "%d, (%f, %f, %f, %f)\n", 0, ptr[0].x, ptr[0].y, ptr[0].z, ptr[0].w);
         glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 

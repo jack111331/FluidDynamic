@@ -7,7 +7,7 @@
 
 class Velocity : public MultipleQuantity {
 private:
-    static constexpr char CLEAR_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.cs";
+    static constexpr char CLEAR_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.shader";
     const Shader CLEAR_VELOCITY_PROGRAM = Shader(Velocity::CLEAR_VELOCITY_PROGRAM_PATH)
             .buildShader();
 
