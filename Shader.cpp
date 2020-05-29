@@ -24,7 +24,7 @@ Shader::~Shader() {
 }
 
 
-void Shader::addShader(uint32_t shaderType, const char *source) {
+Shader &Shader::addShader(uint32_t shaderType, const char *source) {
     int success;
     char infoLog[1024];
     uint32_t shader = glCreateShader(shaderType);
@@ -107,17 +107,16 @@ bool Shader::glLoadShaderFile(const char *szFile, GLuint shader) const {
 }
 
 void Shader::bind() const {
-    glUseProgram(this->m_program);
+    glUseProgram(m_program);
 }
 
 void Shader::bindBuffer(uint32_t bufferId, int location) const {
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, location, bufferId);
 }
 
-void Shader::dispatch() const {
-    // FIXME 2D and barrier
-    glDispatchCompute(1, 1, 1);
-    glMemoryBarrier(GL_ALL_BARRIER_BITS);
+void Shader::dispatch(int x, int y, int z) const {
+    glDispatchCompute(x, y, z);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void Shader::uniform1f(const char* uniformName, float val) const {

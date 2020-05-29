@@ -11,10 +11,10 @@ void GaussSeidelSolver::solve(uint32_t x, uint32_t x0, float a, float denom) {
         GAUSS_SEIDEL_SOLVER_PROGRAM.bindBuffer(x0, 1);
         GAUSS_SEIDEL_SOLVER_PROGRAM.uniform1f("a", a);
         GAUSS_SEIDEL_SOLVER_PROGRAM.uniform1f("denom", denom);
-        GAUSS_SEIDEL_SOLVER_PROGRAM.dispatch();
+        GAUSS_SEIDEL_SOLVER_PROGRAM.dispatch(1, 1, 1);
 
         ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
         ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(x, 0);
-        ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+        ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
     }
 }

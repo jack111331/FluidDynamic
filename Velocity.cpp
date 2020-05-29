@@ -36,7 +36,7 @@ void Velocity::clear(bool isPrevious) {
     CLEAR_VELOCITY_PROGRAM.bind();
     CLEAR_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext ^ isPrevious], 0);
     CLEAR_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ isPrevious], 1);
-    CLEAR_VELOCITY_PROGRAM.dispatch();
+    CLEAR_VELOCITY_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Velocity::addForce(float dt) {
@@ -50,15 +50,15 @@ void Velocity::addForce(float dt) {
     ADD_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 2);
     ADD_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 3);
     ADD_VELOCITY_PROGRAM.uniform1f("dt", dt);
-    ADD_VELOCITY_PROGRAM.dispatch();
+    ADD_VELOCITY_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Velocity::advectU(float dt) {
@@ -70,11 +70,11 @@ void Velocity::advectU(float dt) {
     ADVECT_U_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext ^ 1], 1);
     ADVECT_U_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 2);
     ADVECT_U_VELOCITY_PROGRAM.uniform1f("dt", dt);
-    ADVECT_U_VELOCITY_PROGRAM.dispatch();
+    ADVECT_U_VELOCITY_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Velocity::advectV(float dt) {
@@ -86,11 +86,11 @@ void Velocity::advectV(float dt) {
     ADVECT_V_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext ^ 1], 1);
     ADVECT_V_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 2);
     ADVECT_V_VELOCITY_PROGRAM.uniform1f("dt", dt);
-    ADVECT_V_VELOCITY_PROGRAM.dispatch();
+    ADVECT_V_VELOCITY_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Velocity::vorticityConfinement(float dt, float vorticity) {
@@ -105,15 +105,15 @@ void Velocity::vorticityConfinement(float dt, float vorticity) {
     CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 3);
     CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("dt", dt);
     CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("vorticity", vorticity);
-    CONFINE_VORTICITY_VELOCITY_PROGRAM.dispatch();
+    CONFINE_VORTICITY_VELOCITY_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 
@@ -139,14 +139,14 @@ void Velocity::massConserve(float dt) {
     BUILD_PRESSURE_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 2);
     BUILD_PRESSURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 3);
     BUILD_PRESSURE_PROGRAM.uniform1f("inv", (float)1/(float)m_grid);
-    BUILD_PRESSURE_PROGRAM.dispatch();
+    BUILD_PRESSURE_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(p, 0);
-    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(prevP, 0);
-    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     solver->solve(p, prevP, 1.0f, 4.0f);
 
@@ -158,18 +158,18 @@ void Velocity::massConserve(float dt) {
     CONSERVE_MASS_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
     CONSERVE_MASS_PROGRAM.bindBuffer(p, 2);
     CONSERVE_MASS_PROGRAM.uniform1f("gridSize", m_grid);
-    CONSERVE_MASS_PROGRAM.dispatch();
+    CONSERVE_MASS_PROGRAM.dispatch(1, 1, 1);
     glDeleteBuffers(1, &p);
     glDeleteBuffers(1, &prevP);
     delete solver;
 
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
 }
 

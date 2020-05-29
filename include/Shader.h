@@ -13,11 +13,9 @@ public:
 
     explicit Shader(const char *computeShaderSource);
 
-    Shader() = default;
-
     virtual ~Shader();
 
-    void addShader(uint32_t shaderType, const char *source);
+    Shader &addShader(uint32_t shaderType, const char *source);
 
     Shader &addAttachShader(const Shader *source);
 
@@ -29,7 +27,7 @@ public:
 
     void bindBuffer(uint32_t bufferId, int location) const;
 
-    void dispatch() const;
+    void dispatch(int x, int y, int z) const;
 
     void uniform1f(const char* uniformName, float val) const;
 

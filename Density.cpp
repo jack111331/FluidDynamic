@@ -21,7 +21,7 @@ void Density::clear(bool isPrevious) {
     // location = 0: quantity
     CLEAR_DENSITY_PROGRAM.bind();
     CLEAR_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ isPrevious], 0);
-    CLEAR_DENSITY_PROGRAM.dispatch();
+    CLEAR_DENSITY_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Density::blur(const float *density, int gridSize, float sigma, float *target) {
@@ -59,7 +59,7 @@ void Density::addQuantity(float dt) {
     ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
     ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
     ADD_DENSITY_PROGRAM.uniform1f("dt", dt);
-    ADD_DENSITY_PROGRAM.dispatch();
+    ADD_DENSITY_PROGRAM.dispatch(1, 1, 1);
 
 }
 
@@ -82,11 +82,11 @@ void Density::advect(float dt, uint32_t u, uint32_t v) {
     ADVECT_DENSITY_PROGRAM.bindBuffer(u, 2);
     ADVECT_DENSITY_PROGRAM.bindBuffer(v, 3);
     ADVECT_DENSITY_PROGRAM.uniform1f("dt0", dt * m_grid);
-    ADVECT_DENSITY_PROGRAM.dispatch();
+    ADVECT_DENSITY_PROGRAM.dispatch(1, 1, 1);
 
     ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bind();
     ShaderUtility::SET_DENSITY_BOUND_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
-    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch();
+    ShaderUtility::SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {
