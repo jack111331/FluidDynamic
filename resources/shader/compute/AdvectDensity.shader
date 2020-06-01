@@ -44,9 +44,9 @@ void main() {
     uvec2 upper_right_xy = lower_left_xy+uvec2(1);
     // Linear interpolate
     density[grid_xy] = linearInterpolate2D(vec2(fract(before_advect_xy.x - lower_left_xy.x), fract(before_advect_xy.y - lower_left_xy.y)),
-    prevDensity[dot(lower_left_xy, uvec2(1, ACTUAL_GRID_WIDTH))],
-    prevDensity[dot(uvec2(upper_right_xy.x, lower_left_xy.y), uvec2(1, ACTUAL_GRID_WIDTH))],
-    prevDensity[dot(uvec2(lower_left_xy.x, upper_right_xy.y), uvec2(1, ACTUAL_GRID_WIDTH))],
-    prevDensity[dot(upper_right_xy, uvec2(1, ACTUAL_GRID_WIDTH))]);
+    prevDensity[lower_left_xy.y * ACTUAL_GRID_WIDTH + lower_left_xy.x],
+    prevDensity[lower_left_xy.y * ACTUAL_GRID_WIDTH + upper_right_xy.x],
+    prevDensity[upper_right_xy.y * ACTUAL_GRID_WIDTH + lower_left_xy.x],
+    prevDensity[upper_right_xy.y * ACTUAL_GRID_WIDTH + upper_right_xy.x]);
 
 }

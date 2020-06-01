@@ -5,5 +5,5 @@
 #define V_STAGGERED_GRID_HEIGHT 256+1
 
 uint indexOfVelocityV(uvec2 grid_xy) {
-    return dot(grid_xy, uvec2(1, V_STAGGERED_GRID_WIDTH));
+    return grid_xy.y * V_STAGGERED_GRID_WIDTH + grid_xy.x;
 }

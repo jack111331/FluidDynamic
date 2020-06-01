@@ -16,7 +16,7 @@ Shader::Shader(const char *computeShaderSource) {
 }
 
 Shader::~Shader() {
-    for(auto shader: m_shaderList) {
+    for (auto shader: m_shaderList) {
         glDeleteShader(shader);
     }
     // FIXME if m_program truly contain program, then delete it
@@ -25,19 +25,24 @@ Shader::~Shader() {
 
 
 Shader &Shader::addShader(uint32_t shaderType, const char *source) {
+    std::cout << "create " << source << std::endl;
     int success;
     char infoLog[1024];
     uint32_t shader = glCreateShader(shaderType);
-
     if (glLoadShaderFile(source, shader) == false) {
+        fprintf(stderr, "[%s] Error reading file %s\n", __FILE__, source);
         exit(1);
     }
 
     glCompileShader(shader);
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    std::cout << source << " " << shader << std::endl;
+    fflush(stdout);
+
     if (!success) {
         glGetShaderInfoLog(shader, sizeof(infoLog), NULL, infoLog);
-        fprintf(stderr, "[%s] Compute Shader %s:\n%s\n", __FILE__, source, infoLog);
+        fprintf(stderr, "[%s] Shader %s:\n%s\n", __FILE__, source, infoLog);
+        exit(1);
     }
     m_shaderList.push_back(shader);
 }
@@ -47,8 +52,8 @@ Shader &Shader::addAttachShader(const Shader *source) {
     return *this;
 }
 
-void Shader::attachToProgram(uint32_t program) const{
-    for(auto shader: m_shaderList) {
+void Shader::attachToProgram(uint32_t program) const {
+    for (auto shader: m_shaderList) {
         glAttachShader(program, shader);
     }
 }
@@ -64,25 +69,21 @@ Shader &Shader::buildShader() {
 
     m_program = glCreateProgram();
 
-    attachToProgram(m_program);
-
-    for(auto attachShader: m_attachShaderList) {
+    for (auto attachShader: m_attachShaderList) {
         attachShader->attachToProgram(m_program);
     }
+
+    attachToProgram(m_program);
 
     glLinkProgram(m_program);
 
     glGetProgramiv(m_program, GL_LINK_STATUS, &success);
     if (!success) {
         glDeleteProgram(m_program);
-        glGetProgramInfoLog(this->m_program, sizeof(infoLog), NULL, infoLog);
+        glGetProgramInfoLog(m_program, sizeof(infoLog), NULL, infoLog);
         fprintf(stderr, "[%s] Shader linking : %s\n", __FILE__, infoLog);
+        exit(1);
     }
-
-    for(auto shader: m_shaderList) {
-        glDeleteShader(shader);
-    }
-    m_shaderList.clear();
     m_attachShaderList.clear();
     return *this;
 }
@@ -119,7 +120,7 @@ void Shader::dispatch(int x, int y, int z) const {
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
-void Shader::uniform1f(const char* uniformName, float val) const {
+void Shader::uniform1f(const char *uniformName, float val) const {
     glUniform1f(glGetUniformLocation(m_program, uniformName), val);
 }
 

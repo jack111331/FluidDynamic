@@ -6,23 +6,10 @@
 #include "Shader.h"
 #include "ShaderUtility.h"
 
-class Density : public SingleQuantity {
+class Density {
 private:
-    static constexpr char CLEAR_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.shader";
-    const Shader CLEAR_DENSITY_PROGRAM = Shader(Density::CLEAR_DENSITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char ADD_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AddDensity.shader";
-    const Shader ADD_DENSITY_PROGRAM = Shader(Density::ADD_DENSITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.shader";
-    const Shader ADVECT_DENSITY_PROGRAM = Shader(Density::ADVECT_DENSITY_PROGRAM_PATH)
-            // FIXME May have latter load problem
-            .addAttachShader(&ShaderUtility::GET_U_SUBROUTINE_SHADER)
-            .addAttachShader(&ShaderUtility::GET_V_SUBROUTINE_SHADER)
-            .addAttachShader(&ShaderUtility::LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER)
-            .buildShader();
+    ShaderUtility *m_shaderUtility;
+    JacobiSolver *m_solver;
 
     uint32_t m_quantity[2];
     int m_grid;
@@ -45,7 +32,9 @@ public:
 
     void process(float dt, float diffusion, uint32_t u, uint32_t v);
 
-    uint32_t getQuantity() override;
+    float *enableAndGetReadWriteQuantity(bool isPrevious);
 
-    uint32_t getPrevQuantity() override;
+    const float *enableAndGetReadQuantity(bool isPrevious);
+
+    void disableReadOrWriteQuantity(bool isPrevious);
 };

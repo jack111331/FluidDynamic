@@ -138,9 +138,9 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
     int j = (static_cast<double>(windowInfo->mouseXPos) / static_cast<double>(windowInfo->windowWidth)) * m_gridSize +
             1;
     if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
-        float *density = m_densityField->getPrevQuantity();
-        float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
-        float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+        float *density = m_densityField->enableAndGetReadWriteQuantity(true);
+        float *u = m_velocityField->enableAndGetReadWriteQuantity(Velocity::U_COMPONENT, true);
+        float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
         if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
             u[indexOfVelocityU(i, j, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
             v[indexOfVelocityV(i, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
@@ -148,6 +148,9 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
         if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
             density[indexOf(i, j, m_gridSize)] = source;
         }
+        m_densityField->disableReadOrWriteQuantity(true);
+        m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, true);
+        m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
     }
     windowInfo->prevMouseXPos = windowInfo->mouseXPos;
     windowInfo->prevMouseYPos = windowInfo->mouseYPos;
@@ -155,8 +158,8 @@ void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
 }
 
 void Fluid2D::changeGridPosition() {
-    float *u = m_velocityField->getQuantity(Velocity::U_COMPONENT), *v = m_velocityField->getQuantity(
-            Velocity::V_COMPONENT);
+    const float *u = m_velocityField->enableAndGetReadQuantity(Velocity::U_COMPONENT, false);
+    const float *v = m_velocityField->enableAndGetReadQuantity(Velocity::V_COMPONENT, false);
     float lengthPerGrid = 2.0f / m_gridSize;
     for (int i = 0; i < m_gridSize; ++i) {
         for (int j = 0; j < m_gridSize; ++j) {
@@ -169,6 +172,8 @@ void Fluid2D::changeGridPosition() {
             m_gridPosition[3 * (i * m_gridSize + j) + 2] = 0.0f;
         }
     }
+    m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, false);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, false);
 }
 
 void Fluid2D::update(float dt, float diffusion, float viscosity) {
@@ -176,24 +181,25 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
 //    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
 //    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
-    m_velocityField->process(dt, viscosity, nullptr, nullptr);
-    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
-                            m_velocityField->getQuantity(Velocity::V_COMPONENT));
+    m_velocityField->process(dt, viscosity);
+    m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
+                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
 }
 
 void Fluid2D::display(bool mode) {
     if (mode == DENSITY_FIELD_MODE) {
         // Prepare density
-        m_densityFieldShader->Use();
+        const float *density = m_densityField->enableAndGetReadWriteQuantity(false);
+        m_densityFieldShader->bind();
         glBindVertexArray(m_meshVAO);
         glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, (m_gridSize + 2) * (m_gridSize + 2) * sizeof(float),
-                        m_densityField->getQuantity());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (m_gridSize + 2) * (m_gridSize + 2) * sizeof(float), density);
         glDrawElements(GL_TRIANGLES, 6 * (m_gridSize + 1) * (m_gridSize + 1), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+        m_densityField->disableReadOrWriteQuantity(false);
     } else if (mode == VELOCITY_FIELD_MODE) {
         // Prepare velocity
-        m_velocityFieldShader->Use();
+        m_velocityFieldShader->bind();
         glBindVertexArray(m_velocityVAO);
         glBindBuffer(GL_ARRAY_BUFFER, m_velocityPositionVBO);
         changeGridPosition();
@@ -206,7 +212,7 @@ void Fluid2D::display(bool mode) {
 
 void Fluid2D::addDrivingForce(float dt, float vf, float *state) {
     // blur current density
-    float *density = m_densityField->getPrevQuantity();
+    const float *density = m_densityField->enableAndGetReadWriteQuantity(false);
 
     float *bluredDensity = new float[(m_gridSize + 2) * (m_gridSize + 2)];
     float *bluredState = new float[(m_gridSize + 2) * (m_gridSize + 2)];
@@ -228,8 +234,8 @@ void Fluid2D::addDrivingForce(float dt, float vf, float *state) {
     }
     std::cout << "----" << std::endl;
     getchar();
-    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
-    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+    float *u = m_velocityField->enableAndGetReadWriteQuantity(Velocity::U_COMPONENT, true);
+    float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
 
     for (int i = 1; i <= m_gridSize; ++i) {
         for (int j = 1; j <= m_gridSize; ++j) {
@@ -255,14 +261,17 @@ void Fluid2D::addDrivingForce(float dt, float vf, float *state) {
             v[indexOfVelocityV(i, j, m_gridSize)] += force[1];
         }
     }
+    m_densityField->disableReadOrWriteQuantity(false);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, true);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
     delete[] bluredDensity;
     delete[] bluredState;
 }
 
 void Fluid2D::addBuoyancy(float dt, float alpha, float beta, float gravity) {
     // FIXME local large buoyancy
-    float *density = m_densityField->getQuantity();
-    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+    const float *density = m_densityField->enableAndGetReadQuantity(false);
+    float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
     for (int i = 1; i <= m_gridSize; ++i) {
         for (int j = 1; j <= m_gridSize + 1; ++j) {
             float averageTemperature =
@@ -274,10 +283,12 @@ void Fluid2D::addBuoyancy(float dt, float alpha, float beta, float gravity) {
                                                      * gravity * dt;
         }
     }
+    m_densityField->disableReadOrWriteQuantity(false);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
 }
 
 void Fluid2D::addDensity(int gridWidth, float width, int (&initWindLocation)[2], float source) {
-    float *density = m_densityField->getPrevQuantity();
+    float *density = m_densityField->enableAndGetReadWriteQuantity(true);
     for (int i = max(initWindLocation[0] - gridWidth, 1);
          i <= min(initWindLocation[0] + gridWidth, m_gridSize); ++i) {
         for (int j = max(initWindLocation[1] - gridWidth, 1);
@@ -287,11 +298,12 @@ void Fluid2D::addDensity(int gridWidth, float width, int (&initWindLocation)[2],
             density[indexOf(j, i, m_gridSize)] += gaussFalloff * source;
         }
     }
+    m_densityField->disableReadOrWriteQuantity(true);
 }
 
 void Fluid2D::addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]) {
-    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
-    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+    float *u = m_velocityField->enableAndGetReadWriteQuantity(Velocity::U_COMPONENT, true);
+    float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
 
     double uDirection = cos(windDirection), vDirection = sin(windDirection);
     for (int i = max(initWindLocation[0] - gridWidth, 1);
@@ -304,11 +316,13 @@ void Fluid2D::addGaussianWindForce(int gridWidth, float width, double windDirect
             v[indexOfVelocityV(j, i, m_gridSize)] += gaussFalloff * vDirection;
         }
     }
+    m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, true);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
 }
 
 void Fluid2D::addVortexForce(int gridWidth, float width, float r, int (&initVortexLocation)[2]) {
-    float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
-    float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
+    float *u = m_velocityField->enableAndGetReadWriteQuantity(Velocity::U_COMPONENT, true);
+    float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
 
     for (int i = max(initVortexLocation[0] - gridWidth, 1);
          i <= min(initVortexLocation[0] + gridWidth, m_gridSize); ++i) {
@@ -321,9 +335,12 @@ void Fluid2D::addVortexForce(int gridWidth, float width, float r, int (&initVort
             v[indexOfVelocityV(j, i, m_gridSize)] += r * gaussFalloff * vDirection;
         }
     }
+    m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, true);
+    m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
 
 }
 
 void Fluid2D::clear() {
-    m_densityField->clear();
+    m_densityField->clear(false);
+    m_densityField->clear(true);
 }

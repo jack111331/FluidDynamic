@@ -3,37 +3,14 @@
 #include "Quantity.h"
 #include "Shader.h"
 #include "ShaderUtility.h"
+#include "Solver.h"
 #include <cstdint>
 
-class Velocity : public MultipleQuantity {
+class Velocity {
 private:
-    static constexpr char CLEAR_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.shader";
-    const Shader CLEAR_VELOCITY_PROGRAM = Shader(Velocity::CLEAR_VELOCITY_PROGRAM_PATH)
-            .buildShader();
 
-    static constexpr char ADD_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AddVelocity.cs";
-    const Shader ADD_VELOCITY_PROGRAM = Shader(Velocity::ADD_VELOCITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char ADVECT_U_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectUVelocity.cs";
-    const Shader ADVECT_U_VELOCITY_PROGRAM = Shader(Velocity::ADVECT_U_VELOCITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char ADVECT_V_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectVVelocity.cs";
-    const Shader ADVECT_V_VELOCITY_PROGRAM = Shader(Velocity::ADVECT_V_VELOCITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ConfineVorticityVelocity.cs";
-    const Shader CONFINE_VORTICITY_VELOCITY_PROGRAM = Shader(Velocity::CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char BUILD_PRESSURE_PROGRAM_PATH[] = "resources/shader/compute/BuildPressure.cs";
-    const Shader BUILD_PRESSURE_PROGRAM = Shader(Velocity::BUILD_PRESSURE_PROGRAM_PATH)
-            .buildShader();
-
-    static constexpr char CONSERVE_MASS_PROGRAM_PATH[] = "resources/shader/compute/ConserveMass.cs";
-    const Shader CONSERVE_MASS_PROGRAM = Shader(Velocity::CONSERVE_MASS_PROGRAM_PATH)
-            .buildShader();
+    ShaderUtility *m_shaderUtility;
+    JacobiSolver *m_solver;
 
     int m_grid;
     int m_currentContext;
@@ -46,7 +23,7 @@ private:
 
     void advectV(float dt);
 
-    void vorticityConfinement(float dt, float vorticity);
+//    void vorticityConfinement(float dt, float vorticity);
 
     void massConserve(float dt);
 
@@ -59,9 +36,13 @@ public:
 
     void process(float dt, float vorticity);
 
-    uint32_t getQuantity(int component) override;
+    float *enableAndGetReadWriteQuantity(int component, bool isPrevious);
 
-    uint32_t getPrevQuantity(int component) override;
+    const float *enableAndGetReadQuantity(int component, bool isPrevious);
+
+    void disableReadOrWriteQuantity(int component, bool isPrevious);
+
+    uint32_t getBufferId(int component, bool isPrevious);
 
     static const int U_COMPONENT = 1;
     static const int V_COMPONENT = 2;

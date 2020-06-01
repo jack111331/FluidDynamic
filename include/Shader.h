@@ -13,6 +13,8 @@ public:
 
     explicit Shader(const char *computeShaderSource);
 
+    Shader() = default;
+
     virtual ~Shader();
 
     Shader &addShader(uint32_t shaderType, const char *source);

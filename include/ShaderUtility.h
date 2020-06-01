@@ -10,27 +10,106 @@
 
 class ShaderUtility {
 public:
+    static ShaderUtility *getInstance();
 
-    static constexpr char GAUSS_SEIDEL_SOLVER_PROGRAM_PATH[] = "resources/shader/compute/common/GaussSeidel.cs";
-    static const Shader GAUSS_SEIDEL_SOLVER_PROGRAM;
+    Shader SET_DENSITY_BOUND_PROGRAM;
+    Shader SET_U_VELOCITY_BOUND_PROGRAM;
+    Shader SET_V_VELOCITY_BOUND_PROGRAM;
+    Shader GET_U_SUBROUTINE_SHADER;
+    Shader GET_V_SUBROUTINE_SHADER;
+    Shader LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER;
 
+    Shader CLEAR_DENSITY_PROGRAM;
+    Shader ADD_DENSITY_PROGRAM;
+    Shader ADVECT_DENSITY_PROGRAM;
+
+    Shader CLEAR_VELOCITY_PROGRAM;
+    Shader ADD_VELOCITY_PROGRAM;
+    Shader ADVECT_U_VELOCITY_PROGRAM;
+    Shader ADVECT_V_VELOCITY_PROGRAM;
+    //    Shader CONFINE_VORTICITY_VELOCITY_PROGRAM = Shader(Velocity::CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH);
+    Shader BUILD_PRESSURE_PROGRAM;
+    Shader CONSERVE_MASS_PROGRAM;
+
+
+    Shader JACOBI_SOLVER_PROGRAM;
+private:
+    ShaderUtility();
+    static ShaderUtility *instance;
+
+    /* Common Shader */
     static constexpr char SET_DENSITY_BOUND_PROGRAM_PATH[] = "resources/shader/compute/common/SetDensityBoundary.shader";
-    static const Shader SET_DENSITY_BOUND_PROGRAM;
 
-    static constexpr char SET_U_VELOCITY_BOUND_PROGRAM_PATH[] = "resources/shader/compute/common/SetUVelocityBoundary.cs";
-    static const Shader SET_U_VELOCITY_BOUND_PROGRAM;
+    static constexpr char SET_U_VELOCITY_BOUND_PROGRAM_PATH[] = "resources/shader/compute/common/SetUVelocityBoundary.shader";
 
-    static constexpr char SET_V_VELOCITY_BOUND_PROGRAM_PATH[] = "resources/shader/compute/common/SetVVelocityBoundary.cs";
-    static const Shader SET_V_VELOCITY_BOUND_PROGRAM;
+    static constexpr char SET_V_VELOCITY_BOUND_PROGRAM_PATH[] = "resources/shader/compute/common/SetVVelocityBoundary.shader";
 
     static constexpr char GET_U_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/GetU.shader";
-    static const Shader GET_U_SUBROUTINE_SHADER;
 
     static constexpr char GET_V_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/GetV.shader";
-    static const Shader GET_V_SUBROUTINE_SHADER;
 
     static constexpr char LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/LinearInterpolate2D.shader";
-    static const Shader LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER;
+
+
+    /* Density Relate Shader */
+
+    // location = 0: quantity
+    static constexpr char CLEAR_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/ClearDensity.shader";
+
+    // location = 0: current quantity
+    // location = 1: previous quantity
+    static constexpr char ADD_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AddDensity.shader";
+
+    // location = 0: current quantity
+    // location = 1: previous quantity
+    // location = 2: current u vector field
+    // location = 3: current v vector field
+    static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.shader";
+
+
+
+    /* Velocity Relate Shader */
+
+    // location = 0: U component quantity
+    // location = 1: V component quantity
+    static constexpr char CLEAR_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ClearVelocity.shader";
+
+    // location = 0: current U component quantity
+    // location = 1: previous U component quantity
+    // location = 2: current V component quantity
+    // location = 3: previous V component quantity
+    static constexpr char ADD_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AddVelocity.shader";
+
+    // location = 0: current U component quantity
+    // location = 1: previous U component quantity
+    // location = 2: previous V component quantity
+    static constexpr char ADVECT_U_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectUVelocity.shader";
+
+    // location = 0: current V component quantity
+    // location = 1: previous U component quantity
+    // location = 2: previous V component quantity
+    static constexpr char ADVECT_V_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectVVelocity.shader";
+
+    // location = 0: current U component quantity
+    // location = 1: current V component quantity
+    // location = 2: previous U component quantity
+    // location = 3: previous V component quantity
+//    static constexpr char CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ConfineVorticityVelocity.cs";
+
+    // location = 0: current Pressure quantity
+    // location = 1: previous Pressure quantity
+    // location = 2: current U component quantity
+    // location = 3: current V component quantity
+    static constexpr char BUILD_PRESSURE_PROGRAM_PATH[] = "resources/shader/compute/BuildPressure.shader";
+
+    // location = 0: current U component quantity
+    // location = 1: current V component quantity
+    // location = 2: current Pressure quantity
+    static constexpr char CONSERVE_MASS_PROGRAM_PATH[] = "resources/shader/compute/ConserveMass.shader";
+
+
+    /* Solver Relate Shader */
+    static constexpr char JACOBI_SOLVER_PROGRAM_PATH[] = "resources/shader/compute/Jacobi.shader";
 };
 
 
