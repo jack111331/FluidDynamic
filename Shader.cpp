@@ -25,7 +25,6 @@ Shader::~Shader() {
 
 
 Shader &Shader::addShader(uint32_t shaderType, const char *source) {
-    std::cout << "create " << source << std::endl;
     int success;
     char infoLog[1024];
     uint32_t shader = glCreateShader(shaderType);
@@ -36,8 +35,6 @@ Shader &Shader::addShader(uint32_t shaderType, const char *source) {
 
     glCompileShader(shader);
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    std::cout << source << " " << shader << std::endl;
-    fflush(stdout);
 
     if (!success) {
         glGetShaderInfoLog(shader, sizeof(infoLog), NULL, infoLog);

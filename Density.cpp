@@ -4,7 +4,7 @@
 #include <cmath>
 #include <GL/glew.h>
 
-Density::Density(int N) : m_grid(N) {
+Density::Density(int N) : m_grid(N), m_currentContext(false) {
     m_shaderUtility = ShaderUtility::getInstance();
     m_solver = new JacobiSolver(20);
 
@@ -67,18 +67,8 @@ void Density::diffuse(float dt, float diffusion) {
 //    GaussSeidelSolver *m_solver = new GaussSeidelSolver(20);
 
     float diffusionForNearbyGrid = dt * diffusion * m_grid * m_grid;
-    uint32_t temp;
-    glGenBuffers(1, &temp);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, temp);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
-    m_solver->solve(temp, m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1], diffusionForNearbyGrid,
+    m_solver->solve(m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1], diffusionForNearbyGrid,
                     (1 + 4 * diffusionForNearbyGrid), m_grid);
-    glBindBuffer(GL_COPY_READ_BUFFER, temp);
-    glBindBuffer(GL_COPY_WRITE_BUFFER, m_quantity[m_currentContext]);
-    glBufferData(GL_COPY_WRITE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), nullptr, GL_STATIC_DRAW);
-    glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, (m_grid + 2) * (m_grid + 2) * sizeof(float));
-    glMemoryBarrier(GL_SHADER_STORAGE_BUFFER);
-    glDeleteBuffers(1, &temp);
 }
 
 void Density::advect(float dt, uint32_t u, uint32_t v) {
@@ -100,9 +90,9 @@ void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {
 
     m_currentContext ^= 1;
     diffuse(dt, diffusion);
-
-    m_currentContext ^= 1;
-    advect(dt, u, v);
+//
+//    m_currentContext ^= 1;
+//    advect(dt, u, v);
 }
 
 float *Density::enableAndGetReadWriteQuantity(bool isPrevious) {

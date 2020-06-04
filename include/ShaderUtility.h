@@ -109,6 +109,9 @@ private:
 
 
     /* Solver Relate Shader */
+
+    // location = 0: quantity
+    // location = 1: previous quantity
     static constexpr char JACOBI_SOLVER_PROGRAM_PATH[] = "resources/shader/compute/Jacobi.shader";
 };
 

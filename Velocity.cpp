@@ -8,8 +8,7 @@
 using namespace std;
 
 
-
-Velocity::Velocity(int N) : m_grid(N), m_currentContext(0) {
+Velocity::Velocity(int N) : m_grid(N), m_currentContext(false) {
     m_shaderUtility = ShaderUtility::getInstance();
     m_solver = new JacobiSolver();
 
@@ -110,48 +109,42 @@ void Velocity::advectV(float dt) {
 void Velocity::massConserve(float dt) {
     // Use Gauss Seidel
 //    GaussSeidelSolver *m_solver = new GaussSeidelSolver();
-    uint32_t p, div, pOut;
+    uint32_t p, div;
     glGenBuffers(1, &p);
     glGenBuffers(1, &div);
-    glGenBuffers(1, &pOut);
     // Extend upper and lower as boundary
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, p);
     glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, div);
     glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, pOut);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
 
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bind();
-    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(p, 0);
-    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(div, 1);
+    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(div, 0); // no value
+    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(p, 1);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 2);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 3);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.uniform1f("inv", (float) 1 / (float) m_grid);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.dispatch(m_grid, m_grid, 1);
 
-//    TODO change to fit dispatch size
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(div, 0);
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
+
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(p, 0);
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(div, 0);
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
-
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(pOut, 0);
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
-
-    m_solver->solve(pOut, p, div, 1.0f, 4.0f, m_grid);
+//  FIXME  a parameter
+    m_solver->solve(div, p, -1.0f, 4.0f, m_grid);
 
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bind();
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
-    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(pOut, 2);
+    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(p, 2);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.uniform1f("gridSize", m_grid);
-    m_shaderUtility->CONSERVE_MASS_PROGRAM.dispatch(1, 1, 1);
+    m_shaderUtility->CONSERVE_MASS_PROGRAM.dispatch(m_grid - 1, m_grid, 1);
     glDeleteBuffers(1, &p);
     glDeleteBuffers(1, &div);
-    glDeleteBuffers(1, &pOut);
 
     m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bind();
     m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
@@ -169,16 +162,17 @@ void Velocity::process(float dt, float vorticity) {
     // Mass conservative
     massConserve(dt);
 
-    m_currentContext ^= 1;
+//    m_currentContext ^= 1;
 //    vorticityConfinement(dt, vorticity);
-    massConserve(dt);
+//    massConserve(dt);
 
-    m_currentContext ^= 1;
-    advectU(dt);
-    advectV(dt);
+//TODO fix advect
+//    m_currentContext ^= 1;
+//    advectU(dt);
+//    advectV(dt);
 
-    // Mass conservative
-    massConserve(dt);
+//     Mass conservative
+//    massConserve(dt);
 }
 
 float *Velocity::enableAndGetReadWriteQuantity(int component, bool isPrevious) {

@@ -38,9 +38,9 @@ void main() {
         accurate_workgroup_xy.x - dt0 * 0.25 * (prevU[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y))]
         + prevU[indexOfVelocityU(uvec2(accurate_workgroup_xy))]
         + prevU[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y+1))]
-        + prevU[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y+1))],
+        + prevU[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y+1))]),
         accurate_workgroup_xy.y  - dt0 * prevV[indexOfVelocityV(accurate_workgroup_xy)]
-    ));
+    );
     before_advect_xy = clamp(before_advect_xy, vec2(0.5, 0.0), vec2(VIRTUAL_GRID_WIDTH+0.5, VIRTUAL_GRID_WIDTH));
     uvec2 lower_left_xy = uvec2(before_advect_xy);
     uvec2 upper_right_xy = lower_left_xy+uvec2(1);

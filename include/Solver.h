@@ -25,7 +25,7 @@ public:
 
     JacobiSolver(int iterativeTime) : m_iterativeTime(iterativeTime), m_shaderUtility(ShaderUtility::getInstance()) {};
 
-    void solve(uint32_t xOut, uint32_t x, uint32_t x0, float a, float denom, int N);
+    void solve(uint32_t x, uint32_t x0, float a, float denom, int N);
 
 private:
     ShaderUtility *m_shaderUtility;

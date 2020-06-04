@@ -23,6 +23,6 @@ uniform float denom;
 
 void main() {
     uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x+1, gl_WorkGroupID.y+1);
-    densityOutput[accurate_workgroup_xy.y * GRID_WIDTH + accurate_workgroup_xy.x] = (density[(accurate_workgroup_xy.y+1) * GRID_WIDTH + accurate_workgroup_xy.x] +density[(accurate_workgroup_xy.y-1) * GRID_WIDTH + accurate_workgroup_xy.x] +
+    densityOutput[accurate_workgroup_xy.y * GRID_WIDTH + accurate_workgroup_xy.x] = (density[(accurate_workgroup_xy.y+1) * GRID_WIDTH + accurate_workgroup_xy.x] + density[(accurate_workgroup_xy.y-1) * GRID_WIDTH + accurate_workgroup_xy.x] +
     density[accurate_workgroup_xy.y * GRID_WIDTH + accurate_workgroup_xy.x + 1] + density[accurate_workgroup_xy.y * GRID_WIDTH + accurate_workgroup_xy.x - 1] + a * divergence[accurate_workgroup_xy.y * GRID_WIDTH + accurate_workgroup_xy.x]) / denom;
 }

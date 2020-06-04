@@ -45,11 +45,11 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
         }
     }
 
-    float lengthPerGrid = 2.0f / (gridSize + 1);
+    float lengthPerGridDensity = 2.0f / (gridSize + 1);
     for (int i = 0; i <= gridSize + 1; ++i) {
         for (int j = 0; j <= gridSize + 1; ++j) {
-            m_meshPosition[3 * indexOf(i, j, gridSize)] = -1.0f + lengthPerGrid * j;
-            m_meshPosition[3 * indexOf(i, j, gridSize) + 1] = -1.0f + lengthPerGrid * i;
+            m_meshPosition[3 * indexOf(i, j, gridSize)] = -1.0f + lengthPerGridDensity * j;
+            m_meshPosition[3 * indexOf(i, j, gridSize) + 1] = -1.0f + lengthPerGridDensity * i;
             m_meshPosition[3 * indexOf(i, j, gridSize) + 2] = 0.0f;
         }
     }
@@ -62,10 +62,11 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
         }
     }
 
+    float lengthPerGridVelocity = 2.0f / gridSize;
     for (int i = 0; i < gridSize; ++i) {
         for (int j = 0; j < gridSize; ++j) {
-            m_gridPosition[3 * (i * gridSize + j)] = -1.0f + lengthPerGrid * ((float) j + 0.5f);
-            m_gridPosition[3 * (i * gridSize + j) + 1] = -1.0f + lengthPerGrid * ((float) i + 0.5f);
+            m_gridPosition[3 * (i * gridSize + j)] = -1.0f + lengthPerGridVelocity * ((float) j + 0.5f);
+            m_gridPosition[3 * (i * gridSize + j) + 1] = -1.0f + lengthPerGridVelocity * ((float) i + 0.5f);
             m_gridPosition[3 * (i * gridSize + j) + 2] = 0.0f;
         }
     }
@@ -182,8 +183,8 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
 //    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity);
-    m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
-                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
+//    m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
+//                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
 }
 
 void Fluid2D::display(bool mode) {
