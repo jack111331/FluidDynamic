@@ -17,6 +17,7 @@ public:
     Shader SET_V_VELOCITY_BOUND_PROGRAM;
     Shader GET_U_SUBROUTINE_SHADER;
     Shader GET_V_SUBROUTINE_SHADER;
+    Shader GET_DENSITY_SUBROUTINE_SHADER;
     Shader LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER;
 
     Shader CLEAR_DENSITY_PROGRAM;
@@ -47,6 +48,8 @@ private:
     static constexpr char GET_U_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/GetU.shader";
 
     static constexpr char GET_V_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/GetV.shader";
+
+    static constexpr char GET_DENSITY_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/GetDensity.shader";
 
     static constexpr char LINEAR_INTERPOLATE_2D_SUBROUTINE_SHADER_PATH[] = "resources/shader/compute/common/LinearInterpolate2D.shader";
 

@@ -119,28 +119,27 @@ void Velocity::massConserve(float dt) {
     glBufferData(GL_SHADER_STORAGE_BUFFER, (m_grid + 2) * (m_grid + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
 
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bind();
-    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(div, 0); // no value
-    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(p, 1);
+    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(p, 0);
+    m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(div, 1);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 2);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 3);
-    m_shaderUtility->BUILD_PRESSURE_PROGRAM.uniform1f("inv", (float) 1 / (float) m_grid);
+    m_shaderUtility->BUILD_PRESSURE_PROGRAM.uniform1f("gridSize", m_grid);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.dispatch(m_grid, m_grid, 1);
-
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(div, 0);
-    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(p, 0);
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
-//  FIXME  a parameter
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(div, 0);
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
+
     m_solver->solve(div, p, -1.0f, 4.0f, m_grid);
 
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bind();
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
-    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(p, 2);
+    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(div, 2);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.uniform1f("gridSize", m_grid);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.dispatch(m_grid - 1, m_grid, 1);
     glDeleteBuffers(1, &p);

@@ -27,10 +27,11 @@ uniform float gridSize;
 
 uint indexOfVelocityU(uvec2 grid_xy);
 uint indexOfVelocityV(uvec2 grid_xy);
+uint indexOfPressure(uvec2 grid_xy);
 
 void main() {
     // Invoke workgroup (N-1, N, 1)
     uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x+1, gl_WorkGroupID.y+1);
-    u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] -= gridSize * (pressure[accurate_workgroup_xy.y * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.x+1] - pressure[accurate_workgroup_xy.y * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.x]);
-    v[indexOfVelocityV(uvec2(accurate_workgroup_xy.y, accurate_workgroup_xy.x))] -= gridSize * (pressure[(accurate_workgroup_xy.x+1) * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.y] - pressure[accurate_workgroup_xy.x * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.y]);
+    u[indexOfVelocityU(accurate_workgroup_xy)] -= gridSize * (pressure[indexOfPressure(uvec2(accurate_workgroup_xy.x+1, accurate_workgroup_xy.y))] - pressure[indexOfPressure(accurate_workgroup_xy)]);
+    v[indexOfVelocityV(uvec2(accurate_workgroup_xy.y, accurate_workgroup_xy.x))] -= gridSize * (pressure[indexOfPressure(uvec2(accurate_workgroup_xy.y, accurate_workgroup_xy.x+1))] - pressure[indexOfPressure(uvec2(accurate_workgroup_xy.y, accurate_workgroup_xy.x))]);
 }

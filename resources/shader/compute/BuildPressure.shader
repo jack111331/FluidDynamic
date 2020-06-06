@@ -11,12 +11,12 @@
 
 layout(local_size_x = 1, local_size_y = 1) in;
 
-layout(std430, binding = 0) buffer Pressure {
-    float pressure[];
+layout(std430, binding = 0) buffer PrevPressure {
+    float prevPressure[];
 };
 
-layout(std430, binding = 1) buffer PrevPressure {
-    float prevPressure[];
+layout(std430, binding = 1) buffer Divergence {
+    float divergence[];
 };
 
 layout(std430, binding = 2) buffer UQuantity {
@@ -27,16 +27,16 @@ layout(std430, binding = 3) buffer VQuantity {
     float v[];
 };
 
-uniform float inv;
+uniform float gridSize;
 
 uint indexOfVelocityU(uvec2 grid_xy);
 uint indexOfVelocityV(uvec2 grid_xy);
+uint indexOfPressure(uvec2 grid_xy);
 
 void main() {
     // Invoke workgroup (N, N, 1)
     uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x+1, gl_WorkGroupID.y+1);
-    // FIXME build
-    prevPressure[accurate_workgroup_xy.y * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.x] = -(u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y))]
-    + v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y-1))]) * inv;
-    pressure[accurate_workgroup_xy.y * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.x] = 0.0;
+    prevPressure[indexOfPressure(accurate_workgroup_xy)] = -(u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y))]
+    + v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y-1))]) / gridSize;
+    divergence[indexOfPressure(accurate_workgroup_xy)] = 0.0;
 }
