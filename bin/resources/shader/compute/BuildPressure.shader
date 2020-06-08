@@ -27,7 +27,7 @@ layout(std430, binding = 3) buffer VQuantity {
     float v[];
 };
 
-uniform float inv;
+uniform float gridSize;
 
 uint indexOfVelocityU(uvec2 grid_xy);
 uint indexOfVelocityV(uvec2 grid_xy);
@@ -36,8 +36,8 @@ void main() {
     // Invoke workgroup (N, N, 1)
     uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x+1, gl_WorkGroupID.y+1);
     prevPressure[dot(accurate_workgroup_xy, uvec2(1, ACTUAL_GRID_WIDTH))] = -(
-    u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] -     u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y))]
-    + v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - v[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y-1))]
-    ) / VIRTUAL_GRID_WIDTH;
+    u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - u[indexOfVelocityU(uvec2(accurate_workgroup_xy.x-1, accurate_workgroup_xy.y))]
+    + v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y))] - v[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y-1))]
+    ) / gridSize;
     pressure[dot(accurate_workgroup_xy, uvec2(1, ACTUAL_GRID_WIDTH))] = 0.0;
 }

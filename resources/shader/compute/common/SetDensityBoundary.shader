@@ -1,11 +1,11 @@
 #version 450 core
 #extension GL_ARB_shader_storage_buffer_object: enable
 
-#define VIRTUAL_GRID_WIDTH 256
-#define VIRTUAL_GRID_HEIGHT 256
+const uint VIRTUAL_GRID_WIDTH = 256;
+const uint VIRTUAL_GRID_HEIGHT = 256;
 
-#define ACTUAL_GRID_WIDTH VIRTUAL_GRID_WIDTH+2
-#define ACTUAL_GRID_HEIGHT VIRTUAL_GRID_HEIGHT+2
+const uint ACTUAL_GRID_WIDTH = VIRTUAL_GRID_WIDTH+2;
+const uint ACTUAL_GRID_HEIGHT = VIRTUAL_GRID_HEIGHT+2;
 
 layout(local_size_x = ACTUAL_GRID_WIDTH, local_size_y = 1) in;
 

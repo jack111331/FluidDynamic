@@ -46,7 +46,7 @@ void main() {
     uint id = wid;
 
     Positions[gid+1].xyz += Positions[gid].xyz + Positions[gid+2].xyz;
-    barrier();
+//    barrier();
     Positions[gid*3].xyz += Positions[gid+1].xyz;
     /*
     if(id == 0) {

@@ -38,10 +38,17 @@ void JacobiSolver::solve(uint32_t x, uint32_t x0, float a, float denom, int N) {
         m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(temp, 0);
         m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
-        glBindBuffer(GL_COPY_READ_BUFFER, temp);
-        glBindBuffer(GL_COPY_WRITE_BUFFER, x);
-        glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, (N + 2) * (N + 2) * sizeof(float));
-        glMemoryBarrier(GL_SHADER_STORAGE_BUFFER);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.bind();
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.bindBuffer(temp, 0);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.bindBuffer(x0, 1);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.bindBuffer(x, 2);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.uniform1f("a", a);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.uniform1f("denom", denom);
+        m_shaderUtility->JACOBI_SOLVER_PROGRAM.dispatch(N, N, 1);
+
+        m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
+        m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(x, 0);
+        m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
     }
     glDeleteBuffers(1, &temp);
 }
