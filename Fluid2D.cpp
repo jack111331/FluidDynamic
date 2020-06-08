@@ -173,8 +173,6 @@ void Fluid2D::changeGridPosition() {
             m_gridPosition[3 * (i * m_gridSize + j) + 2] = 0.0f;
         }
     }
-    std::cout << v[indexOfVelocityV(2, 1, m_gridSize)] << " " << v[indexOfVelocityV(1, 2, m_gridSize)] << " " << v[indexOfVelocityV(1, 1, m_gridSize)] << std::endl;
-    getchar();
     m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, false);
     m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, false);
 }

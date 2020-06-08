@@ -45,6 +45,10 @@ void main() {
 
     uint id = wid;
 
+    Positions[gid+1].xyz += Positions[gid].xyz + Positions[gid+2].xyz;
+    barrier();
+    Positions[gid*3].xyz += Positions[gid+1].xyz;
+    /*
     if(id == 0) {
         vec3 p = Positions[gid].xyz;
         vec3 v = Velocities[gid].xyz;
@@ -64,6 +68,7 @@ void main() {
         Positions[gid].xyz = pp;
         Velocities[gid].xyz = vp;
     }
+    */
 /*
     vec3 p = Positions[gid].xyz;
     vec3 v = Velocities[gid].xyz;

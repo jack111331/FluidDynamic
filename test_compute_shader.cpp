@@ -113,7 +113,7 @@ int main() {
 
     pos *points = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), bufMask);
     for (int i = 0; i < NUM_PARTICLES; ++i) {
-        points[i].x = RanF(-0.1, 0.1);
+        points[i].x = -0.1;
         points[i].y = RanF(-0.1, 0.1);
         points[i].z = RanF(-0.1, 0.1);
         points[i].w = 1;
@@ -158,16 +158,22 @@ int main() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSSbo);
+        pos *ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT);
+        fprintf(stderr, "before: (%f, %f, %f, %f)\n", ptr[0].x, ptr[1].x, ptr[2].x, ptr[3].x);
+        getchar();
+        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
         computeShader.bind();
         computeShader.bindBuffer(posSSbo, 0);
         computeShader.bindBuffer(velSSbo, 1);
         computeShader.bindBuffer(colSSbo, 2);
-        computeShader.dispatch(NUM_PARTICLES/THREAD_SIZE, 1, 1);
+        computeShader.dispatch(1, 1, 1);
 
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSSbo);
-        pos *ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT);
-//        fprintf(stderr, "%d, (%f, %f, %f, %f)\n", 0, ptr[0].x, ptr[0].y, ptr[0].z, ptr[0].w);
+        ptr = (pos *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NUM_PARTICLES * sizeof(pos), GL_MAP_READ_BIT);
+        fprintf(stderr, "after: (%f, %f, %f, %f)\n", ptr[0].x, ptr[1].x, ptr[2].x, ptr[3].x);
+        getchar();
         glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
         normalShader.bind();
