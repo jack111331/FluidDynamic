@@ -166,9 +166,9 @@ void Velocity::process(float dt, float vorticity) {
 //    massConserve();
 
 //TODO fix advect
-//    m_currentContext ^= 1;
-//    advectU(dt);
-//    advectV(dt);
+    m_currentContext ^= 1;
+    advectU(dt);
+    advectV(dt);
 
 //     Mass conservative
 //    massConserve();

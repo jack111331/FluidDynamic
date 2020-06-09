@@ -33,16 +33,16 @@ uniform float dt0;
 void main() {
     // Invoke workgroup (N-1, N, 1)
     uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x+1, gl_WorkGroupID.y+1);
-    const uint grid_xy = accurate_workgroup_xy.y * U_STAGGERED_GRID_WIDTH + accurate_workgroup_xy.x;
+    const uint grid_xy = indexOfVelocityU(accurate_workgroup_xy);
     vec2 before_advect_xy = vec2(
         accurate_workgroup_xy.x - dt0 * prevU[indexOfVelocityU(accurate_workgroup_xy)],
         accurate_workgroup_xy.y - dt0 * 0.25 * (prevV[indexOfVelocityV(uvec2(accurate_workgroup_xy.x, accurate_workgroup_xy.y-1))]
-            + prevV[indexOfVelocityV(uvec2(accurate_workgroup_xy))]
+            + prevV[indexOfVelocityV(accurate_workgroup_xy)]
             + prevV[indexOfVelocityV(uvec2(accurate_workgroup_xy.x+1, accurate_workgroup_xy.y-1))]
             + prevV[indexOfVelocityV(uvec2(accurate_workgroup_xy.x+1, accurate_workgroup_xy.y))]
     ));
     before_advect_xy = clamp(before_advect_xy, vec2(0.0, 0.5), vec2(VIRTUAL_GRID_WIDTH, VIRTUAL_GRID_WIDTH+0.5));
-    uvec2 lower_left_xy = uvec2(before_advect_xy);
+    uvec2 lower_left_xy = uvec2(floor(before_advect_xy.x), floor(before_advect_xy.y));
     uvec2 upper_right_xy = lower_left_xy+uvec2(1);
     // Linear interpolate
     u[grid_xy] = linearInterpolate2D(vec2(fract(before_advect_xy.x - lower_left_xy.x), fract(before_advect_xy.y - lower_left_xy.y)),
