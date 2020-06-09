@@ -134,12 +134,12 @@ void Velocity::massConserve() {
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(div, 0);
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 
-    m_solver->solve(div, p, -1.0f, 4.0f, m_grid);
+    m_solver->solve(p, div, 1.0f/(m_grid), 4.0f, m_grid);
 
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bind();
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
-    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(div, 2);
+    m_shaderUtility->CONSERVE_MASS_PROGRAM.bindBuffer(p, 2);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.uniform1f("gridSize", m_grid);
     m_shaderUtility->CONSERVE_MASS_PROGRAM.dispatch(m_grid - 1, m_grid, 1);
     glDeleteBuffers(1, &p);

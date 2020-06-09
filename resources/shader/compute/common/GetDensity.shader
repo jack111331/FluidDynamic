@@ -8,5 +8,5 @@ const uint ACTUAL_GRID_WIDTH = VIRTUAL_GRID_WIDTH+2;
 const uint ACTUAL_GRID_HEIGHT = VIRTUAL_GRID_HEIGHT+2;
 
 uint indexOfPressure(uvec2 grid_xy) {
-    return grid_xy.y * (ACTUAL_GRID_WIDTH) + grid_xy.x;
+    return grid_xy.y * ACTUAL_GRID_WIDTH + grid_xy.x;
 }

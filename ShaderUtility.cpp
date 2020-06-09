@@ -98,6 +98,7 @@ ShaderUtility::ShaderUtility() {
     BUILD_PRESSURE_PROGRAM.buildShader();
 
     JACOBI_SOLVER_PROGRAM.addShader(GL_COMPUTE_SHADER, ShaderUtility::JACOBI_SOLVER_PROGRAM_PATH);
+    JACOBI_SOLVER_PROGRAM.addAttachShader(&GET_DENSITY_SUBROUTINE_SHADER);
     JACOBI_SOLVER_PROGRAM.buildShader();
 }
 
