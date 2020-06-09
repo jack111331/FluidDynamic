@@ -99,7 +99,7 @@ int main() {
 
         glfwPollEvents();
         fluid2D->input(&windowInfo, force, source);
-        control->control();
+//        control->control();
 
         fluid2D->update(dt, diffusion, viscosity);
         fluid2D->display(displayMode);

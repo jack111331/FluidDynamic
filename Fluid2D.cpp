@@ -177,8 +177,8 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
 //    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity, nullptr, nullptr);
-    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
-                            m_velocityField->getQuantity(Velocity::V_COMPONENT));
+//    m_densityField->process(dt, diffusion, m_velocityField->getQuantity(Velocity::U_COMPONENT),
+//                            m_velocityField->getQuantity(Velocity::V_COMPONENT));
 }
 
 void Fluid2D::display(bool mode) {
@@ -214,20 +214,20 @@ void Fluid2D::addDrivingForce(float dt, float vf, float *state) {
     Density::blur(state, m_gridSize, 1, bluredState);
     setBoundary(0, bluredDensity, m_gridSize);
     setBoundary(0, bluredState, m_gridSize);
-    for (int i = 1; i <= m_gridSize; ++i) {
-        for (int j = 1; j <= m_gridSize; ++j) {
-            std::cout << dt * vf
-                         * ((bluredDensity[indexOf(i, j + 1, m_gridSize)] +
-                             bluredDensity[indexOf(i, j, m_gridSize)]) * 0.5f)
-                         * ((bluredState[indexOf(i, j + 1, m_gridSize)] -
-                             bluredState[indexOf(i, j, m_gridSize)]) / m_gridSize)
-                         / ((bluredState[indexOf(i, j + 1, m_gridSize)] +
-                             bluredState[indexOf(i, j, m_gridSize)]) * 0.5f + 1e-10) << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << "----" << std::endl;
-    getchar();
+//    for (int i = 1; i <= m_gridSize; ++i) {
+//        for (int j = 1; j <= m_gridSize; ++j) {
+//            std::cout << dt * vf
+//                         * ((bluredDensity[indexOf(i, j + 1, m_gridSize)] +
+//                             bluredDensity[indexOf(i, j, m_gridSize)]) * 0.5f)
+//                         * ((bluredState[indexOf(i, j + 1, m_gridSize)] -
+//                             bluredState[indexOf(i, j, m_gridSize)]) / m_gridSize)
+//                         / ((bluredState[indexOf(i, j + 1, m_gridSize)] +
+//                             bluredState[indexOf(i, j, m_gridSize)]) * 0.5f + 1e-10) << " ";
+//        }
+//        std::cout << std::endl;
+//    }
+//    std::cout << "----" << std::endl;
+//    getchar();
     float *u = m_velocityField->getPrevQuantity(Velocity::U_COMPONENT);
     float *v = m_velocityField->getPrevQuantity(Velocity::V_COMPONENT);
 

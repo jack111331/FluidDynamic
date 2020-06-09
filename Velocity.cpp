@@ -184,16 +184,16 @@ void Velocity::process(float dt, float diffusion, float *u, float *v) {
     // Mass conservative
     massConserve(dt);
 
-    m_currentContext ^= 1;
-    vorticityConfinement(dt, 1.0f);
-    massConserve(dt);
-
-    m_currentContext ^= 1;
-    advectU(dt, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext ^ 1], m_vQuantity[m_currentContext ^ 1]);
-    advectV(dt, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext ^ 1], m_uQuantity[m_currentContext ^ 1]);
-
-    // Mass conservative
-    massConserve(dt);
+//    m_currentContext ^= 1;
+//    vorticityConfinement(dt, 1.0f);
+//    massConserve(dt);
+//
+//    m_currentContext ^= 1;
+//    advectU(dt, m_uQuantity[m_currentContext], m_uQuantity[m_currentContext ^ 1], m_vQuantity[m_currentContext ^ 1]);
+//    advectV(dt, m_vQuantity[m_currentContext], m_vQuantity[m_currentContext ^ 1], m_uQuantity[m_currentContext ^ 1]);
+//
+//    // Mass conservative
+//    massConserve(dt);
 }
 
 void Velocity::massConserve(float dt) {
