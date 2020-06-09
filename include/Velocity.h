@@ -25,7 +25,7 @@ private:
 
 //    void vorticityConfinement(float dt, float vorticity);
 
-    void massConserve(float dt);
+    void massConserve();
 
 public:
     Velocity(int N);

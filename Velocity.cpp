@@ -106,9 +106,9 @@ void Velocity::advectV(float dt) {
 //}
 
 
-void Velocity::massConserve(float dt) {
+void Velocity::massConserve() {
     // Use Gauss Seidel
-//    GaussSeidelSolver *m_solver = new GaussSeidelSolver();
+    // GaussSeidelSolver *m_solver = new GaussSeidelSolver();
     uint32_t p, div;
     glGenBuffers(1, &p);
     glGenBuffers(1, &div);
@@ -125,22 +125,6 @@ void Velocity::massConserve(float dt) {
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 3);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.uniform1f("gridSize", m_grid);
     m_shaderUtility->BUILD_PRESSURE_PROGRAM.dispatch(m_grid, m_grid, 1);
-
-//    glBindBuffer(GL_SHADER_STORAGE_BUFFER, p);
-//    const float *density = (float *) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (m_grid + 2) * (m_grid + 2) * sizeof(float),
-//                                                      GL_MAP_READ_BIT);
-//    float *u = enableAndGetReadWriteQuantity(U_COMPONENT, false);
-//    float *v = enableAndGetReadWriteQuantity(V_COMPONENT, false);
-//    std::cout << density[indexOfPressure(5, 5, m_grid)] << " is made of " << u[indexOfVelocityU(5, 5, m_grid)] << " " << u[indexOfVelocityU(5, 4, m_grid)] << " " << v[indexOfVelocityV(5, 5, m_grid)] << " " << v[indexOfVelocityV(4, 5, m_grid)] << std::endl;
-//    u[indexOfVelocityU(5, 5, m_grid)] += 0.3;
-//    u[indexOfVelocityU(5, 4, m_grid)] += 0.6;
-//    v[indexOfVelocityV(5, 5, m_grid)] += 0.9;
-//    v[indexOfVelocityV(4, 5, m_grid)] += 1.3;
-//    getchar();
-//    glBindBuffer(GL_SHADER_STORAGE_BUFFER, p);
-//    glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-//    disableReadOrWriteQuantity(U_COMPONENT, false);
-//    disableReadOrWriteQuantity(V_COMPONENT, false);
 
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
     m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(p, 0);
@@ -175,11 +159,11 @@ void Velocity::process(float dt, float vorticity) {
     // Add force
     addForce(dt);
     // Mass conservative
-    massConserve(dt);
+    massConserve();
 
 //    m_currentContext ^= 1;
 //    vorticityConfinement(dt, vorticity);
-//    massConserve(dt);
+//    massConserve();
 
 //TODO fix advect
 //    m_currentContext ^= 1;
@@ -187,7 +171,7 @@ void Velocity::process(float dt, float vorticity) {
 //    advectV(dt);
 
 //     Mass conservative
-//    massConserve(dt);
+//    massConserve();
 }
 
 float *Velocity::enableAndGetReadWriteQuantity(int component, bool isPrevious) {
