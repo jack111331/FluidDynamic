@@ -156,21 +156,18 @@ void Velocity::massConserve() {
 }
 
 void Velocity::process(float dt, float vorticity) {
-    // Add force
+
     addForce(dt);
-    // Mass conservative
     massConserve();
 
 //    m_currentContext ^= 1;
 //    vorticityConfinement(dt, vorticity);
 //    massConserve();
 
-//TODO fix advect
     m_currentContext ^= 1;
     advectU(dt);
     advectV(dt);
 
-//     Mass conservative
     massConserve();
 }
 

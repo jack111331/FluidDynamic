@@ -225,7 +225,7 @@ FluidDynamic_EXTERNAL_OBJECTS =
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/build.make
 ../bin/FluidDynamic.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
 ../bin/FluidDynamic.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
-../bin/FluidDynamic.exe: library/glfw-3.3.2/src/libglfw3.a
+../bin/FluidDynamic.exe: library/glfw-3.3.2/src/libglfw3dll.a
 ../bin/FluidDynamic.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/linklibs.rsp
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/objects1.rsp

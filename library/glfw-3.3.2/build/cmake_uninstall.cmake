@@ -1,9 +1,9 @@
 
-if (NOT EXISTS "D:/libraries/glfw-3.3.2/build/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"D:/libraries/glfw-3.3.2/build/install_manifest.txt\"")
+if (NOT EXISTS "D:/Code/FluidDynamic/library/glfw-3.3.2/build/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"D:/Code/FluidDynamic/library/glfw-3.3.2/build/install_manifest.txt\"")
 endif()
 
-file(READ "D:/libraries/glfw-3.3.2/build/install_manifest.txt" files)
+file(READ "D:/Code/FluidDynamic/library/glfw-3.3.2/build/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})

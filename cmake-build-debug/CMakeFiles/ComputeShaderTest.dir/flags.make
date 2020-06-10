@@ -4,7 +4,7 @@
 # compile CXX with D:/MinGW/bin/c++.exe
 CXX_FLAGS = -g   -std=gnu++11
 
-CXX_DEFINES = 
+CXX_DEFINES = -DGLFW_DLL
 
 CXX_INCLUDES = @CMakeFiles/ComputeShaderTest.dir/includes_CXX.rsp
 

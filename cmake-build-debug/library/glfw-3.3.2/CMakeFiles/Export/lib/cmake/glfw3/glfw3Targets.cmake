@@ -51,9 +51,10 @@ if(_IMPORT_PREFIX STREQUAL "/")
 endif()
 
 # Create imported target glfw
-add_library(glfw STATIC IMPORTED)
+add_library(glfw SHARED IMPORTED)
 
 set_target_properties(glfw PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "GLFW_DLL"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
   INTERFACE_LINK_LIBRARIES "D:/Code/FluidDynamic/library/glew-2.2.0/lib/Release/Win32/glew32.lib"
 )

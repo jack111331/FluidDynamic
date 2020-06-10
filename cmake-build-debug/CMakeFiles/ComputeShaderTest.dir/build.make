@@ -97,7 +97,7 @@ ComputeShaderTest_EXTERNAL_OBJECTS =
 ../bin/ComputeShaderTest.exe: CMakeFiles/ComputeShaderTest.dir/build.make
 ../bin/ComputeShaderTest.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
 ../bin/ComputeShaderTest.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
-../bin/ComputeShaderTest.exe: library/glfw-3.3.2/src/libglfw3.a
+../bin/ComputeShaderTest.exe: library/glfw-3.3.2/src/libglfw3dll.a
 ../bin/ComputeShaderTest.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
 ../bin/ComputeShaderTest.exe: CMakeFiles/ComputeShaderTest.dir/linklibs.rsp
 ../bin/ComputeShaderTest.exe: CMakeFiles/ComputeShaderTest.dir/objects1.rsp

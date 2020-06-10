@@ -1,4 +1,5 @@
-﻿  context.c
+﻿  Building Custom Rule D:/Code/FluidDynamic/library/glfw-3.3.2/src/CMakeLists.txt
+  context.c
   init.c
   input.c
   monitor.c
@@ -14,4 +15,5 @@
   egl_context.c
   osmesa_context.c
   正在產生程式碼...
-  glfw.vcxproj -> D:\libraries\glfw-3.3.2\build\src\Debug\glfw3.lib
+     正在建立程式庫 D:/Code/FluidDynamic/library/glfw-3.3.2/build/src/Debug/glfw3dll.lib 和物件 D:/Code/FluidDynamic/library/glfw-3.3.2/build/src/Debug/glfw3dll.exp
+  glfw.vcxproj -> D:\Code\FluidDynamic\library\glfw-3.3.2\build\src\Debug\glfw3.dll

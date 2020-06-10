@@ -28,6 +28,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
   "WINVER=0x0501"
   "_GLFW_USE_CONFIG_H"
   "_UNICODE"
+  "glfw_EXPORTS"
   )
 
 # The include file search paths:

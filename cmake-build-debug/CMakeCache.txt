@@ -15,7 +15,7 @@
 ########################
 
 //Build shared libraries
-BUILD_SHARED_LIBS:BOOL=OFF
+BUILD_SHARED_LIBS:BOOL=ON
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=D:/MinGW/bin/addr2line.exe
@@ -359,7 +359,7 @@ GLFW_INSTALL:BOOL=ON
 GLFW_SOURCE_DIR:STATIC=D:/Code/FluidDynamic/library/glfw-3.3.2
 
 //Force use of high-performance GPU on hybrid systems
-GLFW_USE_HYBRID_HPG:BOOL=OFF
+GLFW_USE_HYBRID_HPG:BOOL=ON
 
 //Assume the Vulkan loader is linked with the application
 GLFW_VULKAN_STATIC:BOOL=OFF
@@ -371,7 +371,7 @@ OPENGL_gl_LIBRARY:STRING=opengl32
 OPENGL_glu_LIBRARY:STRING=glu32
 
 //Dependencies for the target
-glfw_LIB_DEPENDS:STATIC=general;D:/Code/FluidDynamic/library/glew-2.2.0/lib/Release/Win32/glew32.lib;
+glfw_LIB_DEPENDS:STATIC=general;D:/Code/FluidDynamic/library/glew-2.2.0/lib/Release/Win32/glew32.lib;general;-static-libgcc;
 
 
 ########################

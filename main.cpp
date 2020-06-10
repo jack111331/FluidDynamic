@@ -84,6 +84,11 @@ int main() {
 
     glewInit();
 
+    const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
+    const GLubyte* renderer = glGetString(GL_RENDERER);
+    std::cout << "Current Vendor: " << (const char *)vendor << std::endl;
+    std::cout << "Current Renderer: " << (const char *)renderer << std::endl;
+
     // Initial Setup
     fluid2D = new Fluid2D();
     fluid2D->init(N, timestep);
