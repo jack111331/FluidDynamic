@@ -31,6 +31,7 @@ uniform float dt0;
 
 uint indexOfVelocityU(uvec2 grid_xy);
 uint indexOfVelocityV(uvec2 grid_xy);
+uint indexOfPressure(uvec2 grid_xy);
 float linearInterpolate2D(vec2 portion, float ll, float lr, float ul, float ur);
 
 void main() {
@@ -44,9 +45,9 @@ void main() {
     uvec2 upper_right_xy = lower_left_xy+uvec2(1);
     // Linear interpolate
     density[grid_xy] = linearInterpolate2D(vec2(fract(before_advect_xy.x - lower_left_xy.x), fract(before_advect_xy.y - lower_left_xy.y)),
-    prevDensity[lower_left_xy.y * ACTUAL_GRID_WIDTH + lower_left_xy.x],
-    prevDensity[lower_left_xy.y * ACTUAL_GRID_WIDTH + upper_right_xy.x],
-    prevDensity[upper_right_xy.y * ACTUAL_GRID_WIDTH + lower_left_xy.x],
-    prevDensity[upper_right_xy.y * ACTUAL_GRID_WIDTH + upper_right_xy.x]);
+    prevDensity[indexOfPressure(lower_left_xy)],
+    prevDensity[indexOfPressure(uvec2(upper_right_xy.x, lower_left_xy.y))],
+    prevDensity[indexOfPressure(uvec2(lower_left_xy.x, upper_right_xy.y))],
+    prevDensity[indexOfPressure(upper_right_xy)]);
 
 }

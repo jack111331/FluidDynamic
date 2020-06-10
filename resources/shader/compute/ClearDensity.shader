@@ -16,6 +16,6 @@ layout(std430, binding = 0) buffer Density {
 };
 
 void main() {
-    const uint grid_xy = gl_WorkGroupID.y * ACTUAL_GRID_HEIGHT + gl_WorkGroupID.x;
+    const uint grid_xy = gl_WorkGroupID.y * ACTUAL_GRID_WIDTH + gl_WorkGroupID.x;
     density[grid_xy] = 0;
 }

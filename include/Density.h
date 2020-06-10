@@ -24,7 +24,7 @@ public:
 
     static void blur(const float *density, int gridSize, float sigma, float *target);
 
-    void addQuantity(float dt);
+    void addDensity(float dt);
 
     void diffuse(float dt, float diffusion);
 

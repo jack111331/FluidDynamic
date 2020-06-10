@@ -21,6 +21,7 @@ layout(std430, binding = 1) buffer PrevDensity {
 uniform float dt;
 
 void main() {
-    const uint grid_xy = gl_WorkGroupID.y * ACTUAL_GRID_HEIGHT + gl_WorkGroupID.x;
+    uvec2 accurate_workgroup_xy = uvec2(gl_WorkGroupID.x + 1, gl_WorkGroupID.y + 1);
+    const uint grid_xy = accurate_workgroup_xy.y * ACTUAL_GRID_WIDTH + accurate_workgroup_xy.x;
     density[grid_xy] += dt * prevDensity[grid_xy];
 }

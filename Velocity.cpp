@@ -50,13 +50,13 @@ void Velocity::addForce(float dt) {
     m_shaderUtility->ADD_VELOCITY_PROGRAM.uniform1f("dt", dt);
     m_shaderUtility->ADD_VELOCITY_PROGRAM.dispatch(m_grid - 1, m_grid, 1);
 
-    ShaderUtility::getInstance()->SET_U_VELOCITY_BOUND_PROGRAM.bind();
-    ShaderUtility::getInstance()->SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-    ShaderUtility::getInstance()->SET_U_VELOCITY_BOUND_PROGRAM.dispatch(m_grid + 1, 1, 1);
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.dispatch(m_grid + 1, 1, 1);
 
-    ShaderUtility::getInstance()->SET_V_VELOCITY_BOUND_PROGRAM.bind();
-    ShaderUtility::getInstance()->SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-    ShaderUtility::getInstance()->SET_V_VELOCITY_BOUND_PROGRAM.dispatch(m_grid + 1, 1, 1);
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.dispatch(m_grid + 1, 1, 1);
 }
 
 void Velocity::advectU(float dt) {
@@ -171,7 +171,7 @@ void Velocity::process(float dt, float vorticity) {
     advectV(dt);
 
 //     Mass conservative
-//    massConserve();
+    massConserve();
 }
 
 float *Velocity::enableAndGetReadWriteQuantity(int component, bool isPrevious) {

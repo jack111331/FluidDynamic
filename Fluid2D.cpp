@@ -183,14 +183,14 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
 //    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity);
-//    m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
-//                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
+    m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
+                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
 }
 
 void Fluid2D::display(bool mode) {
     if (mode == DENSITY_FIELD_MODE) {
         // Prepare density
-        const float *density = m_densityField->enableAndGetReadWriteQuantity(false);
+        const float *density = m_densityField->enableAndGetReadQuantity(false);
         m_densityFieldShader->bind();
         glBindVertexArray(m_meshVAO);
         glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);

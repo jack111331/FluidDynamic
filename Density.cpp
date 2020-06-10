@@ -6,7 +6,7 @@
 
 Density::Density(int N) : m_grid(N), m_currentContext(false) {
     m_shaderUtility = ShaderUtility::getInstance();
-    m_solver = new JacobiSolver(20);
+    m_solver = new JacobiSolver();
 
     glGenBuffers(2, m_quantity);
     for (int i = 0; i < 2; ++i) {
@@ -55,12 +55,16 @@ void Density::blur(const float *density, int gridSize, float sigma, float *targe
     }
 }
 
-void Density::addQuantity(float dt) {
+void Density::addDensity(float dt) {
     m_shaderUtility->ADD_DENSITY_PROGRAM.bind();
     m_shaderUtility->ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
     m_shaderUtility->ADD_DENSITY_PROGRAM.bindBuffer(m_quantity[m_currentContext ^ 1], 1);
     m_shaderUtility->ADD_DENSITY_PROGRAM.uniform1f("dt", dt);
-    m_shaderUtility->ADD_DENSITY_PROGRAM.dispatch(m_grid + 2, m_grid + 2, 1);
+    m_shaderUtility->ADD_DENSITY_PROGRAM.dispatch(m_grid, m_grid, 1);
+
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.bindBuffer(m_quantity[m_currentContext], 0);
+    m_shaderUtility->SET_DENSITY_BOUND_PROGRAM.dispatch(1, 1, 1);
 }
 
 void Density::diffuse(float dt, float diffusion) {
@@ -68,7 +72,7 @@ void Density::diffuse(float dt, float diffusion) {
 
     float diffusionForNearbyGrid = dt * diffusion * m_grid * m_grid;
     m_solver->solve(m_quantity[m_currentContext], m_quantity[m_currentContext ^ 1], diffusionForNearbyGrid,
-                    (1 + 4 * diffusionForNearbyGrid), m_grid);
+                    (4 + diffusionForNearbyGrid), m_grid);
 }
 
 void Density::advect(float dt, uint32_t u, uint32_t v) {
@@ -86,13 +90,14 @@ void Density::advect(float dt, uint32_t u, uint32_t v) {
 }
 
 void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {
-    addQuantity(dt);
+    addDensity(dt);
 
     m_currentContext ^= 1;
     diffuse(dt, diffusion);
-//
-//    m_currentContext ^= 1;
-//    advect(dt, u, v);
+
+    m_currentContext ^= 1;
+    advect(dt, u, v);
+
 }
 
 float *Density::enableAndGetReadWriteQuantity(bool isPrevious) {

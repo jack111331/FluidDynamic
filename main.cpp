@@ -11,7 +11,7 @@ Fluid2D *fluid2D;
 static int N = 128;
 static int timestep = 20;
 static float dt = 0.1f;
-static float diffusion = 0.0f;
+static float diffusion = 0.1f;
 static float viscosity = 0.0f;
 static float source = 100.0f;
 static float force = 5.0f;
