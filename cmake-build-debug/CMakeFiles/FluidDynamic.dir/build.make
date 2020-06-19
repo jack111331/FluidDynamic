@@ -182,10 +182,38 @@ CMakeFiles/FluidDynamic.dir/ShaderUtility.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/ShaderUtility.cpp.s"
 	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\ShaderUtility.cpp -o CMakeFiles\FluidDynamic.dir\ShaderUtility.cpp.s
 
+CMakeFiles/FluidDynamic.dir/Environment.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
+CMakeFiles/FluidDynamic.dir/Environment.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
+CMakeFiles/FluidDynamic.dir/Environment.cpp.obj: ../Environment.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/FluidDynamic.dir/Environment.cpp.obj"
+	D:\MinGW\bin\c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\FluidDynamic.dir\Environment.cpp.obj -c D:\Code\FluidDynamic\Environment.cpp
+
+CMakeFiles/FluidDynamic.dir/Environment.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FluidDynamic.dir/Environment.cpp.i"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Code\FluidDynamic\Environment.cpp > CMakeFiles\FluidDynamic.dir\Environment.cpp.i
+
+CMakeFiles/FluidDynamic.dir/Environment.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/Environment.cpp.s"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\Environment.cpp -o CMakeFiles\FluidDynamic.dir\Environment.cpp.s
+
+CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
+CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
+CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj: ../GLFWWindowInfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj"
+	D:\MinGW\bin\c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\FluidDynamic.dir\GLFWWindowInfo.cpp.obj -c D:\Code\FluidDynamic\GLFWWindowInfo.cpp
+
+CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.i"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Code\FluidDynamic\GLFWWindowInfo.cpp > CMakeFiles\FluidDynamic.dir\GLFWWindowInfo.cpp.i
+
+CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.s"
+	D:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Code\FluidDynamic\GLFWWindowInfo.cpp -o CMakeFiles\FluidDynamic.dir\GLFWWindowInfo.cpp.s
+
 CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj: CMakeFiles/FluidDynamic.dir/flags.make
 CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj: CMakeFiles/FluidDynamic.dir/includes_CXX.rsp
 CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj: ../Keyframe.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj"
 	D:\MinGW\bin\c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\FluidDynamic.dir\Keyframe.cpp.obj -c D:\Code\FluidDynamic\Keyframe.cpp
 
 CMakeFiles/FluidDynamic.dir/Keyframe.cpp.i: cmake_force
@@ -207,6 +235,8 @@ FluidDynamic_OBJECTS = \
 "CMakeFiles/FluidDynamic.dir/Control.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/Shader.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/ShaderUtility.cpp.obj" \
+"CMakeFiles/FluidDynamic.dir/Environment.cpp.obj" \
+"CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj" \
 "CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj"
 
 # External object files for target FluidDynamic
@@ -221,6 +251,8 @@ FluidDynamic_EXTERNAL_OBJECTS =
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Control.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Shader.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/ShaderUtility.cpp.obj
+../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Environment.cpp.obj
+../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/Keyframe.cpp.obj
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/build.make
 ../bin/FluidDynamic.exe: ../library/glew-2.2.0/lib/Release/Win32/glew32.lib
@@ -230,7 +262,7 @@ FluidDynamic_EXTERNAL_OBJECTS =
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/linklibs.rsp
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/objects1.rsp
 ../bin/FluidDynamic.exe: CMakeFiles/FluidDynamic.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable ..\bin\FluidDynamic.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable ..\bin\FluidDynamic.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\FluidDynamic.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

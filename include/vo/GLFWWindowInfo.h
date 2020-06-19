@@ -10,6 +10,8 @@
 
 class GLFWWindowInfo {
 public:
+    static GLFWWindowInfo *getInstance();
+
     int windowWidth, windowHeight;
     double prevMouseXPos, prevMouseYPos;
     double mouseXPos, mouseYPos;
@@ -17,6 +19,8 @@ public:
 
     static const int MOUSE_LEFT = GLFW_MOUSE_BUTTON_LEFT;
     static const int MOUSE_RIGHT = GLFW_MOUSE_BUTTON_RIGHT;
+private:
+    static GLFWWindowInfo *instance;
 };
 
 

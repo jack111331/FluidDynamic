@@ -41,8 +41,11 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         Control.cpp
         Shader.cpp
         ShaderUtility.cpp
+        Environment.cpp
+        GLFWWindowInfo.cpp
 
         Keyframe.cpp
+
         )
 list(APPEND FLUID_DYNAMIC_HEADER
         include/NavierStokes.h
@@ -54,6 +57,7 @@ list(APPEND FLUID_DYNAMIC_HEADER
         include/Control.h
         include/Shader.h
         include/ShaderUtility.h
+        include/Environment.h
 
         include/vo/GLFWWindowInfo.h
         include/Keyframe.h
@@ -70,6 +74,6 @@ set(all_code_files
 add_executable(FluidDynamic ${all_code_files})
 target_link_libraries(FluidDynamic GLEW::GLEW glfw OpenGL::GL)
 
-project(ComputeShaderTest)
-add_executable(ComputeShaderTest test_compute_shader.cpp include/Shader.h Shader.cpp)
-target_link_libraries(ComputeShaderTest GLEW::GLEW glfw OpenGL::GL)
+#project(ComputeShaderTest)
+#add_executable(ComputeShaderTest test_compute_shader.cpp include/Shader.h Shader.cpp)
+#target_link_libraries(ComputeShaderTest GLEW::GLEW glfw OpenGL::GL)

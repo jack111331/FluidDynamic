@@ -34,6 +34,11 @@ public:
 
 
     Shader JACOBI_SOLVER_PROGRAM;
+
+
+    Shader ADVECT_ENVIRONMENT_PROGRAM;
+    Shader RECTANGLE_PROGRAM;
+
 private:
     ShaderUtility();
     static ShaderUtility *instance;
@@ -116,6 +121,11 @@ private:
     // location = 0: quantity
     // location = 1: previous quantity
     static constexpr char JACOBI_SOLVER_PROGRAM_PATH[] = "resources/shader/compute/Jacobi.shader";
+
+    /* Render Relate Shader */
+    static constexpr char RECTANGLE_VERT_PATH[] = "resources/shader/RectangleVert.shader";
+    static constexpr char ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH[] = "resources/shader/AdvectEnvironmentFrag.shader";
+    static constexpr char RECTANGLE_FRAG_PATH[] = "resources/shader/RectangleFrag.shader";
 };
 
 

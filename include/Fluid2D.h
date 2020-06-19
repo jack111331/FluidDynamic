@@ -10,6 +10,7 @@
 #include <Shader.h>
 #include "Velocity.h"
 #include "Density.h"
+#include "Environment.h"
 
 class Fluid2D {
 public:
@@ -17,13 +18,13 @@ public:
 
     void init(int gridSize, int solverTimestep);
 
-    void input(GLFWWindowInfo *windowInfo, float force, float source);
+    void input(float force, float source);
 
     void changeGridPosition();
 
     void update(float dt, float diffusion, float viscosity);
 
-    void display(bool mode);
+    void display(int mode);
 
     void addDrivingForce(float dt, float vf, float *state);
 
@@ -34,6 +35,8 @@ public:
     void addGaussianWindForce(int gridWidth, float width, double windDirection, int (&initWindLocation)[2]);
 
     void addVortexForce(int gridWidth, float width, float r, int (&initVortexLocation)[2]);
+
+    void addEnvironment(Environment *environment);
 
     void clear();
 
@@ -51,8 +54,11 @@ private:
     Velocity *m_velocityField;
     Density *m_densityField;
 
-    static const bool VELOCITY_FIELD_MODE = true;
-    static const bool DENSITY_FIELD_MODE = false;
+    std::vector<Environment *> m_environmentList;
+
+    static const int DENSITY_FIELD_MODE = 0;
+    static const int VELOCITY_FIELD_MODE = 1;
+    static const int TEXTURE_MODE = 2;
 };
 
 

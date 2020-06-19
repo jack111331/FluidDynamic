@@ -16,35 +16,35 @@ static float viscosity = 0.0f;
 static float source = 100.0f;
 static float force = 5.0f;
 
-static GLFWWindowInfo windowInfo{
-        .windowWidth = 800,
-        .windowHeight = 600
-};
+int windowWidth = 800;
+int windowHeight = 600;
 
-static bool displayMode = false;
+static int displayMode = 0;
 
 static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos) {
-    if (windowInfo.mouseAction[GLFWWindowInfo::MOUSE_LEFT] || windowInfo.mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
-        windowInfo.mouseXPos = xpos;
-        windowInfo.mouseYPos = ypos;
+    GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
+    if (glfwWindowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT] || glfwWindowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
+        glfwWindowInfo->mouseXPos = xpos;
+        glfwWindowInfo->mouseYPos = ypos;
     } else {
-        windowInfo.prevMouseXPos = windowInfo.mouseXPos = xpos;
-        windowInfo.prevMouseYPos = windowInfo.mouseYPos = ypos;
+        glfwWindowInfo->prevMouseXPos = glfwWindowInfo->mouseXPos = xpos;
+        glfwWindowInfo->prevMouseYPos = glfwWindowInfo->mouseYPos = ypos;
     }
 }
 
 static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+    GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
     if (action == GLFW_PRESS) {
-        windowInfo.mouseAction[button] = true;
+        glfwWindowInfo->mouseAction[button] = true;
     } else if (action == GLFW_RELEASE) {
-        windowInfo.mouseAction[button] = false;
+        glfwWindowInfo->mouseAction[button] = false;
     }
 }
 
 static void keyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS) {
         if (key == GLFW_KEY_V) {
-            displayMode = !displayMode;
+            displayMode = (displayMode + 1) % 3;
         }
         if (key == GLFW_KEY_C) {
             fluid2D->clear();
@@ -70,7 +70,11 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwSetErrorCallback(GLFWErrorCallback);
 
-    GLFWwindow *window = glfwCreateWindow(windowInfo.windowWidth, windowInfo.windowHeight, "Fluid2D Simulation", NULL,
+    GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
+    glfwWindowInfo->windowWidth = windowWidth;
+    glfwWindowInfo->windowHeight = windowHeight;
+
+    GLFWwindow *window = glfwCreateWindow(windowWidth, windowHeight, "Fluid2D Simulation", NULL,
                                           NULL);
     if (window == nullptr) {
         std::cout << "[GLFW] failed to create window" << std::endl;
@@ -84,14 +88,16 @@ int main() {
 
     glewInit();
 
-    const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
-    const GLubyte* renderer = glGetString(GL_RENDERER);
-    std::cout << "Current Vendor: " << (const char *)vendor << std::endl;
-    std::cout << "Current Renderer: " << (const char *)renderer << std::endl;
+    const GLubyte *vendor = glGetString(GL_VENDOR); // Returns the vendor
+    const GLubyte *renderer = glGetString(GL_RENDERER);
+    std::cout << "Current Vendor: " << (const char *) vendor << std::endl;
+    std::cout << "Current Renderer: " << (const char *) renderer << std::endl;
 
     // Initial Setup
+    const char image[] = "image.png";
     fluid2D = new Fluid2D();
     fluid2D->init(N, timestep);
+    fluid2D->addEnvironment(new Environment(image));
 
     TargetDrivenControl *control = new TargetDrivenControl("resources/animation/from_3_to_4/animation.kfd", dt);
     control->setTarget(fluid2D);
@@ -103,12 +109,13 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwPollEvents();
-        fluid2D->input(&windowInfo, force, source);
+        fluid2D->input(force, source);
 //        control->control();
 
         fluid2D->update(dt, diffusion, viscosity);
         fluid2D->display(displayMode);
         glfwSwapBuffers(window);
+//        getchar();
         // TODO DEBUG
     }
 

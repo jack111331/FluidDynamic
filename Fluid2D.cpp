@@ -122,39 +122,40 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_velocityIndicesEBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * gridSize * gridSize * sizeof(uint32_t), m_gridIndices, GL_STATIC_DRAW);
 
-
     // Navier Stokes Field Attribute
     m_densityField = new Density(gridSize);
     m_velocityField = new Velocity(gridSize);
 
 }
 
-void Fluid2D::input(GLFWWindowInfo *windowInfo, float force, float source) {
+void Fluid2D::input(float force, float source) {
     // Process density and velocity field
     m_densityField->clear(true);
     m_velocityField->clear(true);
 
-    int i = (static_cast<double>(windowInfo->windowHeight - windowInfo->mouseYPos) /
-             static_cast<double>(windowInfo->windowHeight )) * m_gridSize + 1;
-    int j = (static_cast<double>(windowInfo->mouseXPos) / static_cast<double>(windowInfo->windowWidth)) * m_gridSize +
+    GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
+
+    int i = (static_cast<double>(glfwWindowInfo->windowHeight - glfwWindowInfo->mouseYPos) /
+             static_cast<double>(glfwWindowInfo->windowHeight )) * m_gridSize + 1;
+    int j = (static_cast<double>(glfwWindowInfo->mouseXPos) / static_cast<double>(glfwWindowInfo->windowWidth)) * m_gridSize +
             1;
     if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
         float *density = m_densityField->enableAndGetReadWriteQuantity(true);
         float *u = m_velocityField->enableAndGetReadWriteQuantity(Velocity::U_COMPONENT, true);
         float *v = m_velocityField->enableAndGetReadWriteQuantity(Velocity::V_COMPONENT, true);
-        if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
-            u[indexOfVelocityU(i, j, m_gridSize)] = force * (windowInfo->mouseXPos - windowInfo->prevMouseXPos);
-            v[indexOfVelocityV(i, j, m_gridSize)] = force * (windowInfo->prevMouseYPos - windowInfo->mouseYPos);
+        if (glfwWindowInfo->mouseAction[GLFWWindowInfo::MOUSE_LEFT]) {
+            u[indexOfVelocityU(i, j, m_gridSize)] = force * (glfwWindowInfo->mouseXPos - glfwWindowInfo->prevMouseXPos);
+            v[indexOfVelocityV(i, j, m_gridSize)] = force * (glfwWindowInfo->prevMouseYPos - glfwWindowInfo->mouseYPos);
         }
-        if (windowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
+        if (glfwWindowInfo->mouseAction[GLFWWindowInfo::MOUSE_RIGHT]) {
             density[indexOf(i, j, m_gridSize)] = source;
         }
         m_densityField->disableReadOrWriteQuantity(true);
         m_velocityField->disableReadOrWriteQuantity(Velocity::U_COMPONENT, true);
         m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
     }
-    windowInfo->prevMouseXPos = windowInfo->mouseXPos;
-    windowInfo->prevMouseYPos = windowInfo->mouseYPos;
+    glfwWindowInfo->prevMouseXPos = glfwWindowInfo->mouseXPos;
+    glfwWindowInfo->prevMouseYPos = glfwWindowInfo->mouseYPos;
 
 }
 
@@ -185,9 +186,13 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     m_velocityField->process(dt, viscosity);
     m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
                             m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
+    for (auto environment : m_environmentList) {
+        environment->advect(dt, m_gridSize, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
+                            m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
+    }
 }
 
-void Fluid2D::display(bool mode) {
+void Fluid2D::display(int mode) {
     if (mode == DENSITY_FIELD_MODE) {
         // Prepare density
         const float *density = m_densityField->enableAndGetReadQuantity(false);
@@ -208,6 +213,10 @@ void Fluid2D::display(bool mode) {
                         3 * m_gridSize * m_gridSize * sizeof(float), m_gridPosition);
         glDrawElements(GL_LINES, 2 * m_gridSize * m_gridSize, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+    } else if (mode == TEXTURE_MODE) {
+        for (auto & i : m_environmentList) {
+            i->drawEnvironment();
+        }
     }
 }
 
@@ -340,6 +349,11 @@ void Fluid2D::addVortexForce(int gridWidth, float width, float r, int (&initVort
     m_velocityField->disableReadOrWriteQuantity(Velocity::V_COMPONENT, true);
 
 }
+
+void Fluid2D::addEnvironment(Environment *environment) {
+    m_environmentList.push_back(environment);
+}
+
 
 void Fluid2D::clear() {
     m_densityField->clear(false);

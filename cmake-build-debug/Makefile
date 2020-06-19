@@ -169,19 +169,6 @@ FluidDynamic/fast:
 .PHONY : FluidDynamic/fast
 
 #=============================================================================
-# Target rules for targets named ComputeShaderTest
-
-# Build rule for target.
-ComputeShaderTest: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 ComputeShaderTest
-.PHONY : ComputeShaderTest
-
-# fast build rule for target.
-ComputeShaderTest/fast:
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/build
-.PHONY : ComputeShaderTest/fast
-
-#=============================================================================
 # Target rules for targets named uninstall
 
 # Build rule for target.
@@ -261,6 +248,33 @@ Density.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Density.cpp.s
 .PHONY : Density.cpp.s
 
+Environment.obj: Environment.cpp.obj
+
+.PHONY : Environment.obj
+
+# target to build an object file
+Environment.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Environment.cpp.obj
+.PHONY : Environment.cpp.obj
+
+Environment.i: Environment.cpp.i
+
+.PHONY : Environment.i
+
+# target to preprocess a source file
+Environment.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Environment.cpp.i
+.PHONY : Environment.cpp.i
+
+Environment.s: Environment.cpp.s
+
+.PHONY : Environment.s
+
+# target to generate assembly for a file
+Environment.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Environment.cpp.s
+.PHONY : Environment.cpp.s
+
 Fluid2D.obj: Fluid2D.cpp.obj
 
 .PHONY : Fluid2D.obj
@@ -287,6 +301,33 @@ Fluid2D.s: Fluid2D.cpp.s
 Fluid2D.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Fluid2D.cpp.s
 .PHONY : Fluid2D.cpp.s
+
+GLFWWindowInfo.obj: GLFWWindowInfo.cpp.obj
+
+.PHONY : GLFWWindowInfo.obj
+
+# target to build an object file
+GLFWWindowInfo.cpp.obj:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.obj
+.PHONY : GLFWWindowInfo.cpp.obj
+
+GLFWWindowInfo.i: GLFWWindowInfo.cpp.i
+
+.PHONY : GLFWWindowInfo.i
+
+# target to preprocess a source file
+GLFWWindowInfo.cpp.i:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.i
+.PHONY : GLFWWindowInfo.cpp.i
+
+GLFWWindowInfo.s: GLFWWindowInfo.cpp.s
+
+.PHONY : GLFWWindowInfo.s
+
+# target to generate assembly for a file
+GLFWWindowInfo.cpp.s:
+	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/GLFWWindowInfo.cpp.s
+.PHONY : GLFWWindowInfo.cpp.s
 
 Keyframe.obj: Keyframe.cpp.obj
 
@@ -349,7 +390,6 @@ Shader.obj: Shader.cpp.obj
 # target to build an object file
 Shader.cpp.obj:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Shader.cpp.obj
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/Shader.cpp.obj
 .PHONY : Shader.cpp.obj
 
 Shader.i: Shader.cpp.i
@@ -359,7 +399,6 @@ Shader.i: Shader.cpp.i
 # target to preprocess a source file
 Shader.cpp.i:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Shader.cpp.i
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/Shader.cpp.i
 .PHONY : Shader.cpp.i
 
 Shader.s: Shader.cpp.s
@@ -369,7 +408,6 @@ Shader.s: Shader.cpp.s
 # target to generate assembly for a file
 Shader.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/Shader.cpp.s
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/Shader.cpp.s
 .PHONY : Shader.cpp.s
 
 ShaderUtility.obj: ShaderUtility.cpp.obj
@@ -480,33 +518,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-test_compute_shader.obj: test_compute_shader.cpp.obj
-
-.PHONY : test_compute_shader.obj
-
-# target to build an object file
-test_compute_shader.cpp.obj:
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/test_compute_shader.cpp.obj
-.PHONY : test_compute_shader.cpp.obj
-
-test_compute_shader.i: test_compute_shader.cpp.i
-
-.PHONY : test_compute_shader.i
-
-# target to preprocess a source file
-test_compute_shader.cpp.i:
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/test_compute_shader.cpp.i
-.PHONY : test_compute_shader.cpp.i
-
-test_compute_shader.s: test_compute_shader.cpp.s
-
-.PHONY : test_compute_shader.s
-
-# target to generate assembly for a file
-test_compute_shader.cpp.s:
-	$(MAKE) -f CMakeFiles\ComputeShaderTest.dir\build.make CMakeFiles/ComputeShaderTest.dir/test_compute_shader.cpp.s
-.PHONY : test_compute_shader.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -517,7 +528,6 @@ help:
 	@echo ... install
 	@echo ... edit_cache
 	@echo ... FluidDynamic
-	@echo ... ComputeShaderTest
 	@echo ... rebuild_cache
 	@echo ... list_install_components
 	@echo ... install/strip
@@ -529,9 +539,15 @@ help:
 	@echo ... Density.obj
 	@echo ... Density.i
 	@echo ... Density.s
+	@echo ... Environment.obj
+	@echo ... Environment.i
+	@echo ... Environment.s
 	@echo ... Fluid2D.obj
 	@echo ... Fluid2D.i
 	@echo ... Fluid2D.s
+	@echo ... GLFWWindowInfo.obj
+	@echo ... GLFWWindowInfo.i
+	@echo ... GLFWWindowInfo.s
 	@echo ... Keyframe.obj
 	@echo ... Keyframe.i
 	@echo ... Keyframe.s
@@ -553,9 +569,6 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... test_compute_shader.obj
-	@echo ... test_compute_shader.i
-	@echo ... test_compute_shader.s
 .PHONY : help
 
 

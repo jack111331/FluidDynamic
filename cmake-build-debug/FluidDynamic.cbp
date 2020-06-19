@@ -54,6 +54,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DGLFW_DLL"/>
 					<Add directory="D:/Code/FluidDynamic/./include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glew-2.2.0/include"/>
@@ -78,6 +79,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DGLFW_DLL"/>
 					<Add directory="D:/Code/FluidDynamic/./include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glfw-3.3.2/include"/>
 					<Add directory="D:/Code/FluidDynamic/library/glew-2.2.0/include"/>
@@ -136,10 +138,10 @@
 				</MakeCommands>
 			</Target>
 			<Target title="glfw">
-				<Option output="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/glfw3.dll" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
+				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
@@ -166,10 +168,10 @@
 				</MakeCommands>
 			</Target>
 			<Target title="glfw/fast">
-				<Option output="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option output="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/glfw3.dll" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src"/>
 				<Option object_output="./"/>
-				<Option type="2"/>
+				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-D_GLFW_USE_CONFIG_H"/>
@@ -202,7 +204,13 @@
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/Environment.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Fluid2D.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/GLFWWindowInfo.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Keyframe.cpp">
@@ -230,6 +238,9 @@
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Density.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/Environment.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Keyframe.h">

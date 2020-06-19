@@ -76,9 +76,9 @@ Shader &Shader::buildShader() {
 
     glGetProgramiv(m_program, GL_LINK_STATUS, &success);
     if (!success) {
-        glDeleteProgram(m_program);
         glGetProgramInfoLog(m_program, sizeof(infoLog), NULL, infoLog);
         fprintf(stderr, "[%s] Shader linking : %s\n", __FILE__, infoLog);
+        glDeleteProgram(m_program);
         exit(1);
     }
     m_attachShaderList.clear();
@@ -119,6 +119,10 @@ void Shader::dispatch(int x, int y, int z) const {
 
 void Shader::uniform1f(const char *uniformName, float val) const {
     glUniform1f(glGetUniformLocation(m_program, uniformName), val);
+}
+
+void Shader::uniform1i(const char* uniformName, int val) const {
+    glUniform1i(glGetUniformLocation(m_program, uniformName), val);
 }
 
 GLuint Shader::getProgramId() {

@@ -33,6 +33,8 @@ public:
 
     void uniform1f(const char* uniformName, float val) const;
 
+    void uniform1i(const char* uniformName, int val) const;
+
     uint32_t getProgramId();
 
 private:

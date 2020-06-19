@@ -254,7 +254,13 @@
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/Environment.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Fluid2D.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/GLFWWindowInfo.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Keyframe.cpp">
@@ -283,6 +289,9 @@
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Density.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/Environment.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Keyframe.h">
