@@ -16,6 +16,7 @@ private:
     int m_currentContext;
     uint32_t m_uQuantity[2];
     uint32_t m_vQuantity[2];
+    uint32_t m_texture;
 
     void addForce(float dt);
 
@@ -43,6 +44,8 @@ public:
     void disableReadOrWriteQuantity(int component, bool isPrevious);
 
     uint32_t getBufferId(int component, bool isPrevious);
+
+    uint32_t getTextureId();
 
     static const int U_COMPONENT = 1;
     static const int V_COMPONENT = 2;
