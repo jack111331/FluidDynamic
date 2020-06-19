@@ -124,8 +124,9 @@ private:
 
     /* Render Relate Shader */
     static constexpr char RECTANGLE_VERT_PATH[] = "resources/shader/RectangleVert.shader";
-    static constexpr char ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH[] = "resources/shader/AdvectEnvironmentFrag.shader";
     static constexpr char RECTANGLE_FRAG_PATH[] = "resources/shader/RectangleFrag.shader";
+    static constexpr char ADVECT_ENVIRONMENT_PROGRAM_VERT_PATH[] = "resources/shader/AdvectEnvironmentVert.shader";
+    static constexpr char ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH[] = "resources/shader/AdvectEnvironmentFrag.shader";
 };
 
 

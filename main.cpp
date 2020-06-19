@@ -94,7 +94,7 @@ int main() {
     std::cout << "Current Renderer: " << (const char *) renderer << std::endl;
 
     // Initial Setup
-    const char image[] = "image.png";
+    const char image[] = "image_1.png";
     fluid2D = new Fluid2D();
     fluid2D->init(N, timestep);
     fluid2D->addEnvironment(new Environment(image));

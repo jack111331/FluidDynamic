@@ -45,10 +45,11 @@ private:
 
     uint32_t *m_meshIndices;
     float *m_meshPosition;
+    float *m_meshTexCoord;
     uint32_t *m_gridIndices;
     float *m_gridPosition;
     Shader *m_densityFieldShader, *m_velocityFieldShader;
-    uint32_t m_meshVAO, m_positionVBO, m_colorVBO, m_indicesEBO;
+    uint32_t m_meshVAO, m_positionVBO, m_colorVBO, m_texCoordVBO, m_indicesEBO;
     uint32_t m_velocityVAO, m_velocityPositionVBO, m_velocityIndicesEBO;
 
     Velocity *m_velocityField;

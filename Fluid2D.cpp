@@ -31,6 +31,7 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
     // Display Related
     m_meshIndices = new uint32_t[6 * (gridSize + 1) * (gridSize + 1)];
     m_meshPosition = new float[3 * (gridSize + 2) * (gridSize + 2)];
+    m_meshTexCoord = new float[2 * (gridSize + 2) * (gridSize + 2)];
     m_gridIndices = new uint32_t[2 * gridSize * gridSize];
     m_gridPosition = new float[3 * gridSize * gridSize];
 
@@ -96,6 +97,13 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
     glBufferData(GL_ARRAY_BUFFER, (gridSize + 2) * (gridSize + 2) * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), nullptr);
     glEnableVertexAttribArray(1);
+
+    // Tex Coord VBO
+    glGenBuffers(1, &m_texCoordVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_texCoordVBO);
+    glBufferData(GL_ARRAY_BUFFER, 2 * (gridSize + 2) * (gridSize + 2) * sizeof(float), m_meshTexCoord, GL_STATIC_DRAW);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float), nullptr);
+    glEnableVertexAttribArray(2);
 
     // Mesh EBO
     glGenBuffers(1, &m_indicesEBO);
@@ -187,7 +195,7 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
                             m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
     for (auto environment : m_environmentList) {
-        environment->advect(dt, m_gridSize, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
+        environment->advect(dt, m_gridSize, m_meshVAO, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
                             m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
     }
 }

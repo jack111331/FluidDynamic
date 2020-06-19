@@ -90,7 +90,7 @@ Environment::Environment(const std::string &textureFilename) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Environment::advect(float dt, int gridSize, uint32_t u, uint32_t v) {
+void Environment::advect(float dt, int gridSize, uint32_t gridVAO, uint32_t u, uint32_t v) {
     glBindFramebuffer(GL_FRAMEBUFFER, m_rectFBO);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture[m_currentContext ^ 1], 0);
     // Render advect texture to framebuffer
@@ -99,12 +99,12 @@ void Environment::advect(float dt, int gridSize, uint32_t u, uint32_t v) {
     ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.bindBuffer(1, v);
     ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1f("dt0", dt * gridSize);
     ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1i("samplerWeed", 0);
-    glBindVertexArray(m_rectVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_rectDataVBO);
+    glBindVertexArray(gridVAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[m_currentContext]);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawElements(GL_TRIANGLES, 6 * (gridSize + 1) * (gridSize + 1), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     m_currentContext ^= 1;
 }

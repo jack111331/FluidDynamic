@@ -37,8 +37,9 @@ constexpr char ShaderUtility::CONSERVE_MASS_PROGRAM_PATH[];
 constexpr char ShaderUtility::JACOBI_SOLVER_PROGRAM_PATH[];
 
 constexpr char ShaderUtility::RECTANGLE_VERT_PATH[];
-constexpr char ShaderUtility::ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH[];
 constexpr char ShaderUtility::RECTANGLE_FRAG_PATH[];
+constexpr char ShaderUtility::ADVECT_ENVIRONMENT_PROGRAM_VERT_PATH[];
+constexpr char ShaderUtility::ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH[];
 
 ShaderUtility::ShaderUtility() {
     SET_DENSITY_BOUND_PROGRAM.addShader(GL_COMPUTE_SHADER, ShaderUtility::SET_DENSITY_BOUND_PROGRAM_PATH);
@@ -106,7 +107,7 @@ ShaderUtility::ShaderUtility() {
     JACOBI_SOLVER_PROGRAM.addAttachShader(&GET_DENSITY_SUBROUTINE_SHADER);
     JACOBI_SOLVER_PROGRAM.buildShader();
 
-    ADVECT_ENVIRONMENT_PROGRAM.addShader(GL_VERTEX_SHADER, ShaderUtility::RECTANGLE_VERT_PATH);
+    ADVECT_ENVIRONMENT_PROGRAM.addShader(GL_VERTEX_SHADER, ShaderUtility::ADVECT_ENVIRONMENT_PROGRAM_VERT_PATH);
     ADVECT_ENVIRONMENT_PROGRAM.addShader(GL_FRAGMENT_SHADER, ShaderUtility::ADVECT_ENVIRONMENT_PROGRAM_FRAG_PATH);
     ADVECT_ENVIRONMENT_PROGRAM.buildShader();
 
