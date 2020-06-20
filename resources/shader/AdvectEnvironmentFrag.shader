@@ -20,5 +20,4 @@ void main() {
     before_advect_xy = clamp(before_advect_xy, lower_bound, upper_bound);
 
     fColor = texture(samplerWeed, before_advect_xy);
-//    fColor = vec4(vec2(getGridVelocity(fTexCoord)), 0.0, 1.0);
 }

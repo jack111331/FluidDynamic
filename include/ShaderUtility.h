@@ -28,7 +28,7 @@ public:
     Shader ADD_VELOCITY_PROGRAM;
     Shader ADVECT_U_VELOCITY_PROGRAM;
     Shader ADVECT_V_VELOCITY_PROGRAM;
-    //    Shader CONFINE_VORTICITY_VELOCITY_PROGRAM = Shader(Velocity::CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH);
+    Shader CONFINE_VORTICITY_VELOCITY_PROGRAM;
     Shader BUILD_PRESSURE_PROGRAM;
     Shader CONSERVE_MASS_PROGRAM;
     Shader VELOCITY_TO_TEXTURE_PROGRAM;
@@ -42,6 +42,7 @@ public:
 
 private:
     ShaderUtility();
+
     static ShaderUtility *instance;
 
     /* Common Shader */
@@ -103,7 +104,7 @@ private:
     // location = 1: current V component quantity
     // location = 2: previous U component quantity
     // location = 3: previous V component quantity
-//    static constexpr char CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ConfineVorticityVelocity.cs";
+    static constexpr char CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH[] = "resources/shader/compute/ConfineVorticityVelocity.shader";
 
     // location = 0: current Pressure quantity
     // location = 1: previous Pressure quantity

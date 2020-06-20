@@ -28,7 +28,7 @@ private:
 
     void advectV(float dt);
 
-//    void vorticityConfinement(float dt, float vorticity);
+    void vorticityConfinement(float dt, float vorticity);
 
     void massConserve();
 

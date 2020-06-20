@@ -127,24 +127,25 @@ void Velocity::advectV(float dt) {
     m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.dispatch(m_grid + 1, 1, 1);
 }
 
-//void Velocity::vorticityConfinement(float dt, float vorticity) {
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.bind();
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext ^ 1], 2);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 3);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("dt", dt);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("vorticity", vorticity);
-//    CONFINE_VORTICITY_VELOCITY_PROGRAM.dispatch(1, 1, 1);
-//
-//    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bind();
-//    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
-//    ShaderUtility::SET_U_VELOCITY_BOUND_PROGRAM.dispatch(m_grid+1, 1, 1);
-//
-//    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bind();
-//    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
-//    ShaderUtility::SET_V_VELOCITY_BOUND_PROGRAM.dispatch(m_grid+1, 1, 1);
-//}
+void Velocity::vorticityConfinement(float dt, float vorticity) {
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.bind();
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_uQuantity[m_currentContext ^ 1], 2);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.bindBuffer(m_vQuantity[m_currentContext ^ 1], 3);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("dt", dt);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("gridSize", m_grid);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.uniform1f("vorticity", vorticity);
+    m_shaderUtility->CONFINE_VORTICITY_VELOCITY_PROGRAM.dispatch(m_grid - 2, m_grid - 2, 1);
+
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    m_shaderUtility->SET_U_VELOCITY_BOUND_PROGRAM.dispatch(m_grid+1, 1, 1);
+
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.bind();
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 0);
+    m_shaderUtility->SET_V_VELOCITY_BOUND_PROGRAM.dispatch(m_grid+1, 1, 1);
+}
 
 
 void Velocity::massConserve() {
@@ -218,9 +219,9 @@ void Velocity::process(float dt, float vorticity) {
     addForce(dt);
     massConserve();
 
-//    m_currentContext ^= 1;
-//    vorticityConfinement(dt, vorticity);
-//    massConserve();
+    m_currentContext ^= 1;
+    vorticityConfinement(dt, vorticity);
+    massConserve();
 
     m_currentContext ^= 1;
     advectU(dt);
