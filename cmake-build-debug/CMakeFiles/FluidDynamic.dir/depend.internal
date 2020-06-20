@@ -85,12 +85,14 @@ CMakeFiles/FluidDynamic.dir/Solver.cpp.obj
  D:/Code/FluidDynamic/Solver.cpp
 CMakeFiles/FluidDynamic.dir/Velocity.cpp.obj
  ../include/GL/glew.h
+ ../include/GLFW/glfw3.h
  ../include/Quantity.h
  ../include/Shader.h
  ../include/ShaderUtility.h
  ../include/Solver.h
  ../include/Utility.h
  ../include/Velocity.h
+ ../include/vo/GLFWWindowInfo.h
  D:/Code/FluidDynamic/Velocity.cpp
 CMakeFiles/FluidDynamic.dir/main.cpp.obj
  ../include/Control.h

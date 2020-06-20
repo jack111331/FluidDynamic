@@ -16,7 +16,11 @@ private:
     int m_currentContext;
     uint32_t m_uQuantity[2];
     uint32_t m_vQuantity[2];
+
     uint32_t m_texture;
+    uint32_t m_rectFBO;
+    uint32_t m_rectVAO;
+    uint32_t m_rectDataVBO;
 
     void addForce(float dt);
 
@@ -27,6 +31,8 @@ private:
 //    void vorticityConfinement(float dt, float vorticity);
 
     void massConserve();
+
+    void generateTexture();
 
 public:
     Velocity(int N);
@@ -45,7 +51,7 @@ public:
 
     uint32_t getBufferId(int component, bool isPrevious);
 
-    uint32_t getTextureId();
+    uint32_t getTextureId() const;
 
     static const int U_COMPONENT = 1;
     static const int V_COMPONENT = 2;

@@ -49,9 +49,9 @@ Environment::Environment(const std::string &textureFilename) {
     }
 
     GLint level = 0;
-    if(channel == 3) {
+    if (channel == 3) {
         level = GL_RGB;
-    } else if(channel == 4){
+    } else if (channel == 4) {
         level = GL_RGBA;
     }
 
@@ -66,9 +66,10 @@ Environment::Environment(const std::string &textureFilename) {
 
     GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
     glGenTextures(2, m_texture);
-    for(int i = 0;i < 2;++i) {
+    for (int i = 0; i < 2; ++i) {
         glBindTexture(GL_TEXTURE_2D, m_texture[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, level, glfwWindowInfo->windowWidth, glfwWindowInfo->windowHeight, 0, level, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, level, glfwWindowInfo->windowWidth, glfwWindowInfo->windowHeight, 0, level,
+                     GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -90,18 +91,20 @@ Environment::Environment(const std::string &textureFilename) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Environment::advect(float dt, int gridSize, uint32_t gridVAO, uint32_t u, uint32_t v) {
+void Environment::advect(float dt, int gridSize, uint32_t gridVAO, uint32_t velocityTexture) {
     glBindFramebuffer(GL_FRAMEBUFFER, m_rectFBO);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture[m_currentContext ^ 1], 0);
     // Render advect texture to framebuffer
     ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.bind();
-    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.bindBuffer(0, u);
-    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.bindBuffer(1, v);
-    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1f("dt0", dt * gridSize);
+    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1f("dt", dt);
+    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1f("gridSize", gridSize);
     ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1i("samplerWeed", 0);
+    ShaderUtility::getInstance()->ADVECT_ENVIRONMENT_PROGRAM.uniform1i("samplerVelocity", 1);
     glBindVertexArray(gridVAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[m_currentContext]);
+    glActiveTexture(GL_TEXTURE0 + 1);
+    glBindTexture(GL_TEXTURE_2D, velocityTexture);
 
     glDrawElements(GL_TRIANGLES, 6 * (gridSize + 1) * (gridSize + 1), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

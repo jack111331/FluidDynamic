@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
+#include <vo/GLFWWindowInfo.h>
 
 using namespace std;
 
@@ -26,6 +27,46 @@ Velocity::Velocity(int N) : m_grid(N), m_currentContext(false) {
         glBufferData(GL_SHADER_STORAGE_BUFFER, (N + 1) * (N + 2) * sizeof(float), NULL, GL_DYNAMIC_DRAW);
         clear(i);
     }
+
+    GLFWWindowInfo *glfwWindowInfo = GLFWWindowInfo::getInstance();
+    glGenTextures(1, &m_texture);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, glfwWindowInfo->windowWidth, glfwWindowInfo->windowHeight, 0, GL_RGBA,
+                 GL_FLOAT, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // TODO Maybe can be refactor
+    // Rectangle VAO
+    glGenVertexArrays(1, &m_rectVAO);
+    glBindVertexArray(m_rectVAO);
+
+    glGenFramebuffers(1, &m_rectFBO);
+
+    // Rectangle VBO
+    const float rectPosition[30] = {
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+
+            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f
+    };
+
+    glGenBuffers(1, &m_rectDataVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_rectDataVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(rectPosition), rectPosition, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
 }
 
 Velocity::~Velocity() {
@@ -155,6 +196,23 @@ void Velocity::massConserve() {
 
 }
 
+void Velocity::generateTexture() {
+    glBindFramebuffer(GL_FRAMEBUFFER, m_rectFBO);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture, 0);
+
+    m_shaderUtility->VELOCITY_TO_TEXTURE_PROGRAM.bind();
+    m_shaderUtility->VELOCITY_TO_TEXTURE_PROGRAM.bindBuffer(m_uQuantity[m_currentContext], 0);
+    m_shaderUtility->VELOCITY_TO_TEXTURE_PROGRAM.bindBuffer(m_vQuantity[m_currentContext], 1);
+
+    glBindVertexArray(m_rectVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_rectDataVBO);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+}
+
 void Velocity::process(float dt, float vorticity) {
 
     addForce(dt);
@@ -169,6 +227,7 @@ void Velocity::process(float dt, float vorticity) {
     advectV(dt);
 
     massConserve();
+    generateTexture();
 }
 
 float *Velocity::enableAndGetReadWriteQuantity(int component, bool isPrevious) {
@@ -206,4 +265,8 @@ uint32_t Velocity::getBufferId(int component, bool isPrevious) {
     } else {
         return m_vQuantity[m_currentContext ^ isPrevious];
     }
+}
+
+uint32_t Velocity::getTextureId() const {
+    return m_texture;
 }

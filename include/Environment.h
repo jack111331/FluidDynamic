@@ -13,7 +13,7 @@ class Environment {
 public:
     Environment(const std::string &textureFilename);
 
-    void advect(float dt, int gridSize, uint32_t gridVAO, uint32_t u, uint32_t v);
+    void advect(float dt, int gridSize, uint32_t gridVAO, uint32_t velocityTexture);
 
     uint32_t getCurrentTexture() const;
     void bindAndActiveCurrentTexture(int slot);

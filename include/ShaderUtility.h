@@ -31,6 +31,7 @@ public:
     //    Shader CONFINE_VORTICITY_VELOCITY_PROGRAM = Shader(Velocity::CONFINE_VORTICITY_VELOCITY_PROGRAM_PATH);
     Shader BUILD_PRESSURE_PROGRAM;
     Shader CONSERVE_MASS_PROGRAM;
+    Shader VELOCITY_TO_TEXTURE_PROGRAM;
 
 
     Shader JACOBI_SOLVER_PROGRAM;
@@ -114,6 +115,9 @@ private:
     // location = 1: current V component quantity
     // location = 2: current Pressure quantity
     static constexpr char CONSERVE_MASS_PROGRAM_PATH[] = "resources/shader/compute/ConserveMass.shader";
+
+    static constexpr char VELOCITY_TO_TEXTURE_VERT_PROGRAM_PATH[] = "resources/shader/VelocityToTextureVert.shader";
+    static constexpr char VELOCITY_TO_TEXTURE_FRAG_PROGRAM_PATH[] = "resources/shader/VelocityToTextureFrag.shader";
 
 
     /* Solver Relate Shader */
