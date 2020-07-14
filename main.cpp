@@ -11,7 +11,7 @@ Fluid2D *fluid2D;
 static int N = 128;
 static int timestep = 20;
 static float dt = 0.1f;
-static float diffusion = 0.1f;
+static float diffusion = 1.0f;
 static float viscosity = 0.0f;
 static float source = 100.0f;
 static float force = 5.0f;
@@ -94,15 +94,15 @@ int main() {
     std::cout << "Current Renderer: " << (const char *) renderer << std::endl;
 
     // Initial Setup
-    const char image[] = "image_1.png";
+    const char image[] = "image.png";
     fluid2D = new Fluid2D();
     fluid2D->init(N, timestep);
     fluid2D->addEnvironment(new Environment(image));
 
-    TargetDrivenControl *control = new TargetDrivenControl("resources/animation/from_3_to_4/animation.kfd", dt);
-    control->setTarget(fluid2D);
-//    Control2D *control = new GenerateRisingSmoke();
+//    TargetDrivenControl *control = new TargetDrivenControl("resources/animation/from_3_to_4/animation.kfd", dt);
 //    control->setTarget(fluid2D);
+    Control2D *control = new GenerateRisingSmoke();
+    control->setTarget(fluid2D);
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -110,7 +110,7 @@ int main() {
 
         glfwPollEvents();
         fluid2D->input(force, source);
-//        control->control();
+        control->control();
 
         fluid2D->update(dt, diffusion, viscosity);
         fluid2D->display(displayMode);

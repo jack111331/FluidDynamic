@@ -193,7 +193,7 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     // FIXME alpha and beta
 //    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
-//    addBuoyancy(dt, 0.0f, 0.3f, -9.8);
+    addBuoyancy(dt, -0.1f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity);
     m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
                             m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
@@ -368,4 +368,6 @@ void Fluid2D::addEnvironment(Environment *environment) {
 void Fluid2D::clear() {
     m_densityField->clear(false);
     m_densityField->clear(true);
+    m_velocityField->clear(false);
+    m_velocityField->clear(true);
 }
