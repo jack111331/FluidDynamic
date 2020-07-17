@@ -53,6 +53,7 @@ CMAKE_BINARY_DIR = D:\Code\FluidDynamic\cmake-build-debug
 
 # The main recursive "all" target.
 all: CMakeFiles/FluidDynamic.dir/all
+all: CMakeFiles/LBFGSTest.dir/all
 all: library/glfw-3.3.2/all
 
 .PHONY : all
@@ -64,6 +65,7 @@ preinstall: library/glfw-3.3.2/preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/FluidDynamic.dir/clean
+clean: CMakeFiles/LBFGSTest.dir/clean
 clean: library/glfw-3.3.2/clean
 
 .PHONY : clean
@@ -133,6 +135,33 @@ CMakeFiles/FluidDynamic.dir/clean:
 .PHONY : CMakeFiles/FluidDynamic.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/LBFGSTest.dir
+
+# All Build rule for target.
+CMakeFiles/LBFGSTest.dir/all:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/depend
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=16,17 "Built target LBFGSTest"
+.PHONY : CMakeFiles/LBFGSTest.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/LBFGSTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles 2
+	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/LBFGSTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/LBFGSTest.dir/rule
+
+# Convenience name for target.
+LBFGSTest: CMakeFiles/LBFGSTest.dir/rule
+
+.PHONY : LBFGSTest
+
+# clean rule for target.
+CMakeFiles/LBFGSTest.dir/clean:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/clean
+.PHONY : CMakeFiles/LBFGSTest.dir/clean
+
+#=============================================================================
 # Target rules for target library/glfw-3.3.2/CMakeFiles/uninstall.dir
 
 # All Build rule for target.
@@ -166,7 +195,7 @@ library/glfw-3.3.2/CMakeFiles/uninstall.dir/clean:
 library/glfw-3.3.2/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) -f library\glfw-3.3.2\src\CMakeFiles\glfw.dir\build.make library/glfw-3.3.2/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) -f library\glfw-3.3.2\src\CMakeFiles\glfw.dir\build.make library/glfw-3.3.2/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Code\FluidDynamic\cmake-build-debug\CMakeFiles --progress-num=18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 "Built target glfw"
 .PHONY : library/glfw-3.3.2/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.

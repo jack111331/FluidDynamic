@@ -67,6 +67,10 @@ list(APPEND FLUID_DYNAMIC_HEADER
 
         include/stb_image.h
         include/stb_image_resize.h
+
+        include/LBFGS.h
+        include/LBFGSpp
+        include/Eigen
         )
 
 set(all_code_files
@@ -80,3 +84,7 @@ target_link_libraries(FluidDynamic GLEW::GLEW glfw OpenGL::GL)
 #project(ComputeShaderTest)
 #add_executable(ComputeShaderTest test_compute_shader.cpp include/Shader.h Shader.cpp)
 #target_link_libraries(ComputeShaderTest GLEW::GLEW glfw OpenGL::GL)
+
+project(LBFGSTest)
+add_executable(LBFGSTest test_lbfgs.cpp include/LBFGS.h include/LBFGSpp include/Eigen)
+target_link_libraries(LBFGSTest)

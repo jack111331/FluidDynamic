@@ -249,10 +249,19 @@
 		<Unit filename="D:/Code/FluidDynamic/include/DensityDerivative.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/Eigen">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Environment.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Keyframe.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/LBFGS.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/LBFGSpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/NavierStokes.h">

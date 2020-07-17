@@ -90,6 +90,18 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	"D:\Program Files\JetBrains\CLion 2019.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	"D:\Program Files\JetBrains\CLion 2019.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -110,18 +122,6 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	"D:\Program Files\JetBrains\CLion 2019.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	"D:\Program Files\JetBrains\CLion 2019.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -167,6 +167,19 @@ FluidDynamic: cmake_check_build_system
 FluidDynamic/fast:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/build
 .PHONY : FluidDynamic/fast
+
+#=============================================================================
+# Target rules for targets named LBFGSTest
+
+# Build rule for target.
+LBFGSTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 LBFGSTest
+.PHONY : LBFGSTest
+
+# fast build rule for target.
+LBFGSTest/fast:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/build
+.PHONY : LBFGSTest/fast
 
 #=============================================================================
 # Target rules for targets named uninstall
@@ -572,6 +585,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\FluidDynamic.dir\build.make CMakeFiles/FluidDynamic.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+test_lbfgs.obj: test_lbfgs.cpp.obj
+
+.PHONY : test_lbfgs.obj
+
+# target to build an object file
+test_lbfgs.cpp.obj:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/test_lbfgs.cpp.obj
+.PHONY : test_lbfgs.cpp.obj
+
+test_lbfgs.i: test_lbfgs.cpp.i
+
+.PHONY : test_lbfgs.i
+
+# target to preprocess a source file
+test_lbfgs.cpp.i:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/test_lbfgs.cpp.i
+.PHONY : test_lbfgs.cpp.i
+
+test_lbfgs.s: test_lbfgs.cpp.s
+
+.PHONY : test_lbfgs.s
+
+# target to generate assembly for a file
+test_lbfgs.cpp.s:
+	$(MAKE) -f CMakeFiles\LBFGSTest.dir\build.make CMakeFiles/LBFGSTest.dir/test_lbfgs.cpp.s
+.PHONY : test_lbfgs.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -582,9 +622,10 @@ help:
 	@echo ... install
 	@echo ... edit_cache
 	@echo ... FluidDynamic
+	@echo ... install/strip
+	@echo ... LBFGSTest
 	@echo ... rebuild_cache
 	@echo ... list_install_components
-	@echo ... install/strip
 	@echo ... uninstall
 	@echo ... glfw
 	@echo ... Control.obj
@@ -629,6 +670,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... test_lbfgs.obj
+	@echo ... test_lbfgs.i
+	@echo ... test_lbfgs.s
 .PHONY : help
 
 
