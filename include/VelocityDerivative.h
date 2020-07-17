@@ -1,0 +1,16 @@
+//
+// Created by Edge on 2020/7/14.
+//
+
+#ifndef FLUIDDYNAMIC_VELOCITYDERIVATIVE_H
+#define FLUIDDYNAMIC_VELOCITYDERIVATIVE_H
+
+
+
+class VelocityDerivative {
+
+};
+
+
+
+#endif //FLUIDDYNAMIC_VELOCITYDERIVATIVE_H

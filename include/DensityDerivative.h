@@ -1,0 +1,16 @@
+//
+// Created by Edge on 2020/7/14.
+//
+
+#ifndef FLUIDDYNAMIC_DENSITYDERIVATIVE_H
+#define FLUIDDYNAMIC_DENSITYDERIVATIVE_H
+
+
+
+class DensityDerivative {
+
+};
+
+
+
+#endif //FLUIDDYNAMIC_DENSITYDERIVATIVE_H
