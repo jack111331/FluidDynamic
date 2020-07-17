@@ -204,6 +204,9 @@
 		<Unit filename="D:/Code/FluidDynamic/Density.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/DensityDerivative.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/Environment.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
@@ -231,6 +234,9 @@
 		<Unit filename="D:/Code/FluidDynamic/Velocity.cpp">
 			<Option target="FluidDynamic"/>
 		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/VelocityDerivative.cpp">
+			<Option target="FluidDynamic"/>
+		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/cmake-build-debug/library/glfw-3.3.2/src/glfw_config.h">
 			<Option target="glfw"/>
 		</Unit>
@@ -238,6 +244,9 @@
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Density.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/DensityDerivative.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Environment.h">
@@ -265,6 +274,9 @@
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/Velocity.h">
+			<Option target="FluidDynamic"/>
+		</Unit>
+		<Unit filename="D:/Code/FluidDynamic/include/VelocityDerivative.h">
 			<Option target="FluidDynamic"/>
 		</Unit>
 		<Unit filename="D:/Code/FluidDynamic/include/stb_image.h">

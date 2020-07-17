@@ -217,9 +217,9 @@ void Velocity::generateTexture() {
 void Velocity::process(float dt, float vorticity) {
 
     addForce(dt);
-    massConserve();
-
-    m_currentContext ^= 1;
+//    massConserve();
+//
+//    m_currentContext ^= 1;
     vorticityConfinement(dt, vorticity);
     massConserve();
 

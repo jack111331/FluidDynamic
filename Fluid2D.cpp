@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include "Fluid2D.h"
 #include <iostream>
+#include "stb_image.h"
 
 using std::max;
 using std::min;
@@ -139,6 +140,50 @@ void Fluid2D::init(int gridSize, int solverTimestep) {
 
 }
 
+void Fluid2D::initWithInitialDensity(int gridSize, int solverTimestep, const std::string &initDensityFilename) {
+    init(gridSize, solverTimestep);
+    float *density = m_densityField->enableAndGetReadWriteQuantity(false);
+    int width, height, channel;
+    uint8_t *image = stbi_load(initDensityFilename.c_str(), &width, &height, &channel, STBI_grey);
+    if (!image) {
+        std::cerr << "Wrong file path" << std::endl;
+        exit(1);
+    }
+    if (width != height || width != gridSize) {
+        std::cerr << "Wrong initial density size" << std::endl;
+        exit(1);
+    }
+    for (int i = 1; i <= gridSize; ++i) {
+        for (int j = 1; j <= gridSize; ++j) {
+            density[indexOf(i, j, gridSize)] = image[(gridSize - i + 1) * gridSize + j - 1];
+        }
+    }
+    stbi_image_free(image);
+    m_densityField->disableReadOrWriteQuantity(false);
+}
+
+void Fluid2D::clearWithInitialDensity(int gridSize, int solverTimestep, const std::string &initDensityFilename) {
+    clear();
+    float *density = m_densityField->enableAndGetReadWriteQuantity(false);
+    int width, height, channel;
+    uint8_t *image = stbi_load(initDensityFilename.c_str(), &width, &height, &channel, STBI_grey);
+    if (!image) {
+        std::cerr << "Wrong file path" << std::endl;
+        exit(1);
+    }
+    if (width != height || width != gridSize) {
+        std::cerr << "Wrong initial density size" << std::endl;
+        exit(1);
+    }
+    for (int i = 1; i <= gridSize; ++i) {
+        for (int j = 1; j <= gridSize; ++j) {
+            density[indexOf(i, j, gridSize)] = image[(gridSize - i + 1) * gridSize + j - 1];
+        }
+    }
+    stbi_image_free(image);
+    m_densityField->disableReadOrWriteQuantity(false);
+}
+
 void Fluid2D::input(float force, float source) {
     // Process density and velocity field
     m_densityField->clear(true);
@@ -148,7 +193,8 @@ void Fluid2D::input(float force, float source) {
 
     int i = (static_cast<double>(glfwWindowInfo->windowHeight - glfwWindowInfo->mouseYPos) /
              static_cast<double>(glfwWindowInfo->windowHeight )) * m_gridSize + 1;
-    int j = (static_cast<double>(glfwWindowInfo->mouseXPos) / static_cast<double>(glfwWindowInfo->windowWidth)) * m_gridSize +
+    int j = (static_cast<double>(glfwWindowInfo->mouseXPos) / static_cast<double>(glfwWindowInfo->windowWidth)) *
+            m_gridSize +
             1;
     if (i >= 1 && i < m_gridSize && j >= 1 && j < m_gridSize) {
         float *density = m_densityField->enableAndGetReadWriteQuantity(true);
@@ -193,7 +239,7 @@ void Fluid2D::update(float dt, float diffusion, float viscosity) {
     // FIXME alpha and beta
 //    addBuoyancy(dt, -0.000625, 5.0f, -9.81);
 //    addBuoyancy(dt, -0.000625, 5.0f, 1);
-    addBuoyancy(dt, -0.1f, 0.3f, -9.8);
+//    addBuoyancy(dt, -0.1f, 0.3f, -9.8);
     m_velocityField->process(dt, viscosity);
     m_densityField->process(dt, diffusion, m_velocityField->getBufferId(Velocity::U_COMPONENT, false),
                             m_velocityField->getBufferId(Velocity::V_COMPONENT, false));
@@ -224,7 +270,7 @@ void Fluid2D::display(int mode) {
         glDrawElements(GL_LINES, 2 * m_gridSize * m_gridSize, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     } else if (mode == TEXTURE_MODE) {
-        for (auto & i : m_environmentList) {
+        for (auto &i : m_environmentList) {
             i->drawEnvironment();
         }
     }

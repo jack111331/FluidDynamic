@@ -14,19 +14,23 @@ const uint V_STAGGERED_GRID_HEIGHT = VIRTUAL_GRID_HEIGHT+1;
 
 layout(local_size_x = 1, local_size_y = 1) in;
 
-layout(std430, binding = 0) buffer VQuantity {
-    float v[];
+layout(std430, binding = 0) buffer VDerivative {
+    float vDerivative[];
 };
-layout(std430, binding = 1) buffer UPrevQuantity {
+layout(std430, binding = 1) buffer PrevVDerivative {
+    float prevVDerivative[];
+};
+layout(std430, binding = 2) buffer UPrevQuantity {
     float prevU[];
 };
-layout(std430, binding = 2) buffer VPrevQuantity {
+layout(std430, binding = 3) buffer VPrevQuantity {
     float prevV[];
 };
 
 uint indexOfVelocityU(uvec2 grid_xy);
 uint indexOfVelocityV(uvec2 grid_xy);
 float linearInterpolate2D(vec2 portion, float ll, float lr, float ul, float ur);
+float linearInterpolate2DDerivative(float portion, float ll, float lr, float ul, float ur);
 
 uniform float dt0;
 
@@ -48,9 +52,19 @@ void main() {
     uvec2 lower_left_xy = uvec2(floor(before_advect_xy.x), floor(before_advect_xy.y));
     uvec2 upper_right_xy = lower_left_xy+uvec2(1);
     // Linear interpolate
-    v[grid_xy] = linearInterpolate2D(vec2(fract(before_advect_xy.x - lower_left_xy.x), fract(before_advect_xy.y - lower_left_xy.y)),
-    prevV[indexOfVelocityV(lower_left_xy)],
-    prevV[indexOfVelocityV(uvec2(upper_right_xy.x, lower_left_xy.y))],
-    prevV[indexOfVelocityV(uvec2(lower_left_xy.x, upper_right_xy.y))],
-    prevV[indexOfVelocityV(upper_right_xy)]);
+    vDerivative[grid_xy] = linearInterpolate2D(vec2(fract(before_advect_xy.x - lower_left_xy.x), fract(before_advect_xy.y - lower_left_xy.y)),
+    prevVDerivative[indexOfPressure(lower_left_xy)],
+    prevVDerivative[indexOfPressure(uvec2(upper_right_xy.x, lower_left_xy.y))],
+    prevVDerivative[indexOfPressure(uvec2(lower_left_xy.x, upper_right_xy.y))],
+    prevVDerivative[indexOfPressure(upper_right_xy)]) +
+    before_advect_xy.x * linearInterpolate2DDerivative(fract(before_advect_xy.y - lower_left_xy.y),
+    prevV[indexOfPressure(lower_left_xy)],
+    prevV[indexOfPressure(uvec2(upper_right_xy.x, lower_left_xy.y))],
+    prevV[indexOfPressure(uvec2(lower_left_xy.x, upper_right_xy.y))],
+    prevV[indexOfPressure(upper_right_xy)]) +
+    before_advect_xy.y * linearInterpolate2DDerivative(fract(before_advect_xy.x - lower_left_xy.x),
+    prevV[indexOfPressure(lower_left_xy)],
+    prevV[indexOfPressure(uvec2(upper_right_xy.x, lower_left_xy.y))],
+    prevV[indexOfPressure(uvec2(lower_left_xy.x, upper_right_xy.y))],
+    prevV[indexOfPressure(upper_right_xy)]);
 }

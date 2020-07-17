@@ -13,7 +13,6 @@ private:
     JacobiSolver *m_solver;
 
     int m_grid;
-    int m_currentContext;
     uint32_t m_uQuantity[2];
     uint32_t m_vQuantity[2];
 
@@ -29,8 +28,6 @@ private:
     void advectV(float dt);
 
     void vorticityConfinement(float dt, float vorticity);
-
-    void massConserve();
 
     void generateTexture();
 
@@ -49,9 +46,13 @@ public:
 
     void disableReadOrWriteQuantity(int component, bool isPrevious);
 
+    void massConserve();
+
     uint32_t getBufferId(int component, bool isPrevious);
 
     uint32_t getTextureId() const;
+
+    int m_currentContext;
 
     static const int U_COMPONENT = 1;
     static const int V_COMPONENT = 2;

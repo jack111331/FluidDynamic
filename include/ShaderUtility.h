@@ -24,6 +24,8 @@ public:
     Shader ADD_DENSITY_PROGRAM;
     Shader ADVECT_DENSITY_PROGRAM;
 
+    Shader ADVECT_DENSITY_DERIVATIVE_PROGRAM;
+
     Shader CLEAR_VELOCITY_PROGRAM;
     Shader ADD_VELOCITY_PROGRAM;
     Shader ADVECT_U_VELOCITY_PROGRAM;
@@ -32,6 +34,9 @@ public:
     Shader BUILD_PRESSURE_PROGRAM;
     Shader CONSERVE_MASS_PROGRAM;
     Shader VELOCITY_TO_TEXTURE_PROGRAM;
+
+    Shader ADVECT_U_VELOCITY_DERIVATIVE_PROGRAM;
+    Shader ADVECT_V_VELOCITY_DERIVATIVE_PROGRAM;
 
 
     Shader JACOBI_SOLVER_PROGRAM;
@@ -76,7 +81,8 @@ private:
     // location = 3: current v vector field
     static constexpr char ADVECT_DENSITY_PROGRAM_PATH[] = "resources/shader/compute/AdvectDensity.shader";
 
-
+    // Density Derivative Relate Shader
+    static constexpr char ADVECT_DENSITY_DERIVATIVE_PROGRAM_PATH[] = "resources/shader/compute/derivative/AdvectDensity.shader";
 
     /* Velocity Relate Shader */
 
@@ -120,6 +126,9 @@ private:
     static constexpr char VELOCITY_TO_TEXTURE_VERT_PROGRAM_PATH[] = "resources/shader/VelocityToTextureVert.shader";
     static constexpr char VELOCITY_TO_TEXTURE_FRAG_PROGRAM_PATH[] = "resources/shader/VelocityToTextureFrag.shader";
 
+    // Velocity Derivative Relate Shader
+    static constexpr char ADVECT_U_VELOCITY_DERIVATIVE_PROGRAM_PATH[] = "resources/shader/compute/derivative/AdvectUVelocity.shader";
+    static constexpr char ADVECT_V_VELOCITY_DERIVATIVE_PROGRAM_PATH[] = "resources/shader/compute/derivative/AdvectVVelocity.shader";
 
     /* Solver Relate Shader */
 

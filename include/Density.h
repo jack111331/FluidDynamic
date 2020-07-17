@@ -13,7 +13,6 @@ private:
 
     uint32_t m_quantity[2];
     int m_grid;
-    bool m_currentContext;
 
 public:
     Density(int N);
@@ -37,4 +36,9 @@ public:
     const float *enableAndGetReadQuantity(bool isPrevious);
 
     void disableReadOrWriteQuantity(bool isPrevious);
+
+    uint32_t getBufferId(bool isPrevious);
+
+    bool m_currentContext;
+
 };

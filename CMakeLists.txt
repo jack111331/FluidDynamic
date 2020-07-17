@@ -45,7 +45,8 @@ list(APPEND FLUID_DYNAMIC_SOURCE
         GLFWWindowInfo.cpp
 
         Keyframe.cpp
-
+        DensityDerivative.cpp
+        VelocityDerivative.cpp
         )
 list(APPEND FLUID_DYNAMIC_HEADER
         include/NavierStokes.h
@@ -61,6 +62,8 @@ list(APPEND FLUID_DYNAMIC_HEADER
 
         include/vo/GLFWWindowInfo.h
         include/Keyframe.h
+        include/DensityDerivative.h
+        include/VelocityDerivative.h
 
         include/stb_image.h
         include/stb_image_resize.h

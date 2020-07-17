@@ -96,7 +96,7 @@ int main() {
     // Initial Setup
     const char image[] = "image.png";
     fluid2D = new Fluid2D();
-    fluid2D->init(N, timestep);
+    fluid2D->initWithInitialDensity(N, timestep, "resources/animation/keyframe/3.png");
     fluid2D->addEnvironment(new Environment(image));
 
 //    TargetDrivenControl *control = new TargetDrivenControl("resources/animation/from_3_to_4/animation.kfd", dt);

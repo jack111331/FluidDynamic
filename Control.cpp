@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <iostream>
 #include "Control.h"
 
 
@@ -49,6 +50,26 @@ void OptimizationControl::control() {
     Keyframe keyframe;
     int t = 2;
     m_animation->getKeyframeAtTime(t, keyframe);
+//    m_controlForceSequence add 9 gauss wind and 2 vortex
+
+// TODO
+//    evaluate()
+}
+
+OptimizationControl::EvaluateResult OptimizationControl::evaluate(const std::vector<ControlForce> &controlForceSequence) {
+    if(controlForceSequence.empty()) {
+        std::cerr << "No control force sequence" << std::endl;
+        exit(1);
+    }
+    EvaluateResult result;
+    result.phi = 0.0f;
+    for(int i = 0;i < controlForceSequence[0].gaussianWindForceList.size();++i) {
+        result.gaussianWindForceDerivativeList.push_back({0.0f, 0.0f});
+    }
+    for(int i = 0;i < controlForceSequence[0].vortexForceList.size();++i) {
+        result.vortexForceDerivativeList.push_back({0.0f});
+    }
+//    TODO add velocity derivative and density derivative class
 }
 
 OptimizationControl::~OptimizationControl() {

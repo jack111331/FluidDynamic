@@ -93,11 +93,10 @@ void Density::process(float dt, float diffusion, uint32_t u, uint32_t v) {
     addDensity(dt);
 
     m_currentContext ^= 1;
-    diffuse(dt, diffusion);
-
-    m_currentContext ^= 1;
     advect(dt, u, v);
 
+    m_currentContext ^= 1;
+    diffuse(dt, diffusion);
 }
 
 float *Density::enableAndGetReadWriteQuantity(bool isPrevious) {
@@ -115,4 +114,8 @@ const float *Density::enableAndGetReadQuantity(bool isPrevious) {
 void Density::disableReadOrWriteQuantity(bool isPrevious) {
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_quantity[m_currentContext ^ isPrevious]);
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+}
+
+uint32_t Density::getBufferId(bool isPrevious) {
+    return m_quantity[m_currentContext ^ isPrevious];
 }

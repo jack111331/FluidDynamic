@@ -18,6 +18,10 @@ public:
 
     void init(int gridSize, int solverTimestep);
 
+    void initWithInitialDensity(int gridSize, int solverTimestep, const std::string &initDensityFilename);
+
+    void clearWithInitialDensity(int gridSize, int solverTimestep, const std::string &initDensityFilename);
+
     void input(float force, float source);
 
     void changeGridPosition();
